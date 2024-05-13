@@ -12,10 +12,7 @@
                 "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
                 "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
                 "C:/Program Files/googletest/googletest/include",
-                "C:/Program Files/curl/include",
-                "C:/Program Files/libzip/lib",
-                "C:/Program Files/boost",
-                "C:/ffmpeg"
+                "C:/Program Files/boost"
             ],
             "defines": [
                 "_DEBUG",

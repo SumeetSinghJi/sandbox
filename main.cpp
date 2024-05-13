@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <filesystem>
+#include <unordered_map>
 #include <vector>
 #ifdef __WIN32
 #include <SDL2/SDL.h>
@@ -12,6 +13,7 @@
 #include <SDL_image.h>
 #include <SDL_net.h>
 #endif
+#include "headers/WebserverClient.hpp"
 
 /**
  * TO DO
@@ -30,11 +32,14 @@ const int WORLD_HEIGHT = 1200; // double screen/camera size
 const int SCREEN_WIDTH = 800;  // double screen/camera size
 const int SCREEN_HEIGHT = 600; // double screen/camera size
 
+WebserverClient ws{};
+
 SDL_Window *window{};
 SDL_Renderer *renderer{};
 SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+SDL_Texture *backgroundTexture{};
 SDL_Texture *houseTexture{};
-SDL_Rect houseRect = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 10, SCREEN_HEIGHT / 10};
+SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
 
 class Player
 {
@@ -202,7 +207,7 @@ void webserver_process_player_vector(std::vector<Player *> players)
 void initialise_players()
 {
     int playerID = players.size() + 1; // Start with 1 if players vector is not empty
-    Player *player = new Player(playerID, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, std::vector<std::string>{"assets/dot.bmp", "assets/dot.bmp"});
+    Player *player = new Player(playerID, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, std::vector<std::string>{"assets/turtle.png", "assets/turtle.png"});
     players.push_back(player);
 }
 void initialise_players_textures()
@@ -240,6 +245,7 @@ SDL_Texture *load_texture(const std::string &textureFilePath)
 
 void load_textures()
 {
+    backgroundTexture = load_texture("assets/farm-day.png");
     houseTexture = load_texture("assets/house-day.png");
 }
 
@@ -332,11 +338,39 @@ void handle_inputs(bool &quit)
 }
 void update_camera_follow_player()
 {
+    int minX = INT_MAX;
+    int minY = INT_MAX;
+    int maxX = INT_MIN;
+    int maxY = INT_MIN;
+
     for (auto *p : players)
     {
-        cameraRect.x = p->get_x_position() - (SCREEN_WIDTH / 2);
-        cameraRect.y = p->get_y_position() - (SCREEN_HEIGHT / 2);
+        int playerX = p->get_x_position();
+        int playerY = p->get_y_position();
+
+        if (playerX < minX)
+            minX = playerX;
+        if (playerY < minY)
+            minY = playerY;
+        if (playerX + SCREEN_WIDTH > maxX)
+            maxX = playerX + SCREEN_WIDTH;
+        if (playerY + SCREEN_HEIGHT > maxY)
+            maxY = playerY + SCREEN_HEIGHT;
     }
+
+    // Adjust camera position to keep all players in view
+    cameraRect.x = minX - (SCREEN_WIDTH / 2);
+    cameraRect.y = minY - (SCREEN_HEIGHT / 2);
+
+    // Clamp camera position to world boundaries
+    if (cameraRect.x < 0)
+        cameraRect.x = 0;
+    if (cameraRect.y < 0)
+        cameraRect.y = 0;
+    if (cameraRect.x + SCREEN_WIDTH > WORLD_WIDTH)
+        cameraRect.x = WORLD_WIDTH - SCREEN_WIDTH;
+    if (cameraRect.y + SCREEN_HEIGHT > WORLD_HEIGHT)
+        cameraRect.y = WORLD_HEIGHT - SCREEN_HEIGHT;
 }
 void update_player_stay_within_world_bounds()
 {
@@ -360,6 +394,8 @@ void update_player_stay_within_world_bounds()
         }
     }
 }
+void update_collission_logic() {
+}
 void update()
 {
     update_camera_follow_player();
@@ -375,12 +411,14 @@ void draw(SDL_Renderer *renderer)
     // Clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, backgroundTexture, nullptr, nullptr);
 
+    draw_house();
     for (auto p : players)
     {
         p->draw_player(p->get_x_position() - cameraRect.x, p->get_y_position() - cameraRect.y);
     }
-    draw_house();
+    
 
     // Render present
     SDL_RenderPresent(renderer);
@@ -399,7 +437,7 @@ void run_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
         SDL_Delay(60); /** Limit FPS */
     }
 }
-int main()
+int main(int argc, char *argv[])
 {
     // Seed random number generator
     srand(time(nullptr));

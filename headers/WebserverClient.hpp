@@ -2,8 +2,12 @@
 
 #include <iostream>
 #include <string>
+#ifdef __WIN32
+#include <winsock2.h>
+#else
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#endif
 #include <boost/asio.hpp>
 
 class WebserverClient
@@ -16,5 +20,5 @@ private:
     boost::asio::ip::tcp::resolver resolver{io_context}; /** resolve string address to endpoints. Same as a DNS/Domain name server */
     boost::asio::ip::tcp::socket socket{io_context};     /** socket for server being queried. Resolver passes the webaddress to use */
 public:
-    WebserverClient(){}
+    WebserverClient();
 };

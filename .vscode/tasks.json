@@ -6,14 +6,17 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
+                "-I${workspaceFolder}/headers",
+                "-IC:/Program Files/boost",
                 "-IC:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
+                "-IC:/Program Files/SDL2_net/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/glad/include",
                 "-g",
                 "${file}",
-                // "${workspaceFolder}/src/*.cpp",
+                "${workspaceFolder}/src/*.cpp",
                 "C:/Program Files/glad/src/glad.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.exe",
@@ -22,13 +25,17 @@
                 "-LC:/Program Files/SDL2_image/x86_64-w64-mingw32/lib",
                 "-LC:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/lib",
                 "-LC:/Program Files/SDL2_TTF/x86_64-w64-mingw32/lib",
+                "-LC:/Program Files/SDL2_net/x86_64-w64-mingw32/lib",
+                "-lboost_system-mgw13-mt-x64-1_85",
                 "-lmingw32",
                 "-lSDL2main",
                 "-lSDL2",
                 "-lSDL2_image",
                 "-lSDL2_ttf",
                 "-lSDL2_mixer",
-                "-lopengl32"
+                "-lSDL2_net",
+                "-lopengl32",
+                "-lws2_32", // for boost
             ],
             "options": {
                 "cwd": "${fileDirname}"
