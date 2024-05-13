@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/src",
+                "C:/Program Files/glad/include",
+                "C:/Program Files/glfw/include",
+                "C:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2",
+                "C:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2",
+                "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
+                "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
+                "C:/Program Files/googletest/googletest/include",
+                "C:/Program Files/curl/include",
+                "C:/Program Files/libzip/lib",
+                "C:/Program Files/boost",
+                "C:/ffmpeg"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
