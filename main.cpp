@@ -5,6 +5,6 @@ WebserverClient ws{};
 
 int main() {
     std::cout << "Hello world" << std::endl;
-    system("pause");
+    ws.create_account("sumeet", "sumeet.singhji@outlook.com", "password1");
     return 0;
 }
