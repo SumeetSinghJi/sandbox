@@ -4,14 +4,8 @@ project(sandbox VERSION 0.2)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
-    set(FFMPEG_INCLUDE_DIR "C:/ffmpeg")
-    set(FFMPEG_LIBRARIES "C:/ffmpeg/lib")
     set(BOOST_DIR "C:/Program Files/boost")
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
-    set(SDL2_DIR "C:/Program Files/SDL2/cmake")
-    set(SDL2_Image_DIR "C:/Program Files/SDL2_image/cmake")
-    set(SDL2_ttf_DIR "C:/Program Files/SDL2_TTF/cmake")
-    set(SDL2_mixer_DIR "C:/Program Files/SDL2_Mixer/cmake")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows -lws2_32")
 endif()
 if(APPLE)
@@ -37,10 +31,6 @@ if(UNIX AND NOT APPLE)
 endif()
 
 find_package(Boost REQUIRED)
-find_package(SDL2 REQUIRED)
-find_package(SDL2_Image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(SDL2_mixer REQUIRED)
 
 file(GLOB SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
@@ -58,21 +48,6 @@ include_directories(
 
 target_link_libraries(sandbox
     ${Boost_LIBRARIES}
-    SDL2::SDL2main
-    SDL2::SDL2
-    SDL2_image::SDL2_image
-    SDL2_ttf::SDL2_ttf
-    SDL2_mixer::SDL2_mixer
 )
-
-# # Output ALL CMAKE variables
-# get_cmake_property(_variableNames VARIABLES)
-# foreach (_variableName ${_variableNames})
-#     # string(FIND "${_variableName}" "_FOUND" _found) # comment out this line to find all variables
-#     # if(_found GREATER -1) # comment out this line to find all variables
-#         message(STATUS "Variable: ${_variableName} = ${${_variableName}}")
-#     # endif() # comment out this line to find all variables
-# endforeach()
-
 
     
