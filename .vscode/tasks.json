@@ -6,15 +6,13 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
+                "-IC:/Program Files/boost",
                 "-IC:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
                 "-IC:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
-                "-IC:/Program Files/glad/include",
                 "-g",
                 "${file}",
-                // "${workspaceFolder}/src/*.cpp",
-                "C:/Program Files/glad/src/glad.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.exe",
                 "-LC:/Program Files/boost/stage/lib",
@@ -22,13 +20,14 @@
                 "-LC:/Program Files/SDL2_image/x86_64-w64-mingw32/lib",
                 "-LC:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/lib",
                 "-LC:/Program Files/SDL2_TTF/x86_64-w64-mingw32/lib",
+                "-lboost_system-mgw13-mt-x64-1_85",
                 "-lmingw32",
                 "-lSDL2main",
                 "-lSDL2",
                 "-lSDL2_image",
                 "-lSDL2_ttf",
                 "-lSDL2_mixer",
-                "-lopengl32"
+                "-lws2_32"
             ],
             "options": {
                 "cwd": "${fileDirname}"

@@ -4,14 +4,10 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/src",
-                "C:/Program Files/glad/include",
-                "C:/Program Files/glfw/include",
                 "C:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2",
                 "C:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2",
                 "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
                 "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
-                "C:/Program Files/googletest/googletest/include",
                 "C:/Program Files/boost"
             ],
             "defines": [
