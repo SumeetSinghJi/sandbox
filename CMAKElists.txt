@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
-project(sandbox VERSION 0.2)
+project(sandbox VERSION 0.1)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
-    set(BOOST_DIR "C:/Program Files/boost")
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
     set(PLATFORM_LIBS ws2_32)
 endif()
