@@ -6,8 +6,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 if(WIN32)
     set(BOOST_DIR "C:/Program Files/boost")
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows -lws2_32")
+    # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows") # uncomment on full release to hide terminal popup when game starts
+    set(PLATFORM_LIBS ws2_32)
 endif()
+
 if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} 
     -fcolor-diagnostics 
@@ -20,6 +22,7 @@ if(APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/boost/stage/libs")
     set(Boost_INCLUDE_DIR "/opt/homebrew/Cellar/boost/1.85.0")
 endif()
+
 if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} 
     -g 
@@ -34,7 +37,7 @@ find_package(Boost REQUIRED)
 
 file(GLOB SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
-    )
+)
 
 add_executable(sandbox
     ${CMAKE_SOURCE_DIR}/main.cpp
@@ -48,6 +51,5 @@ include_directories(
 
 target_link_libraries(sandbox
     ${Boost_LIBRARIES}
+    ${PLATFORM_LIBS}
 )
-
-    
