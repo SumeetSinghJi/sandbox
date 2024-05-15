@@ -6,30 +6,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 if(WIN32)
     set(BOOST_DIR "C:/Program Files/boost")
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
-    # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows") # uncomment on full release to hide terminal popup when game starts
     set(PLATFORM_LIBS ws2_32)
 endif()
 
 if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} 
-    -fcolor-diagnostics 
-    -fansi-escape-codes 
-    -g 
-    -std=c++17 
-    -stdlib=libc++ 
-    -I/opt/homebrew/include
-    -I/opt/homebrew/Cellar/boost/1.85.0/include")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/boost/stage/libs")
-    set(Boost_INCLUDE_DIR "/opt/homebrew/Cellar/boost/1.85.0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fansi-escape-codes -g -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/opt/homebrew/Cellar/boost/1.85.0/include")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/homebrew/Cellar/boost/1.85.0/lib")
 endif()
 
 if(UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} 
-    -g 
-    -std=c++17 
-    -I/usr/include 
-    -I/usr/local/include 
-    -I/usr/include/x86_64-linux-gnu")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++17 -I/usr/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/lib")
 endif()
 
@@ -45,7 +31,7 @@ add_executable(sandbox
 )
 
 include_directories(
-    ./headers,
+    ./headers
     ${Boost_INCLUDE_DIR}
 )
 
