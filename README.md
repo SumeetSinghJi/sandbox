@@ -1,0 +1,1 @@
+Internal development and testing environment for porting code seamlessly across multiple platforms e.g. from Windows Desktop to Macbook

@@ -6,6 +6,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 if(WIN32)
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
     set(PLATFORM_LIBS ws2_32)
+    
+    set(CMAKE_PREFIX_PATH "C:/Program Files/curl")
+    set(CURL_LIBRARY "C:/Program Files/curl/lib/libcurl.a")
 endif()
 
 if(APPLE)
@@ -19,6 +22,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 find_package(Boost REQUIRED)
+find_package(CURL REQUIRED)
 
 file(GLOB SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
@@ -32,9 +36,11 @@ add_executable(sandbox
 include_directories(
     ./headers
     ${Boost_INCLUDE_DIR}
+    ${CURL_INCLUDE_DIRS}
 )
 
 target_link_libraries(sandbox
     ${Boost_LIBRARIES}
     ${PLATFORM_LIBS}
+    ${CURL_LIBRARIES}
 )

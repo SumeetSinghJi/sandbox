@@ -1,14 +1,20 @@
 {
     "configurations": [
-        {
+        { // Windows build
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "C:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2",
-                "C:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2",
-                "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2",
-                "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2",
-                "C:/Program Files/boost"
+                "${workspaceFolder}/headers",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/include", // // For Visual Studio C Standard Include path
+                "C:/Program Files/boost", // boost
+                "C:/Program Files/glad/include", // GLAD
+                "C:/Program Files/SDL2/x86_64-w64-mingw32/include/SDL2", // SDL
+                "C:/Program Files/SDL2_image/x86_64-w64-mingw32/include/SDL2", // SDL_image
+                "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include/SDL2", // SDL_Mixer
+                "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include/SDL2", // SDL_ttf
+                "C:/Program Files/googletest/googletest/include", // Google Test
+                "C:/Program Files/curl/include", // curl
+                "C:/Program Files/libzip/lib", // libzip
+                "C:/ffmpeg" // ffmpeg
             ],
             "defines": [
                 "_DEBUG",
@@ -20,20 +26,49 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"
         },
-        {
+        { // Mac build
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/opt/homebrew/include"
+                "${workspaceFolder}/headers",
+                "/opt/homebrew/include", // Include path for all Brew installed packages
+                "-I/opt/homebrew/Cellar/boost/1.85.0/include" // boost
             ],
             "defines": [],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/opt/homebrew/opt/llvm/bin/clang",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
             "intelliSenseMode": "macos-clang-arm64"
+        },
+        { // Linux build
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/headers",
+                "/usr/include", // Include path for libzip/zlib
+                "/usr/local/include",
+                "/usr/include/", // All SDL libraries + Gtest = ffmpeg
+                "/usr/include/x86_64-linux-gnu" // from apt install libcurl4-gnutls-dev
+                /* FFMPEG Linux compilation guide to produce headers e.g. avconfig.h
+                
+                    sudo apt-get install build-essential libmp3lame-dev libopus-dev libvpx-dev libx264-dev libx265-dev libfdk-aac-dev
+                    
+                    git clone https://git.ffmpeg.org/ffmpeg.git
+                    
+                    cd ffmpeg
+                    
+                    ./configure --prefix=/usr/local --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libopus --enable-libvpx --enable-libx264 --enable-libx265 --enable-libfdk-aac
+                    
+                    make -j$(nproc)
+                    
+                    sudo make install
+                */
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

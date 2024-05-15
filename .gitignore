@@ -1,2 +1,6 @@
 # CMAKE Build folders
 build
+out
+
+# Development folders
+.vs
