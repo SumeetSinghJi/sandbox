@@ -1,0 +1,3 @@
+/Users/sumeetsingh/Documents/sandbox/build/CMakeFiles/sandbox.dir
+/Users/sumeetsingh/Documents/sandbox/build/CMakeFiles/edit_cache.dir
+/Users/sumeetsingh/Documents/sandbox/build/CMakeFiles/rebuild_cache.dir
