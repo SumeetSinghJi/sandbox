@@ -10,12 +10,12 @@ endif()
 
 if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fansi-escape-codes -g -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/opt/homebrew/Cellar/boost/1.85.0/include")
-    set(PLATFORM_LIBS -L/opt/homebrew/lib -L/opt/homebrew/Cellar/boost/1.85.0/lib)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/homebrew/Cellar/boost/1.85.0/lib")
 endif()
 
 if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++17 -I/usr/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu")
-    set(PLATFORM_LIBS -L/usr/lib)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/lib")
 endif()
 
 find_package(Boost REQUIRED)
