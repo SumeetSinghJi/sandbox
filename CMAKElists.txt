@@ -5,7 +5,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
-    set(PLATFORM_LIBS ws2_32)
+    set(PLATFORM_LIBS ws2_32
+    # -mwindows #uncomment on full release to stop terminal popup when SDL game window startsup
+    )
 endif()
 
 if(APPLE)
