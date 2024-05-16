@@ -4,9 +4,10 @@
 #include <filesystem>
 #include <unordered_map>
 #include <vector>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_net.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <curl/curl.h>
 #include "headers/WebserverClient.hpp"
 
@@ -19,7 +20,7 @@
  * implement a camera
  * Implement a shoot function that works on direction
  * Create a seperate local webserver file and executable then test
- * Add to BubbleUP
+ * Convert game into tiles
  */
 
 const int WORLD_WIDTH = 1600;  // double screen/camera size
@@ -31,6 +32,7 @@ WebserverClient ws{};
 
 SDL_Window *window{};
 SDL_Renderer *renderer{};
+TTF_Font *font{};
 SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 SDL_Texture *backgroundTexture{};
 SDL_Texture *houseTexture{};
@@ -171,36 +173,36 @@ public:
 
 std::vector<Player *> players{};
 
-void start_curl() {
-	const std::string curlCertPath = "./curl/bin/curl-ca-bundle.crt";
-	CURL* curl;
-	CURLcode res;
-	curl_global_init(CURL_GLOBAL_ALL);
-	curl = curl_easy_init();
-	if (curl)
-	{
-		curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
+void start_curl()
+{
+    const std::string curlCertPath = "./curl/bin/curl-ca-bundle.crt";
+    CURL *curl;
+    CURLcode res;
+    curl_global_init(CURL_GLOBAL_ALL);
+    curl = curl_easy_init();
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
 
-		// Set CA cert path
-		curl_easy_setopt(curl, CURLOPT_CAINFO, curlCertPath.c_str());
+        // Set CA cert path
+        curl_easy_setopt(curl, CURLOPT_CAINFO, curlCertPath.c_str());
 
-		// this is the actual Curl command.
-		res = curl_easy_perform(curl);
+        // this is the actual Curl command.
+        res = curl_easy_perform(curl);
 
-		if (res == CURLE_OK)
-		{
-			std::cout << "Curl worked" << std::endl;
-		}
-		else
-		{
-			std::cout << "Error: curl failed: " << curl_easy_strerror(res) << std::endl;
-		}
+        if (res == CURLE_OK)
+        {
+            std::cout << "Curl worked" << std::endl;
+        }
+        else
+        {
+            std::cout << "Error: curl failed: " << curl_easy_strerror(res) << std::endl;
+        }
 
-		curl_easy_cleanup(curl);
-	}
-	curl_global_cleanup();
+        curl_easy_cleanup(curl);
+    }
+    curl_global_cleanup();
 }
-
 
 // WEBSERVER LOGIC
 std::vector<Player *> serverPlayers{};
@@ -259,6 +261,38 @@ void GET_network_messages()
     // Update the local players vector with the data from the server
     players = serverPlayers;
 }
+
+TTF_Font *load_font(const std::string &fontFilePath, const int &fontSize)
+{
+    TTF_Font *font = TTF_OpenFont(fontFilePath.c_str(), fontSize);
+    if (!font)
+    {
+        std::cerr << "Error: Failed to load font: " << font << ": " << TTF_GetError() << std::endl;
+    }
+    return font;
+}
+void render_text(const std::string &text, int x, int y, Uint8 redText, Uint8 greenText, Uint8 blueText, Uint8 alphaText, TTF_Font *font)
+{
+    SDL_Color textColor = {redText, greenText, blueText, alphaText};
+    SDL_Surface *textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), textColor);
+
+    if (textSurface)
+    {
+        int textWidth, textHeight;
+        // Calculate textWidth and textHeight using TTF_SizeText
+        TTF_SizeText(font, text.c_str(), &textWidth, &textHeight);
+
+        SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        SDL_FreeSurface(textSurface);
+
+        if (textTexture)
+        {
+            SDL_Rect textRect = {x, y, textWidth, textHeight};
+            SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
+        }
+        SDL_DestroyTexture(textTexture);
+    }
+}
 SDL_Texture *load_texture(const std::string &textureFilePath)
 {
     SDL_Texture *texture = IMG_LoadTexture(renderer, textureFilePath.c_str());
@@ -268,100 +302,16 @@ SDL_Texture *load_texture(const std::string &textureFilePath)
     }
     return texture;
 }
-
 void load_textures()
 {
     backgroundTexture = load_texture("assets/farm-day.png");
     houseTexture = load_texture("assets/house-day.png");
 }
-
-void sdl_destroy(SDL_Window *window, SDL_Renderer *renderer)
+void load_fonts()
 {
-    // Destroy renderer and window
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-
-    // Quit SDL subsystems
-    SDLNet_Quit();
-    SDL_Quit();
+    font = load_font("assets/fonts/noto-sans/NotoSans-Regular.ttf", 24);
 }
-void start_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
-{
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cerr << "SDL could not initialize! SDL Error: " << SDL_GetError() << std::endl;
-        exit(1);
-    }
 
-    // Create window
-    window = SDL_CreateWindow("Fireworks", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (window == nullptr)
-    {
-        std::cerr << "Window could not be created! SDL Error: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        exit(1);
-    }
-
-    // Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == nullptr)
-    {
-        std::cerr << "Renderer could not be created! SDL Error: " << SDL_GetError() << std::endl;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        exit(1);
-    }
-
-    if (SDLNet_Init() < 0)
-    {
-        std::cerr << "SDLNet_Init failed: " << SDLNet_GetError() << std::endl;
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        exit(1);
-    }
-}
-void handle_inputs(bool &quit)
-{
-    // Event handler
-    SDL_Event e;
-    // Handle events on queue
-    while (SDL_PollEvent(&e) != 0)
-    {
-        if (e.type == SDL_QUIT)
-        {
-            quit = true;
-        }
-        if (e.type == SDL_KEYDOWN)
-        {
-            for (auto p : players)
-            {
-                switch (e.key.keysym.sym)
-                {
-                case SDLK_UP:
-                    POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
-                    break;
-                case SDLK_DOWN:
-                    POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
-                    break;
-                case SDLK_LEFT:
-                    POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
-                    break;
-                case SDLK_RIGHT:
-                    POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
-                    break;
-                case SDLK_SPACE:
-                    // Example: Jump up in z axis
-                    POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-    }
-}
 void update_camera_follow_player()
 {
     int minX = INT_MAX;
@@ -420,17 +370,59 @@ void update_player_stay_within_world_bounds()
         }
     }
 }
-void update_collission_logic() {
+void update_collission_logic()
+{
+}
+void draw_house()
+{
+    SDL_RenderCopy(renderer, houseTexture, nullptr, &houseRect);
+}
+
+void handle(bool &quit)
+{
+    // Event handler
+    SDL_Event e;
+    // Handle events on queue
+    while (SDL_PollEvent(&e) != 0)
+    {
+        if (e.type == SDL_QUIT)
+        {
+            quit = true;
+        }
+        if (e.type == SDL_KEYDOWN)
+        {
+            for (auto p : players)
+            {
+                switch (e.key.keysym.sym)
+                {
+                case SDLK_UP:
+                    POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
+                    break;
+                case SDLK_DOWN:
+                    POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
+                    break;
+                case SDLK_LEFT:
+                    POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
+                    break;
+                case SDLK_RIGHT:
+                    POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
+                    break;
+                case SDLK_SPACE:
+                    // Example: Jump up in z axis
+                    POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 }
 void update()
 {
     update_camera_follow_player();
     update_player_stay_within_world_bounds();
     GET_network_messages();
-}
-void draw_house()
-{
-    SDL_RenderCopy(renderer, houseTexture, nullptr, &houseRect);
 }
 void draw(SDL_Renderer *renderer)
 {
@@ -439,15 +431,92 @@ void draw(SDL_Renderer *renderer)
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, backgroundTexture, nullptr, nullptr);
 
+    render_text("Turtle Story", (SCREEN_WIDTH * 0.5), (SCREEN_HEIGHT * 0.1), 255, 255, 255, 255, font);
+
     draw_house();
     for (auto p : players)
     {
         p->draw_player(p->get_x_position() - cameraRect.x, p->get_y_position() - cameraRect.y);
     }
-    
 
     // Render present
     SDL_RenderPresent(renderer);
+}
+
+void start_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
+{
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        std::cerr << "Error: Failes to initialise SDL" << SDL_GetError() << std::endl;
+        exit(1);
+    }
+    else
+    {
+        std::cout << "Success: initialised: SDL2" << std::endl;
+    }
+
+    if (TTF_Init() != 0)
+    {
+        std::cerr << "Error: Failed to initialize SDL Font: " << TTF_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    else
+    {
+        std::cout << "Success: initialised: SDL2 TTF" << std::endl;
+    }
+
+    if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
+    {
+        std::cerr << "Error: Failed to initialize SDL IMG: " << IMG_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    else
+    {
+        std::cout << "Success: initialised: SDL2 Image" << std::endl;
+    }
+
+    if (Mix_Init(MIX_INIT_MP3) != MIX_INIT_MP3)
+    {
+        std::cerr << "Error: Failed to initialize Audio: " << Mix_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    else
+    {
+        std::cout << "Success: initialised: SDL2 Mixer" << std::endl;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        std::cerr << "Error: Failed to open audio channel: " << Mix_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    else
+    {
+        std::cout << "Success: initialised: SDL2 Mixer Audio" << std::endl;
+    }
+
+    // Create window
+    window = SDL_CreateWindow("Fireworks", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == nullptr)
+    {
+        std::cerr << "Window could not be created! SDL Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+
+    // Create renderer
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == nullptr)
+    {
+        std::cerr << "Renderer could not be created! SDL Error: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        exit(1);
+    }
 }
 void run_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
 {
@@ -457,31 +526,42 @@ void run_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
     // Main loop
     while (!quit)
     {
-        handle_inputs(quit);
+        handle(quit);
         update();
         draw(renderer);
         SDL_Delay(60); /** Limit FPS */
     }
 }
+void sdl_exit(SDL_Window *window, SDL_Renderer *renderer)
+{
+    // Destroy renderer and window
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+
+    // Quit SDL subsystems
+    SDL_Quit();
+}
+
 int main(int argc, char *argv[])
 {
     // Seed random number generator
     srand(time(nullptr));
 
     std::cout << "STARTING ONLINE LOGIN" << std::endl;
-	start_curl();
-	ws.create_account("sumeet", "sumeet.singhji@outlook.com", "password1");
+    start_curl();
+    ws.create_account("sumeet", "sumeet.singhji@outlook.com", "password1");
 
     std::cout << "STARTING SDL" << std::endl;
     // Initialize SDL
     start_sdl(window, renderer);
-    
+
     load_textures();
+    load_fonts();
     initialise_players();
     initialise_players_textures();
     POST_player_vector_to_server(players);
     run_sdl(window, renderer);
-    sdl_destroy(window, renderer);
+    sdl_exit(window, renderer);
 
     return 0;
 }

@@ -6,9 +6,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
 if(WIN32)
     set(Boost_INCLUDE_DIR "C:/Program Files/boost")
     set(PLATFORM_LIBS ws2_32)
-    
-    set(CMAKE_PREFIX_PATH "C:/Program Files/curl")
-    set(CURL_LIBRARY "C:/Program Files/curl/lib/libcurl.a")
 endif()
 
 if(APPLE)
@@ -23,6 +20,10 @@ endif()
 
 find_package(Boost REQUIRED)
 find_package(CURL REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_Image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 file(GLOB SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
@@ -35,12 +36,24 @@ add_executable(sandbox
 
 include_directories(
     ./headers
-    ${Boost_INCLUDE_DIR}
-    ${CURL_INCLUDE_DIRS}
 )
 
 target_link_libraries(sandbox
     ${Boost_LIBRARIES}
     ${PLATFORM_LIBS}
     ${CURL_LIBRARIES}
+    SDL2::SDL2main
+    SDL2::SDL2
+    ${SDL2_Image_LIBRARIES}
+    ${SDL2_ttf_LIBRARIES}
+    ${SDL2_mixer_LIBRARIES}
 )
+
+# # Search CMAKE variables for string "________"
+# get_cmake_property(_variableNames VARIABLES)
+# foreach (_variableName ${_variableNames})
+#     string(FIND "${_variableName}" "CURL" _found)
+#     if(_found GREATER -1)
+#         message(STATUS "Variable: ${_variableName} = ${${_variableName}}")
+#     endif()
+# endforeach()
