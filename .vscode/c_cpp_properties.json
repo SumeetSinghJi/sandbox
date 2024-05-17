@@ -31,7 +31,7 @@
             "includePath": [
                 "${workspaceFolder}/headers",
                 "/opt/homebrew/include", // Include path for all Brew installed packages
-                "-I/opt/homebrew/Cellar/boost/1.85.0/include" // boost
+                "/opt/homebrew/Cellar/curl/8.7.1/include", // curl include path
             ],
             "defines": [],
             "macFrameworkPath": [

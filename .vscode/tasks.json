@@ -175,31 +175,24 @@
             "args": [
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
+                "-std=c++17",
+                "-stdlib=libc++",
+                "-I${workspaceFolder}/headers",
+                "-I/opt/homebrew/include",
+                "-I/opt/homebrew/Cellar/curl/8.7.1/include", // curl include path
                 "-g",
                 "${workspaceFolder}/main.cpp",
                 "${workspaceFolder}/src/*.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-std=c++17",
-                "-stdlib=libc++",
-                "-I/opt/homebrew/include",
-                "-I/opt/homebrew/Cellar/boost/1.85.0/include",
-                "-I${workspaceFolder}/headers",
                 "-L/opt/homebrew/lib",
-                "-I/opt/homebrew/Cellar/boost/1.85.0/lib",
+                "-L/opt/homebrew/opt/curl/lib", // curl lib path
                 "-lboost_system",
                 "-lSDL2",
                 "-lSDL2_image",
                 "-lSDL2_ttf",
                 "-lSDL2_mixer",
-                "-lavformat",
-                "-lavcodec",
-                "-lavutil",
-                "-lswscale",
-                "-lgtest",
-                "-lcurl",
-                "-lzip",
-                "-lz",
+                "-lcurl", // curl library
             ],
             "options": {
                 "cwd": "${fileDirname}"

@@ -6,8 +6,8 @@
     License: MIT License
 */
 
-// #pragma clang diagnostic push
-// #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #pragma once
 
@@ -323,4 +323,4 @@ public:
 
 };
 
-// #pragma clang diagnostic pop
+#pragma clang diagnostic pop

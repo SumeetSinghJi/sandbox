@@ -9,19 +9,20 @@ if(WIN32)
 endif()
 
 if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fansi-escape-codes -g -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/opt/homebrew/Cellar/boost/1.85.0/include")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/homebrew/Cellar/boost/1.85.0/lib")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fansi-escape-codes -g -std=c++17 -stdlib=libc++ -I/opt/homebrew/Cellar/curl/8.7.1/include")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib -L/opt/homebrew/Cellar/curl/8.7.1/lib")
 endif()
 
 if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++17 -I/usr/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/lib")
+    set(CMAKE_PREFIX_PATH "/opt/homebrew")
 endif()
 
 find_package(Boost REQUIRED)
 find_package(CURL REQUIRED)
 find_package(SDL2 REQUIRED)
-find_package(SDL2_Image REQUIRED)
+find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
@@ -36,24 +37,17 @@ add_executable(sandbox
 
 include_directories(
     ./headers
+    ${Boost_INCLUDE_DIRS}
+    ${CURL_INCLUDE_DIRS}
 )
 
 target_link_libraries(sandbox
     ${Boost_LIBRARIES}
     ${PLATFORM_LIBS}
     ${CURL_LIBRARIES}
-    SDL2::SDL2main
     SDL2::SDL2
-    ${SDL2_Image_LIBRARIES}
-    ${SDL2_ttf_LIBRARIES}
-    ${SDL2_mixer_LIBRARIES}
+    SDL2::SDL2main
+    SDL2::SDL2_image
+    SDL2::SDL2_ttf
+    SDL2::SDL2_mixer
 )
-
-# # Search CMAKE variables for string "________"
-# get_cmake_property(_variableNames VARIABLES)
-# foreach (_variableName ${_variableNames})
-#     string(FIND "${_variableName}" "CURL" _found)
-#     if(_found GREATER -1)
-#         message(STATUS "Variable: ${_variableName} = ${${_variableName}}")
-#     endif()
-# endforeach()
