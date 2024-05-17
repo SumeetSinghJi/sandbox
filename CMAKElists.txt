@@ -42,7 +42,6 @@ include_directories(
 )
 
 target_link_libraries(sandbox
-    ${Boost_LIBRARIES}
     ${PLATFORM_LIBS}
     ${CURL_LIBRARIES}
     SDL2::SDL2
@@ -51,3 +50,12 @@ target_link_libraries(sandbox
     SDL2_ttf::SDL2_ttf
     SDL2_mixer::SDL2_mixer   
 )
+
+# # Search CMAKE variable for string
+# get_cmake_property(_variableNames VARIABLES)
+# foreach (_variableName ${_variableNames})
+#     string(FIND "${_variableName}" "boost" _found)
+#     if(_found GREATER -1)
+#         message(STATUS "Variable: ${_variableName} = ${${_variableName}}")
+#         endif()
+# endforeach()
