@@ -131,7 +131,11 @@
 			"scoped_allocator": "cpp",
 			"spanstream": "cpp",
 			"stacktrace": "cpp",
-			"syncstream": "cpp"
+			"syncstream": "cpp",
+			"__debug": "cpp",
+			"__errc": "cpp",
+			"__mutex_base": "cpp",
+			"print": "cpp"
 		},
 		"name":"sandbox",
 	}

@@ -47,7 +47,7 @@ target_link_libraries(sandbox
     ${CURL_LIBRARIES}
     SDL2::SDL2
     SDL2::SDL2main
-    SDL2::SDL2_image
-    SDL2::SDL2_ttf
-    SDL2::SDL2_mixer
+    SDL2_image::SDL2_image
+    SDL2_ttf::SDL2_ttf
+    SDL2_mixer::SDL2_mixer   
 )

@@ -175,7 +175,6 @@ std::vector<Player *> players{};
 
 void start_curl()
 {
-    const std::string curlCertPath = "./curl/bin/curl-ca-bundle.crt";
     CURL *curl;
     CURLcode res;
     curl_global_init(CURL_GLOBAL_ALL);
@@ -184,8 +183,10 @@ void start_curl()
     {
         curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
 
-        // Set CA cert path
-        curl_easy_setopt(curl, CURLOPT_CAINFO, curlCertPath.c_str());
+        // Disable SSL peer verification
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+        // Disable SSL host verification
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
         // this is the actual Curl command.
         res = curl_easy_perform(curl);
@@ -443,7 +444,7 @@ void draw(SDL_Renderer *renderer)
     SDL_RenderPresent(renderer);
 }
 
-void start_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
+void start_sdl()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
@@ -518,7 +519,7 @@ void start_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
         exit(1);
     }
 }
-void run_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
+void run_sdl()
 {
     // Main loop flag
     bool quit = false;
@@ -532,7 +533,7 @@ void run_sdl(SDL_Window *&window, SDL_Renderer *&renderer)
         SDL_Delay(60); /** Limit FPS */
     }
 }
-void sdl_exit(SDL_Window *window, SDL_Renderer *renderer)
+void sdl_exit()
 {
     // Destroy renderer and window
     SDL_DestroyRenderer(renderer);
@@ -553,15 +554,15 @@ int main(int argc, char *argv[])
 
     std::cout << "STARTING SDL" << std::endl;
     // Initialize SDL
-    start_sdl(window, renderer);
+    start_sdl();
 
     load_textures();
     load_fonts();
     initialise_players();
     initialise_players_textures();
     POST_player_vector_to_server(players);
-    run_sdl(window, renderer);
-    sdl_exit(window, renderer);
+    run_sdl();
+    sdl_exit();
 
     return 0;
 }
