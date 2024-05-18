@@ -4,17 +4,13 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/headers",
-                "C:/Program Files (x86)/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/include", // // For Visual Studio C Standard Include path
                 "C:/Program Files/boost", // boost
                 "C:/Program Files/glad/include", // GLAD
                 "C:/Program Files/SDL2/x86_64-w64-mingw32/include", // SDL
-                "C:/Program Files/SDL2_image/x86_64-w64-mingw32/include", // SDL_image
-                "C:/Program Files/SDL2_Mixer/x86_64-w64-mingw32/include", // SDL_Mixer
-                "C:/Program Files/SDL2_TTF/x86_64-w64-mingw32/include", // SDL_ttf
                 "C:/Program Files/googletest/googletest/include", // Google Test
                 "C:/Program Files/curl/include", // curl
                 "C:/Program Files/libzip/lib", // libzip
-                "C:/ffmpeg" // ffmpeg
+                "C:/Program Files/ffmpeg" // ffmpeg
             ],
             "defines": [
                 "_DEBUG",
@@ -31,7 +27,7 @@
             "includePath": [
                 "${workspaceFolder}/headers",
                 "/opt/homebrew/include", // Include path for all Brew installed packages
-                "/opt/homebrew/Cellar/curl/8.7.1/include", // curl include path
+                "-I/opt/homebrew/Cellar/curl/8.7.1/include", // curl include path
             ],
             "defines": [],
             "macFrameworkPath": [
