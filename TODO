@@ -4,7 +4,9 @@ Vedic-lang
 * Upload my function example in documentation
 * Need official package manager location
 * Possibly put down what it’s built on e.g. Rust, and if it can include cargo or if it can be extended (or have embedded rust/lua etc, code)
-* Can we interface with system
+* Can we interface with underlying platform e.g. for windows gui window, or system sleep, or linux arpa for curl
+* We need an poll event input so that we can continue a program but if an event key input is detected
+it will perform that, allow for making complex software, games, etc., 
 * is man the same as auto in c++, or let? it says there are 3 data types, but they are all the same "man"
 * Can you have a variable in a string e.g. वद("परिणामः " + अ)
 * By default all cout vada cost statements are new lines. Is there anyway to have it on one line?

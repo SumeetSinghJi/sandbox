@@ -1,0 +1,35 @@
+
+
+# clone repository
+brew tap --force homebrew/core
+cd "$(brew --repository homebrew/core)"
+brew update
+git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
+git checkout -b 2.0.6-vedic-formula origin/master
+
+
+# brew tests
+brew tests
+HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source vedic
+brew test vedic
+brew audit --strict --online vedic
+
+
+# brew delete a package
+brew uninstall vedic
+brew cleanup vedic
+brew cleanup --prune=all
+rm -rf $(brew --cache)/*
+rm -rf $(brew --repository)/Library/Logs/Homebrew/*
+
+# Pull request
+git add Formula/vedic.rb
+git commit -m "vedic 2.0.6: add new formula
+
+
+vedic lang is a Sanskrit Programming language written with Rust.
+It aims to assist native speakers, and learners to communiate
+and program with Sanskrit characters with a fast and growing 
+performance rich language and community to support them.
+GitHub project located here: https://github.com/vedic-lang
+git push --set-upstream SumeetSinghJi 2.0.6-vedic-formula
