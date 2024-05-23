@@ -1,6 +1,7 @@
 GITHUB SUBMISSION WORKFLOW
 
 # STEP 1 - FORK REPO ONLINE
+# e.g click CREATE FORK here: https://github.com/vedic-lang/vedic
 
 # STEP 2 - SYNC CLONED REPO
 git clone https://github.com/SumeetSinghJi/vedic
@@ -20,6 +21,15 @@ git push origin SUMEETS_BRANCH
 
 # STEP 5 - CREATE PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
+
+# OPTIONAL - SYNC OUT OF DATE LOCAL REPO + FORK
+# Go to Fork online then click SYNC FORK - UPDATE BRANCH: https://github.com/SumeetSinghJi/vedic
+cd vedic
+git remote add upstream https://github.com/vedic-lang/vedic
+git fetch upstream
+git merge upstream/main
+git reset --hard upstream/main
+
 
 ______________________________________________________
 
