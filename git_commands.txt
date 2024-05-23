@@ -1,28 +1,49 @@
+GITHUB SUBMISSION WORKFLOW
 
+# STEP 1 - FORK REPO ONLINE
 
-# clone repository
+# STEP 2 - SYNC CLONED REPO
+git clone https://github.com/SumeetSinghJi/vedic
+cd vedic
+git remote add upstream https://github.com/vedic-lang/vedic
+git fetch upstream
+git merge upstream/main
+git reset --hard upstream/main
+
+# STEP 3 - CREATE BRANCH
+git checkout -b SUMEETS_BRANCH
+
+# STEP 4 - COMMIT/PUSH
+git add .
+git commit -m "Add your descriptive commit message here"
+git push origin SUMEETS_BRANCH
+
+# STEP 5 - CREATE PULL REQUEST
+# Go to your forked repo and click COMPARE PULL REQUEST and accept
+
+______________________________________________________
+
+# CLONE BREW LOCALLY (creates a clone of brew main repo isolated from local Brew on MacOS)
 brew tap --force homebrew/core
 cd "$(brew --repository homebrew/core)"
 brew update
 git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
 git checkout -b 2.0.6-vedic-formula origin/master
 
-
-# brew tests
+# BREW TEST PACKAGE WORKING
 brew tests
 HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source vedic
 brew test vedic
 brew audit --strict --online vedic
 
-
-# brew delete a package
+# BREW DELETE/CLEANUP PACKAGE
 brew uninstall vedic
 brew cleanup vedic
 brew cleanup --prune=all
 rm -rf $(brew --cache)/*
 rm -rf $(brew --repository)/Library/Logs/Homebrew/*
 
-# Pull request
+# COMMIT + PUSH + PR (requires 2 new lines in commit message)
 git add Formula/vedic.rb
 git commit -m "vedic 2.0.6: add new formula
 
