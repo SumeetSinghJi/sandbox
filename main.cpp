@@ -3,6 +3,7 @@
 #include <ctime>
 #include <filesystem>
 #include <unordered_map>
+#include <random>
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -26,6 +27,7 @@ const int WORLD_WIDTH = 1600;  // double screen/camera size
 const int WORLD_HEIGHT = 1200; // double screen/camera size
 const int SCREEN_WIDTH = 800;  // double screen/camera size
 const int SCREEN_HEIGHT = 600; // double screen/camera size
+int clientPlayerID{};
 
 WebserverClient ws{};
 
@@ -36,6 +38,10 @@ SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 SDL_Texture *backgroundTexture{};
 SDL_Texture *houseTexture{};
 SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
+
+std::mt19937 gen(std::random_device{}());                    // for bot simulation
+std::uniform_int_distribution<> dis(0, 3);                   // for bot simulation
+std::chrono::steady_clock::time_point lastBotMovementTime{}; // for bot simulation
 
 class Player
 {
@@ -229,6 +235,35 @@ void GET_network_messages()
     // Update the local players vector with the data from the server
     players = serverPlayers;
 }
+bool update_should_bot_move()
+{
+    auto currentTime = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastBotMovementTime).count();
+    return elapsedTime >= 2000; // Adjust this value to change the delay (in milliseconds)
+}
+void update_bot_movement_simulation_POST()
+{
+    int random_choice = dis(gen);
+
+    switch (random_choice)
+    {
+    case 0:
+        POST_movement_to_server(2, 0, -5, "UP");
+        break;
+    case 1:
+        POST_movement_to_server(2, 0, 5, "DOWN");
+        break;
+    case 2:
+        POST_movement_to_server(2, -5, 0, "LEFT");
+        break;
+    case 3:
+        POST_movement_to_server(2, 5, 0, "RIGHT");
+        break;
+    default:
+        std::cerr << "Error: Invalid random choice" << std::endl;
+        break;
+    }
+}
 
 TTF_Font *load_font(const std::string &fontFilePath, const int &fontSize)
 {
@@ -361,26 +396,29 @@ void handle(bool &quit)
         {
             for (auto p : players)
             {
-                switch (e.key.keysym.sym)
+                if (clientPlayerID = p->get_player_id())
                 {
-                case SDLK_UP:
-                    POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
-                    break;
-                case SDLK_DOWN:
-                    POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
-                    break;
-                case SDLK_LEFT:
-                    POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
-                    break;
-                case SDLK_RIGHT:
-                    POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
-                    break;
-                case SDLK_SPACE:
-                    // Example: Jump up in z axis
-                    POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
-                    break;
-                default:
-                    break;
+                    switch (e.key.keysym.sym)
+                    {
+                    case SDLK_UP:
+                        POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
+                        break;
+                    case SDLK_DOWN:
+                        POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
+                        break;
+                    case SDLK_LEFT:
+                        POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
+                        break;
+                    case SDLK_RIGHT:
+                        POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
+                        break;
+                    case SDLK_SPACE:
+                        // Example: Jump up in z axis
+                        POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
         }
@@ -390,6 +428,11 @@ void update()
 {
     update_camera_follow_player();
     update_player_stay_within_world_bounds();
+    if (update_should_bot_move())
+    {
+        update_bot_movement_simulation_POST();
+        lastBotMovementTime = std::chrono::steady_clock::now(); // Update time after movement
+    }
     GET_network_messages();
 }
 void draw(SDL_Renderer *renderer)
@@ -526,6 +569,11 @@ int main(int argc, char *argv[])
     load_textures();
     load_fonts();
     initialise_players();
+    for (auto p : players)
+    {
+        clientPlayerID = p->get_player_id();
+    }
+    initialise_players(); // initialise bot player id 2
     initialise_players_textures();
     POST_player_vector_to_server(players);
     run_sdl();
