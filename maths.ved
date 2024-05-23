@@ -1,0 +1,68 @@
+# Example Calculation program written in vedic lang
+# Translations in Sanskrit and English are above each function
+# The main function is not required however included to demonstrate nested functions
+
+# @brief function to return addition results of 2 variables
+#
+# sutra yog(a, ā)
+# function sum(a, ā)
+# {
+#  phal a + ā;
+#  return a + ā;
+# }
+#
+# @param a the first letter of Sanskrit alphabet is first number to add
+# @param ā the second letter of Sanskrit alphabet is the second number to add
+# @return results of addition of both avariables
+सूत्र योग(अ, आ) 
+{
+  फल अ + आ;
+}
+
+# @brief function to return subtraction results of 2 variables
+#
+# sutra ghatanam(a, ā)
+# function subtraction(a, ā)
+# {
+#  phal a - ā;
+#  return a - ā;
+# }
+#
+# @param a the first letter of Sanskrit alphabet is first number to subtract
+# @param ā the second letter of Sanskrit alphabet is the second number to subtract
+# @return results of subtraction of both avariables
+सूत्र घटनम्(अ, आ) 
+{
+  फल अ - आ;
+}
+
+# @brief define a main program
+#
+# sutra sukhya
+# function main () {}
+सूत्र मुख्य()
+{
+  # Print greeting
+  # veda(namaste aarambha tantraansh)
+  # say(hello beginning software)
+  वद("नमस्ते आरम्भ तन्त्रांश");
+
+  # Print results of function addition
+  # vada(parinamah a + b)
+  # say(result of a + b)
+  वद("परिणामः १ + २");
+  # vada(yog(ek, do);
+  # say(plus(one, two);
+  वद(योग(१,२)); # expected output 3
+
+  # Print results of function subtraction
+  # vada(parinamah a - b)
+  # say(result of a - b)
+  वद("परिणामः १ - २");
+  # vada(ghatanam(ek, do);
+  # say(subtract(one, two);
+  वद(घटनम्(१,२)); # expected output -1
+}
+
+# Call main program
+मुख्य();

@@ -8,7 +8,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-#include <curl/curl.h>
 #include "headers/WebserverClient.hpp"
 
 /**
@@ -172,38 +171,6 @@ public:
 };
 
 std::vector<Player *> players{};
-
-void start_curl()
-{
-    CURL *curl;
-    CURLcode res;
-    curl_global_init(CURL_GLOBAL_ALL);
-    curl = curl_easy_init();
-    if (curl)
-    {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/");
-
-        // Disable SSL peer verification
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-        // Disable SSL host verification
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-
-        // this is the actual Curl command.
-        res = curl_easy_perform(curl);
-
-        if (res == CURLE_OK)
-        {
-            std::cout << "Curl worked" << std::endl;
-        }
-        else
-        {
-            std::cout << "Error: curl failed: " << curl_easy_strerror(res) << std::endl;
-        }
-
-        curl_easy_cleanup(curl);
-    }
-    curl_global_cleanup();
-}
 
 // WEBSERVER LOGIC
 std::vector<Player *> serverPlayers{};
@@ -549,7 +516,7 @@ int main(int argc, char *argv[])
     srand(time(nullptr));
 
     std::cout << "STARTING ONLINE LOGIN" << std::endl;
-    start_curl();
+
     ws.create_account("sumeet", "sumeet.singhji@outlook.com", "password1");
 
     std::cout << "STARTING SDL" << std::endl;

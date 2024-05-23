@@ -1,61 +1,8 @@
- *  Executing task: C/C++: clang++ build active file 
-
 Starting build...
-clang++ -std=gnu++14 -fcolor-diagnostics -fansi-escape-codes -g /Users/sumeetsingh/Documents/sandbox/main.cpp -o /Users/sumeetsingh/Documents/sandbox/main -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/opt/homebrew/Cellar/boost/1.85.0/include -L/opt/homebrew/lib -I/opt/homebrew/Cellar/boost/1.85.0/lib -lboost_system -lSDL2 -lSDL2_image -lSDL2_net
-In file included from /Users/sumeetsingh/Documents/sandbox/main.cpp:2:
-In file included from /Users/sumeetsingh/Documents/sandbox/headers/WebserverClient.hpp:11:
-In file included from /opt/homebrew/include/boost/asio.hpp:32:
-In file included from /opt/homebrew/include/boost/asio/basic_datagram_socket.hpp:20:
-In file included from /opt/homebrew/include/boost/asio/basic_socket.hpp:39:
-In file included from /opt/homebrew/include/boost/asio/detail/reactive_socket_service.hpp:31:
-In file included from /opt/homebrew/include/boost/asio/detail/reactive_socket_accept_op.hpp:25:
-In file included from /opt/homebrew/include/boost/asio/detail/socket_holder.hpp:20:
-In file included from /opt/homebrew/include/boost/asio/detail/socket_ops.hpp:374:
-/opt/homebrew/include/boost/asio/detail/impl/socket_ops.ipp:2584:7: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
- 2584 |       sprintf(if_name + 1, "%lu", scope_id);
-      |       ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/stdio.h:188:1: note: 'sprintf' has been explicitly marked deprecated here
-  188 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
-      | ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/cdefs.h:215:48: note: expanded from macro '__deprecated_msg'
-  215 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
-      |                                                       ^
-In file included from /Users/sumeetsingh/Documents/sandbox/main.cpp:2:
-In file included from /Users/sumeetsingh/Documents/sandbox/headers/WebserverClient.hpp:11:
-In file included from /opt/homebrew/include/boost/asio.hpp:115:
-In file included from /opt/homebrew/include/boost/asio/ip/network_v4.hpp:256:
-/opt/homebrew/include/boost/asio/ip/impl/network_v4.ipp:138:3: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
-  138 |   sprintf(prefix_len, "/%u", prefix_length_);
-      |   ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/stdio.h:188:1: note: 'sprintf' has been explicitly marked deprecated here
-  188 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
-      | ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/cdefs.h:215:48: note: expanded from macro '__deprecated_msg'
-  215 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
-      |                                                       ^
-In file included from /Users/sumeetsingh/Documents/sandbox/main.cpp:2:
-In file included from /Users/sumeetsingh/Documents/sandbox/headers/WebserverClient.hpp:11:
-In file included from /opt/homebrew/include/boost/asio.hpp:116:
-In file included from /opt/homebrew/include/boost/asio/ip/network_v6.hpp:230:
-/opt/homebrew/include/boost/asio/ip/impl/network_v6.ipp:107:3: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
-  107 |   sprintf(prefix_len, "/%u", prefix_length_);
-      |   ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/stdio.h:188:1: note: 'sprintf' has been explicitly marked deprecated here
-  188 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
-      | ^
-/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/cdefs.h:215:48: note: expanded from macro '__deprecated_msg'
-  215 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
-      |                                                       ^
-3 warnings generated.
+clang++ -std=gnu++14 -fcolor-diagnostics -fansi-escape-codes -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/Users/sumeetsingh/Documents/sandbox/headers -g /Users/sumeetsingh/Documents/sandbox/main.cpp /Users/sumeetsingh/Documents/sandbox/src/*.cpp -o /Users/sumeetsingh/Documents/sandbox/main -L/opt/homebrew/lib -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 Undefined symbols for architecture arm64:
   "std::exception_ptr::__from_native_exception_pointer(void*)", referenced from:
-      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-6a8d29.o
+      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-c95e3b.o
   "___cxa_init_primary_exception", referenced from:
-      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-6a8d29.o
+      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-c95e3b.o
 ld: symbol(s) not found for architecture arm64
-clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-
-Build finished with error(s).
-
- *  The terminal process terminated with exit code: -1. 
- *  Terminal will be reused by tasks, press any key to close it. 
