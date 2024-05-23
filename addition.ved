@@ -1,0 +1,65 @@
+# Example addition software written in vedic lang https://vedic-lang.github.io/
+#
+# Translations in Sanskrit and English are above each function
+# The main function is not required but included for demonstration
+# 
+# If this code is copied from internet save to a file called: addition.ved
+# install vedic lang from here: https://vedic-lang.github.io/
+# then run with: vedic addition.ved
+# Enter a number at both prompts and press enter to see results
+
+# @brief function to return addition results of 2 user input variables
+# will return an sanskrit symbol e.g. १ only if entered in Sanskrit 
+# else will return results in English
+# TRANSLATION
+# sutra yog(a, ā)
+# function add(a, ā)
+# {
+#  phal a + ā;
+#  return a + ā;
+# }
+# @param a the first letter of Sanskrit alphabet is first number to add
+# @param ā the second letter of Sanskrit alphabet is the second number to add
+# @return results of addition of both avariables
+सूत्र योग(अ, आ)
+{
+  फल अ + आ;
+}
+
+# sutra sukhya
+# function main
+सूत्र मुख्य()
+{
+  # veda(namaste aarambha tantraansh)
+  # say(hello beginning software)
+  वद("नमस्ते आरम्भ तन्त्रांश");
+
+  # vada(yojayitum prathamam sankhyam pravishantu)
+  # say(enter first number to add)
+  वद("योजयितुं प्रथमं सङ्ख्यां प्रविशन्तु ");
+  # mana a = pathan
+  # variable a = reading
+  मान अ = पठन();
+  # vada(yojayitum dvitiyam sankhyam pravishantu)
+  # say(enter second number to add)
+  वद("योजयितुं द्वितीयं सङ्ख्यां प्रविशन्तु ");
+  # mana ā = pathan
+  # variable b  = reading
+  मान आ = पठन(); 
+
+  # vada(parinamah a + b)
+  # say(result of a + b)
+  वद("परिणाम अ + आ = ");
+
+  # vada(yog(अ, आ);
+  # say(add(a, b);
+  वद(योग(अ,आ));
+
+  # nigram(०)
+  # exit(0)
+  निर्गम(०);
+}
+
+# main
+# sukhya
+मुख्य();
