@@ -70,7 +70,7 @@ git add Formula/vedic.rb
 git commit -m "vedic 2.0.6: add new formula
 
 
-vedic lang is a Sanskrit Programming language written with Rust.
+vedic lang is a Sanskrit Programming language.
 It aims to assist native speakers, and learners to communiate
 and program with Sanskrit characters with a fast and growing 
 performance rich language and community to support them.
