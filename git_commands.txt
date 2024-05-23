@@ -1,9 +1,15 @@
-GITHUB SUBMISSION WORKFLOW
+GITHUB COMMANDS
 
-# STEP 1 - FORK REPO ONLINE
-# e.g click CREATE FORK here: https://github.com/vedic-lang/vedic
+TERMINOLOGY
 
-# STEP 2 - SYNC CLONED REPO
+upstream: the original repo e.g, vedic-lang
+origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
+
+
+STEP 1 - FORK REPO
+# e.g here click CREATE FORK: https://github.com/vedic-lang/vedic
+
+STEP 2 - CLONE REPO
 git clone https://github.com/SumeetSinghJi/vedic
 cd vedic
 git remote add upstream https://github.com/vedic-lang/vedic
@@ -11,19 +17,19 @@ git fetch upstream
 git merge upstream/main
 git reset --hard upstream/main
 
-# STEP 3 - CREATE BRANCH
+STEP 3 - CREATE BRANCH
 git checkout -b SUMEETS_BRANCH
 
-# STEP 4 - COMMIT/PUSH
+STEP 4 - COMMIT/PUSH
 git add .
 git commit -m "Add your descriptive commit message here"
 git push origin SUMEETS_BRANCH
 
-# STEP 5 - CREATE PULL REQUEST
+STEP 5 - PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
 
-# OPTIONAL - SYNC OUT OF DATE LOCAL REPO + FORK
-# Go to Fork online then click SYNC FORK - UPDATE BRANCH: https://github.com/SumeetSinghJi/vedic
+OPTIONAL - SYNC FORK/CLONE
+# Go to fork online, click SYNC FORK - UPDATE BRANCH: https://github.com/SumeetSinghJi/vedic
 cd vedic
 git remote add upstream https://github.com/vedic-lang/vedic
 git fetch upstream
@@ -31,11 +37,17 @@ git merge upstream/main
 git reset --hard upstream/main
 
 
-______________________________________________________
+________________________________________________________________________________________________
 
-# CLONE BREW LOCALLY (creates a clone of brew main repo isolated from local Brew on MacOS)
+BREW WORKFLOW
+
+READ MORE HERE: https://docs.brew.sh/Formula-Cookbook
+
+# CLONE BREW LOCALLY 
+# creates a clone of brew main repo isolated from local Brew on MacOS
 brew tap --force homebrew/core
 cd "$(brew --repository homebrew/core)"
+cp ~/Documents/your_project/vedic.rb Formula/v
 brew update
 git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
 git checkout -b 2.0.6-vedic-formula origin/master
@@ -62,5 +74,5 @@ vedic lang is a Sanskrit Programming language written with Rust.
 It aims to assist native speakers, and learners to communiate
 and program with Sanskrit characters with a fast and growing 
 performance rich language and community to support them.
-GitHub project located here: https://github.com/vedic-lang
+GitHub project located here: https://github.com/vedic-lang"
 git push --set-upstream SumeetSinghJi 2.0.6-vedic-formula
