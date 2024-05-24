@@ -15,18 +15,19 @@
 #include <SDL2/SDL_ttf.h>
 #ifdef _WIN32
 #include <winsock2.h>
+#include <boost/asio.hpp> // for online services
 #else
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #endif
 #include <filesystem>
-// #include <boost/asio.hpp> // for multiplayer functionality
 
 /**
  * MISSING
  * 1. Camera
- * 2. Multiplayer
- * 3. Tiles
+ * 2. Game world is one continous scene e.g. size 100000x100000, only update() and draw() entities within your camera view x 2 for performance
+ * 3. Multiplayer
+ * 4. Tiles
  */
 
 // FORWARD DECLARATIONS
