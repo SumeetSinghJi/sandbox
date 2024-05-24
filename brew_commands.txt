@@ -1,0 +1,88 @@
+
+VEDIC BREW FORMULA WORKFLOW
+
+# 1. user runs: brew install vedic
+# 2. formula vedic.rb source zip url and sha256 is confirmed and unzipped downloaded to users /opt/homebrew
+# 3. livecheck sees if their is a new version available in the latest github page
+# 4. depends_on rust will install rust, llvm on users PC to build vedic bin later
+# 5. def install will cd/opt/homebrew then run: cargo build --package vedic --release
+# which will create PATH to vedic bin on target PC
+# 6. def caveats will show message install message done on targets terminal
+# 7. test at end is for BrewBot automated testing to ensure all packages confirm to standards
+
+__________________________________________________________________________________________
+
+WORKING WITH 2 AUDIT ERRORS
+
+sumeetsingh@Sumeets-Air-2 v % HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source vedic.rb
+Error: Failed to load cask: vedic.rb
+Cask 'vedic' is unreadable: wrong constant name #<Class:0x000000011e819b00>
+Warning: Treating vedic.rb as a formula.
+
+sumeetsingh@Sumeets-Air-2 v % brew audit --strict --online vedic                                      
+vedic
+  * line 21, col 5: use "cargo", "install", *std_cargo_args
+Error: 1 problem in 1 formula detected.
+sumeetsingh@Sumeets-Air-2 v % 
+
+__________________________________________________________________________________________
+
+TEST STEPS:
+
+brew tap --force homebrew/core
+cd "$(brew --repository homebrew/core)"
+cp ~/Documents/xxxxxxxxxx/vedic.rb Formula/v
+cd Formula/v
+HOMEBREW_VERBOSE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall --build-from-source vedic.rb
+brew test vedic
+brew audit --strict --online vedic
+
+
+__________________________________________________________________________________________
+
+File: vedic.rb
+
+class Vedic < Formula
+  desc "Sanskrit programming language"
+  homepage "https://vedic-lang.github.io/"
+  url "https://github.com/vedic-lang/vedic/archive/refs/tags/v2.0.6.tar.gz"
+  sha256 "5453386fcebfa48a5f3d39bc832d19edaaaa98d8d36841428ff6a20db0dd0151"
+  license "MIT"
+  head "https://github.com/vedic-lang/vedic.git", branch: "main"
+
+  livecheck do
+    url :stable
+    regex(/release[._-](\d+(?:\.\d+)+)/i)
+    strategy :github_latest
+  end
+
+  depends_on "rust" => :build
+
+  def install
+    arch = Hardware::CPU.arm? ? "aarch64-apple-darwin" : "x86_64-apple-darwin"
+
+    # Build for the specific architecture
+    system "cargo", "build", "--release", "--package", "vedic", "--target", arch
+    
+    bin.install "target/#{arch}/release/vedic"
+  end
+
+  def caveats
+    <<~EOS
+    Vedic-lang is a Sanskrit Programming Language
+
+    documentation here: https://vedic-lang.github.io/
+
+      To get started, run:
+        vedic --help
+    EOS
+  end
+
+  test do
+    # hello world in vedic
+    (testpath/"hello.ved").write <<~EOS
+      वद("नमस्ते विश्व!");
+    EOS
+    assert_match "नमस्ते विश्व!", shell_output("#{bin}/vedic hello.ved")
+  end
+end

@@ -39,33 +39,25 @@ git reset --hard upstream/main
 
 ________________________________________________________________________________________________
 
-BREW WORKFLOW
+BREW FORMULA COMMIT WORKFLOW
 
-READ MORE HERE: https://docs.brew.sh/Formula-Cookbook
-
-# CLONE BREW LOCALLY 
-# creates a clone of brew main repo isolated from local Brew on MacOS
+# step 1 - fork repo https://github.com/Homebrew/homebrew-core
 brew tap --force homebrew/core
 cd "$(brew --repository homebrew/core)"
-cp ~/Documents/your_project/vedic.rb Formula/v
-brew update
-git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
-git checkout -b 2.0.6-vedic-formula origin/master
-
-# BREW TEST PACKAGE WORKING
-brew tests
-HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source vedic
+cp ~/Documents/sandbox/vedic.rb Formula/v
+cd Formula/v
+HOMEBREW_VERBOSE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall --build-from-source vedic.rb
 brew test vedic
 brew audit --strict --online vedic
-
-# BREW DELETE/CLEANUP PACKAGE
-brew uninstall vedic
-brew cleanup vedic
-brew cleanup --prune=all
-rm -rf $(brew --cache)/*
-rm -rf $(brew --repository)/Library/Logs/Homebrew/*
+# brew uninstall vedic
+# brew cleanup vedic
+# brew cleanup --prune=all
+# rm -rf $(brew --cache)/*
+# rm -rf $(brew --repository)/Library/Logs/Homebrew/*
 
 # COMMIT + PUSH + PR (requires 2 new lines in commit message)
+git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
+git checkout -b 2.0.6-vedic-formula origin/master
 git add Formula/vedic.rb
 git commit -m "vedic 2.0.6: add new formula
 
@@ -76,3 +68,4 @@ and program with Sanskrit characters with a fast and growing
 performance rich language and community to support them.
 GitHub project located here: https://github.com/vedic-lang"
 git push --set-upstream SumeetSinghJi 2.0.6-vedic-formula
+# create PULL request on Fork for merging with main
