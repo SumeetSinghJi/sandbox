@@ -1,7 +1,6 @@
 GITHUB COMMANDS
 
 TERMINOLOGY
-
 upstream: the original repo e.g, vedic-lang
 origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
 

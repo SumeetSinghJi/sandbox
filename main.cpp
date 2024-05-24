@@ -26,7 +26,7 @@
  * MISSING
  * 1. Camera
  * 2. Game world is one continous scene e.g. size 100000x100000, only update() and draw() entities within your camera view x 2 for performance
- * 3. Multiplayer
+ * 3. Separate web server
  * 4. Tiles
  */
 

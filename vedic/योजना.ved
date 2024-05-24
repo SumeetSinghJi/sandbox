@@ -1,16 +1,12 @@
 # Example addition software written in vedic lang https://vedic-lang.github.io/
 #
-# Translations in Sanskrit and English are above each function
-# The main function is not required but included for demonstration
-# 
-# If this code is copied from internet save to a file called: addition.ved
-# install vedic lang from here: https://vedic-lang.github.io/
-# then run with: vedic addition.ved
 # Enter a number at both prompts and press enter to see results
+# The main function is not required but included for demonstration
+# Translations in Sanskrit and English are above each function
 
 # @brief function to return addition results of 2 user input variables
-# will return an sanskrit symbol e.g. १ only if entered in Sanskrit 
-# else will return results in English
+# will return an sanskrit character e.g. १ only if entered in Sanskrit 
+# else will return results in Arabic number characters
 # TRANSLATION
 # sutra yog(a, ā)
 # function add(a, ā)
