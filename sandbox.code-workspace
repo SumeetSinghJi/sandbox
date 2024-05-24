@@ -135,7 +135,9 @@
 			"__debug": "cpp",
 			"__errc": "cpp",
 			"__mutex_base": "cpp",
-			"print": "cpp"
+			"print": "cpp",
+			"generator": "cpp",
+			"text_encoding": "cpp"
 		},
 		"name":"sandbox",
 	}

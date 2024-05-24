@@ -9,40 +9,22 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-#include "headers/WebserverClient.hpp"
+#ifdef _WIN32
+#include <winsock2.h>
+#else
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#endif
+// #include <boost/asio.hpp> // for multiplayer functionality
 
 /**
- * TO DO
- *
- * POST/GET methods convert to JSON string so that you can POST using Boost or SDL_net
- * webserver save game state - use filesystem possibly to save state of scene vector
- * draw a fence and prevent payer from moving beyond it unless they jump
- * implement a camera
- * Implement a shoot function that works on direction
- * Create a seperate local webserver file and executable then test
- * Convert game into tiles
+ * MISSING in complete game
+ * 1. Camera
+ * 2. Multiplayer
+ * 3. Tiles
  */
 
-const int WORLD_WIDTH = 1600;  // double screen/camera size
-const int WORLD_HEIGHT = 1200; // double screen/camera size
-const int SCREEN_WIDTH = 800;  // double screen/camera size
-const int SCREEN_HEIGHT = 600; // double screen/camera size
-int clientPlayerID{};
-
-WebserverClient ws{};
-
-SDL_Window *window{};
-SDL_Renderer *renderer{};
-TTF_Font *font{};
-SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-SDL_Texture *backgroundTexture{};
-SDL_Texture *houseTexture{};
-SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
-
-std::mt19937 gen(std::random_device{}());                    // for bot simulation
-std::uniform_int_distribution<> dis(0, 3);                   // for bot simulation
-std::chrono::steady_clock::time_point lastBotMovementTime{}; // for bot simulation
-
+// FORWARD DECLARATIONS
 class Player
 {
 private:
@@ -176,34 +158,91 @@ public:
     }
 };
 
-std::vector<Player *> players{};
+class WebserverHost
+{
+private:
+    std::vector<Player *> serverentities{};
 
-// WEBSERVER LOGIC
-std::vector<Player *> serverPlayers{};
-void webserver_save_game_state()
-{
-}
-void webserver_load_game_state()
-{
-}
-void webserver_process_player_handle(int playerID, int x, int y, const std::string &direction)
-{
-    // Find the player in the serverPlayers vector and update its position
-    for (auto &p : serverPlayers)
+public:
+    WebserverHost() { std::cout << "Constructed: WebserverHost" << std::endl; }
+    ~WebserverHost() { std::cout << "Deconstructed: WebserverHost" << std::endl; }
+    void webserver_save_game_state()
     {
-        if (p->get_player_id() == playerID)
+    }
+    void webserver_load_game_state()
+    {
+    }
+    void webserver_process_player_handle(int playerID, int x, int y, const std::string &direction)
+    {
+        // Find the player in the serverentities vector and update its position
+        for (auto &p : serverentities)
         {
-            p->set_position(p->get_x_position() + x, p->get_y_position() + y);
-            p->set_direction(direction);
-            std::cout << "Server updated player " << playerID << " position: x: " << p->get_x_position() << " y: " << p->get_y_position() << " Direction: " << p->get_direction() << std::endl;
-            return;
+            if (p->get_player_id() == playerID)
+            {
+                p->set_position(p->get_x_position() + x, p->get_y_position() + y);
+                p->set_direction(direction);
+                std::cout << "Server updated player " << playerID << " position: x: " << p->get_x_position() << " y: " << p->get_y_position() << " Direction: " << p->get_direction() << std::endl;
+                return;
+            }
         }
     }
-}
-void webserver_process_player_vector(std::vector<Player *> players)
+    void webserver_process_player_vector(std::vector<Player *> players)
+    {
+        serverentities = players;
+    }
+    std::vector<Player *> get_entities() const
+    {
+        return serverentities;
+    }
+};
+
+class WebserverClient
 {
-    serverPlayers = players;
-}
+private:
+    bool successResponse{};                              /**< Response from webserver */
+    std::string queryURL{};                              /**< the url to query e.g. www.example.com */
+    std::string queryProtocol{};                         /**< the protocol to follow url query e.g. http*/
+    // boost::asio::io_context io_context{};                /**< provides a context for I/O services e.g. sockets, timers, asynchronous functions */
+    // boost::asio::ip::tcp::resolver resolver{io_context}; /**< resolve string address to endpoints. Same as a DNS/Domain name server */
+    // boost::asio::ip::tcp::socket socket{io_context};     /**< socket for server being queried. Resolver passes the webaddress to use */
+public:
+    WebserverClient()
+    {
+        std::cout << "Constructed: WebserverClient" << std::endl;
+    }
+
+    ~WebserverClient()
+    {
+        std::cout << "Deconstructed: WebserverClient" << std::endl;
+    }
+
+    bool response_success() const
+    {
+        return successResponse;
+    }
+};
+
+const int WORLD_WIDTH = 1600;  // double screen/camera size
+const int WORLD_HEIGHT = 1200; // double screen/camera size
+const int SCREEN_WIDTH = 800;  // double screen/camera size
+const int SCREEN_HEIGHT = 600; // double screen/camera size
+int clientPlayerID{};
+
+WebserverHost host{};
+WebserverClient client{};
+std::vector<Player *> players{};
+
+SDL_Window *window{};
+SDL_Renderer *renderer{};
+TTF_Font *font{};
+SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+SDL_Texture *backgroundTexture{};
+SDL_Texture *houseTexture{};
+SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
+
+std::mt19937 gen(std::random_device{}());                    // for bot simulation
+std::uniform_int_distribution<> dis(0, 3);                   // for bot simulation
+std::chrono::steady_clock::time_point lastBotMovementTime{}; // for bot simulation
 
 // CLIENT LOGIC
 void initialise_players()
@@ -223,17 +262,17 @@ void initialise_players_textures()
 void POST_player_vector_to_server(std::vector<Player *> players)
 {
     // send JSON string
-    webserver_process_player_vector(players);
+    host.webserver_process_player_vector(players);
 }
 void POST_movement_to_server(int playerID, int x, int y, const std::string &direction)
 {
     // send JSON string
-    webserver_process_player_handle(playerID, x, y, direction);
+    host.webserver_process_player_handle(playerID, x, y, direction);
 }
 void GET_network_messages()
 {
     // Update the local players vector with the data from the server
-    players = serverPlayers;
+    players = host.get_entities();
 }
 bool update_should_bot_move()
 {
@@ -396,7 +435,7 @@ void handle(bool &quit)
         {
             for (auto p : players)
             {
-                if (clientPlayerID = p->get_player_id())
+                if (clientPlayerID == p->get_player_id())
                 {
                     switch (e.key.keysym.sym)
                     {
@@ -558,12 +597,8 @@ int main(int argc, char *argv[])
     // Seed random number generator
     srand(time(nullptr));
 
-    std::cout << "STARTING ONLINE LOGIN" << std::endl;
-
-    ws.create_account("sumeet", "sumeet.singhji@outlook.com", "password1");
-
     std::cout << "STARTING SDL" << std::endl;
-    // Initialize SDL
+
     start_sdl();
 
     load_textures();
