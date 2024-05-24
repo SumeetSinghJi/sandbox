@@ -1,3 +1,7 @@
+/**
+ * EXAMPLE C++ SDL Multiplayer game
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -15,17 +19,18 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #endif
+#include <filesystem>
 // #include <boost/asio.hpp> // for multiplayer functionality
 
 /**
- * MISSING in complete game
+ * MISSING
  * 1. Camera
  * 2. Multiplayer
  * 3. Tiles
  */
 
 // FORWARD DECLARATIONS
-class Player
+class Entity
 {
 private:
     int playerID{};
@@ -43,15 +48,15 @@ private:
     std::string direction{};
 
 public:
-    Player(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures)
+    Entity(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures)
         : playerID(playerID), rect({x, y, w, h}), walkingTextures(walkingTextures)
     {
-        std::cout << "Constructed: Player" << std::endl;
+        std::cout << "Constructed: Entity" << std::endl;
         lastFrameChange = std::chrono::steady_clock::now();
     }
-    ~Player()
+    ~Entity()
     {
-        std::cout << "Deconstructed: Player" << std::endl;
+        std::cout << "Deconstructed: Entity" << std::endl;
         for (auto &texture : textureMap)
         {
             SDL_DestroyTexture(texture.second);
@@ -75,8 +80,12 @@ public:
     }
     void set_position(int xPos, int yPos)
     {
-        rect.x = xPos;
-        rect.y = yPos;
+        rect.x += xPos;
+        rect.y += yPos;
+    }
+    SDL_Rect get_rect() const
+    {
+        return rect;
     }
     void set_direction(const std::string &dir)
     {
@@ -107,7 +116,6 @@ public:
             }
         }
     }
-
     void set_animation_texture()
     {
         if (!texturePath.empty())
@@ -136,7 +144,6 @@ public:
             }
         }
     }
-
     void update_animation()
     {
         auto currentTime = std::chrono::steady_clock::now();
@@ -150,27 +157,115 @@ public:
             texturePath = walkingTextures[currentAnimationFrame];
         }
     }
-    void draw_player(int cameraX, int cameraY)
+    void draw_entity(int cameraX, int cameraY)
     {
         rect.x = cameraX;
         rect.y = cameraY;
         SDL_RenderCopy(renderer, texture, nullptr, &rect);
     }
+    void update_collission_logic(std::vector<Entity *> &entities)
+    {
+        for (Entity *e : entities)
+        {
+            SDL_Rect thisRect = this->get_rect();
+            SDL_Rect collidedEntity = e->get_rect();
+
+            if (e == this)
+            {
+                continue;
+            }
+
+            // Check for intersection between two players
+            if (SDL_HasIntersection(&thisRect, &collidedEntity))
+            {
+                std::cout << this->get_player_id() << "collided with: " << e->get_player_id() << std::endl;
+
+                // Determine the direction of collision
+                int dx = thisRect.x + thisRect.w / 2 - collidedEntity.x - collidedEntity.w / 2;
+                int dy = thisRect.y + thisRect.h / 2 - collidedEntity.y - collidedEntity.h / 2;
+
+                int penetrationX = (thisRect.w + collidedEntity.w) / 2 - std::abs(dx);
+                int penetrationY = (thisRect.h + collidedEntity.h) / 2 - std::abs(dy);
+
+                // Resolve collision
+                if (penetrationX < penetrationY)
+                {
+                    // Horizontal collision
+                    if (dx < 0)
+                    {
+                        thisRect.x -= penetrationX / 2;
+                        collidedEntity.x += penetrationX / 2;
+                    }
+                    else
+                    {
+                        thisRect.x += penetrationX / 2;
+                        collidedEntity.x -= penetrationX / 2;
+                    }
+                }
+                else
+                {
+                    // Vertical collision
+                    if (dy < 0)
+                    {
+                        thisRect.y -= penetrationY / 2;
+                        collidedEntity.y += penetrationY / 2;
+                    }
+                    else
+                    {
+                        thisRect.y += penetrationY / 2;
+                        collidedEntity.y -= penetrationY / 2;
+                    }
+                }
+
+                // Adjust player positions
+                this->set_position(thisRect.x, thisRect.y);
+                e->set_position(collidedEntity.x, collidedEntity.y);
+            }
+        }
+    }
 };
+class Player : public Entity{
+    private:
+    public:
+    Player(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
+    Entity(playerID, x, y, w, h, walkingTextures) {}
+
+};
+class Item : public Entity{
+    private:
+    public:
+    Item(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
+    Entity(playerID, x, y, w, h, walkingTextures) {}
+};
+class Enemy : public Entity{
+    private:
+    public:
+    Enemy(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
+    Entity(playerID, x, y, w, h, walkingTextures) {}
+};
+class Obstacle : public Entity{
+    private:
+    public:
+    Obstacle(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
+    Entity(playerID, x, y, w, h, walkingTextures) {}
+};
+std::vector<Entity *> entities{};
 
 class WebserverHost
 {
 private:
-    std::vector<Player *> serverentities{};
+    std::vector<Entity *> serverentities{};
 
 public:
     WebserverHost() { std::cout << "Constructed: WebserverHost" << std::endl; }
     ~WebserverHost() { std::cout << "Deconstructed: WebserverHost" << std::endl; }
     void webserver_save_game_state()
     {
+        // use filesystem to save serverentities to file
     }
     void webserver_load_game_state()
     {
+        // use filesystem to load from file to serverentities
     }
     void webserver_process_player_handle(int playerID, int x, int y, const std::string &direction)
     {
@@ -186,22 +281,24 @@ public:
             }
         }
     }
-    void webserver_process_player_vector(std::vector<Player *> players)
+    void webserver_process_player_vector(std::vector<Entity *> entities)
     {
-        serverentities = players;
+        serverentities = entities;
     }
-    std::vector<Player *> get_entities() const
+    std::vector<Entity *> get_entities() const
     {
         return serverentities;
     }
 };
 
+WebserverHost host{};
+
 class WebserverClient
 {
 private:
-    bool successResponse{};                              /**< Response from webserver */
-    std::string queryURL{};                              /**< the url to query e.g. www.example.com */
-    std::string queryProtocol{};                         /**< the protocol to follow url query e.g. http*/
+    bool successResponse{};      /**< Response from webserver */
+    std::string queryURL{};      /**< the url to query e.g. www.example.com */
+    std::string queryProtocol{}; /**< the protocol to follow url query e.g. http*/
     // boost::asio::io_context io_context{};                /**< provides a context for I/O services e.g. sockets, timers, asynchronous functions */
     // boost::asio::ip::tcp::resolver resolver{io_context}; /**< resolve string address to endpoints. Same as a DNS/Domain name server */
     // boost::asio::ip::tcp::socket socket{io_context};     /**< socket for server being queried. Resolver passes the webaddress to use */
@@ -210,28 +307,39 @@ public:
     {
         std::cout << "Constructed: WebserverClient" << std::endl;
     }
-
     ~WebserverClient()
     {
         std::cout << "Deconstructed: WebserverClient" << std::endl;
     }
-
     bool response_success() const
     {
         return successResponse;
     }
+    void POST_player_vector_to_server(std::vector<Entity *> entities)
+    {
+        // POST JSON string
+        host.webserver_process_player_vector(entities);
+    }
+    void POST_movement_to_server(int playerID, int x, int y, const std::string &direction)
+    {
+        // POST JSON string
+        host.webserver_process_player_handle(playerID, x, y, direction);
+    }
+    void GET_network_messages()
+    {
+        // GET JSON string
+        entities = host.get_entities();
+    }
 };
+
+WebserverClient client{};
 
 const int WORLD_WIDTH = 1600;  // double screen/camera size
 const int WORLD_HEIGHT = 1200; // double screen/camera size
 const int SCREEN_WIDTH = 800;  // double screen/camera size
 const int SCREEN_HEIGHT = 600; // double screen/camera size
 int clientPlayerID{};
-
-WebserverHost host{};
-WebserverClient client{};
-std::vector<Player *> players{};
-
+int botPlayerID{};
 SDL_Window *window{};
 SDL_Renderer *renderer{};
 TTF_Font *font{};
@@ -239,40 +347,29 @@ SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 SDL_Texture *backgroundTexture{};
 SDL_Texture *houseTexture{};
 SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
+bool isMultiplayerGame{};
 
 std::mt19937 gen(std::random_device{}());                    // for bot simulation
 std::uniform_int_distribution<> dis(0, 3);                   // for bot simulation
 std::chrono::steady_clock::time_point lastBotMovementTime{}; // for bot simulation
 
 // CLIENT LOGIC
-void initialise_players()
+void initialise_players(int playerCount)
 {
-    int playerID = players.size() + 1; // Start with 1 if players vector is not empty
-    Player *player = new Player(playerID, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, std::vector<std::string>{"assets/turtle.png", "assets/turtle.png"});
-    players.push_back(player);
+    for (int i{}; i < playerCount; ++i)
+    {
+        int playerID = entities.size() + 1; // Start with 1 if entities vector is not empty
+        Player *player = new Player(playerID, SCREEN_WIDTH / 2 + playerID, SCREEN_HEIGHT / 2 + playerID, 100, 100, std::vector<std::string>{"assets/turtle.png", "assets/turtle.png"});
+        entities.push_back(player);
+    }
 }
 void initialise_players_textures()
 {
-    for (auto &p : players) // Iterate by reference
+    for (auto &p : entities) // Iterate by reference
     {
         p->set_renderer(renderer);
         p->set_texture_map();
     }
-}
-void POST_player_vector_to_server(std::vector<Player *> players)
-{
-    // send JSON string
-    host.webserver_process_player_vector(players);
-}
-void POST_movement_to_server(int playerID, int x, int y, const std::string &direction)
-{
-    // send JSON string
-    host.webserver_process_player_handle(playerID, x, y, direction);
-}
-void GET_network_messages()
-{
-    // Update the local players vector with the data from the server
-    players = host.get_entities();
 }
 bool update_should_bot_move()
 {
@@ -283,24 +380,53 @@ bool update_should_bot_move()
 void update_bot_movement_simulation_POST()
 {
     int random_choice = dis(gen);
-
-    switch (random_choice)
+    for (Entity *e : entities)
     {
-    case 0:
-        POST_movement_to_server(2, 0, -5, "UP");
-        break;
-    case 1:
-        POST_movement_to_server(2, 0, 5, "DOWN");
-        break;
-    case 2:
-        POST_movement_to_server(2, -5, 0, "LEFT");
-        break;
-    case 3:
-        POST_movement_to_server(2, 5, 0, "RIGHT");
-        break;
-    default:
-        std::cerr << "Error: Invalid random choice" << std::endl;
-        break;
+        if (e->get_player_id() == botPlayerID)
+        {
+            if (isMultiplayerGame)
+            {
+                switch (random_choice)
+                {
+                case 0:
+                    client.POST_movement_to_server(2, 0, -5, "UP");
+                    break;
+                case 1:
+                    client.POST_movement_to_server(2, 0, 5, "DOWN");
+                    break;
+                case 2:
+                    client.POST_movement_to_server(2, -5, 0, "LEFT");
+                    break;
+                case 3:
+                    client.POST_movement_to_server(2, 5, 0, "RIGHT");
+                    break;
+                default:
+                    std::cerr << "Error: Invalid random choice" << std::endl;
+                    break;
+                }
+            }
+            else
+            {
+                switch (random_choice)
+                {
+                case 0:
+                    e->set_position(0, -5);
+                    break;
+                case 1:
+                    e->set_position(0, 5);
+                    break;
+                case 2:
+                    e->set_position(-5, 0);
+                    break;
+                case 3:
+                    e->set_position(5, 0);
+                    break;
+                default:
+                    std::cerr << "Error: Invalid random choice" << std::endl;
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -361,7 +487,7 @@ void update_camera_follow_player()
     int maxX = INT_MIN;
     int maxY = INT_MIN;
 
-    for (auto *p : players)
+    for (auto *p : entities)
     {
         int playerX = p->get_x_position();
         int playerY = p->get_y_position();
@@ -376,7 +502,7 @@ void update_camera_follow_player()
             maxY = playerY + SCREEN_HEIGHT;
     }
 
-    // Adjust camera position to keep all players in view
+    // Adjust camera position to keep all entities in view
     cameraRect.x = minX - (SCREEN_WIDTH / 2);
     cameraRect.y = minY - (SCREEN_HEIGHT / 2);
 
@@ -392,7 +518,7 @@ void update_camera_follow_player()
 }
 void update_player_stay_within_world_bounds()
 {
-    for (auto *p : players)
+    for (auto *p : entities)
     {
         if (p->get_x_position() < 0)
         {
@@ -412,9 +538,7 @@ void update_player_stay_within_world_bounds()
         }
     }
 }
-void update_collission_logic()
-{
-}
+
 void draw_house()
 {
     SDL_RenderCopy(renderer, houseTexture, nullptr, &houseRect);
@@ -433,30 +557,55 @@ void handle(bool &quit)
         }
         if (e.type == SDL_KEYDOWN)
         {
-            for (auto p : players)
+            for (auto p : entities)
             {
                 if (clientPlayerID == p->get_player_id())
                 {
-                    switch (e.key.keysym.sym)
+                    if (isMultiplayerGame)
                     {
-                    case SDLK_UP:
-                        POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
-                        break;
-                    case SDLK_DOWN:
-                        POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
-                        break;
-                    case SDLK_LEFT:
-                        POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
-                        break;
-                    case SDLK_RIGHT:
-                        POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
-                        break;
-                    case SDLK_SPACE:
-                        // Example: Jump up in z axis
-                        POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
-                        break;
-                    default:
-                        break;
+                        switch (e.key.keysym.sym)
+                        {
+                        case SDLK_UP:
+                            client.POST_movement_to_server(p->get_player_id(), 0, -5, "UP");
+                            break;
+                        case SDLK_DOWN:
+                            client.POST_movement_to_server(p->get_player_id(), 0, 5, "DOWN");
+                            break;
+                        case SDLK_LEFT:
+                            client.POST_movement_to_server(p->get_player_id(), -5, 0, "LEFT");
+                            break;
+                        case SDLK_RIGHT:
+                            client.POST_movement_to_server(p->get_player_id(), 5, 0, "RIGHT");
+                            break;
+                        case SDLK_SPACE:
+                            client.POST_movement_to_server(p->get_player_id(), 0, 0, "JUMP");
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        switch (e.key.keysym.sym)
+                        {
+                        case SDLK_UP:
+                            p->set_position(0, -5);
+                            break;
+                        case SDLK_DOWN:
+                            p->set_position(0, 5);
+                            break;
+                        case SDLK_LEFT:
+                            p->set_position(-5, 0);
+                            break;
+                        case SDLK_RIGHT:
+                            p->set_position(5, 0);
+                            break;
+                        case SDLK_SPACE:
+                            p->set_position(0, 0);
+                            break;
+                        default:
+                            break;
+                        }
                     }
                 }
             }
@@ -467,12 +616,19 @@ void update()
 {
     update_camera_follow_player();
     update_player_stay_within_world_bounds();
-    if (update_should_bot_move())
+    if (isMultiplayerGame)
     {
-        update_bot_movement_simulation_POST();
-        lastBotMovementTime = std::chrono::steady_clock::now(); // Update time after movement
+        if (update_should_bot_move())
+        {
+            update_bot_movement_simulation_POST(); // bot handle
+            lastBotMovementTime = std::chrono::steady_clock::now(); // Update time after movement
+        }
+        client.GET_network_messages();
     }
-    GET_network_messages();
+    for (Entity *e : entities)
+    {
+        e->update_collission_logic(entities);
+    }
 }
 void draw(SDL_Renderer *renderer)
 {
@@ -481,12 +637,12 @@ void draw(SDL_Renderer *renderer)
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, backgroundTexture, nullptr, nullptr);
 
-    render_text("Turtle Story", (SCREEN_WIDTH * 0.5), (SCREEN_HEIGHT * 0.1), 255, 255, 255, 255, font);
+    render_text("Turtle Story कूर्म कथा", (SCREEN_WIDTH * 0.15), (SCREEN_HEIGHT * 0.1), 255, 255, 255, 255, font);
 
     draw_house();
-    for (auto p : players)
+    for (auto p : entities)
     {
-        p->draw_player(p->get_x_position() - cameraRect.x, p->get_y_position() - cameraRect.y);
+        p->draw_entity(p->get_x_position() - cameraRect.x, p->get_y_position() - cameraRect.y);
     }
 
     // Render present
@@ -550,7 +706,7 @@ void start_sdl()
     }
 
     // Create window
-    window = SDL_CreateWindow("Fireworks", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Turtle Story कूर्म कथा", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == nullptr)
     {
         std::cerr << "Window could not be created! SDL Error: " << SDL_GetError() << std::endl;
@@ -603,14 +759,17 @@ int main(int argc, char *argv[])
 
     load_textures();
     load_fonts();
-    initialise_players();
-    for (auto p : players)
-    {
-        clientPlayerID = p->get_player_id();
+    isMultiplayerGame = true;
+    if (isMultiplayerGame) {
+        initialise_players(2); // create 2 players, bot is second
+        clientPlayerID = 1;
+        botPlayerID = 2;
+    } else {
+        initialise_players(1);
+        clientPlayerID = 1;
     }
-    initialise_players(); // initialise bot player id 2
     initialise_players_textures();
-    POST_player_vector_to_server(players);
+    client.POST_player_vector_to_server(entities);
     run_sdl();
     sdl_exit();
 
