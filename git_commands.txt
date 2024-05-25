@@ -32,6 +32,7 @@ STEP 5 - PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
 
 STEP 6 - RESET/SYNC FORK
+git branch -D 2.0.6_vedic_formula # force delete branch if required
 git remote add upstream https://github.com/vedic-lang/vedic
 git fetch upstream
 git merge upstream/main
