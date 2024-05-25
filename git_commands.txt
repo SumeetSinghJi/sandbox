@@ -45,39 +45,38 @@ ________________________________________________________________________________
 
 BREW FORMULA COMMIT WORKFLOW
 
-# step 1 - fork repo https://github.com/Homebrew/homebrew-core
+STEP 1 - FORK REPO
+# e.g here click CREATE FORK: https://github.com/Homebrew/homebrew-core
 brew tap --force homebrew/core
 cd "$(brew --repository homebrew/core)"
-cp ~/Documents/sandbox/vedic.rb Formula/v
+cp ~/Documents/homebrew-vedic/vedic.rb Formula/v
 cd Formula/v
+
+# STEP 2 - TEST INSTALL
 HOMEBREW_VERBOSE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall --build-from-source vedic.rb
+# if fails run CLEANUP STEP and try again
 
-
-# RUN TESTS
-brew test vedic
-brew audit --strict --online vedic
-brew audit --new vedic
-brew style --fix vedic
-
-
-# RUN CLEANUP
+# OPTIONAL STEP - CLEANUP
 brew uninstall vedic
 brew cleanup vedic
 brew cleanup --prune=all
 rm -rf $(brew --cache)/*
 rm -rf $(brew --repository)/Library/Logs/Homebrew/*
 
-# COMMIT + PUSH + PR (requires 2 new lines in commit message)
+# STEP 3 - RUN TESTS
+brew test vedic
+brew audit --strict --online vedic
+brew audit --new vedic
+brew style --fix vedic
+# if fails run CLEANUP STEP and try again
+
+# STEP 4 - COMMIT PUSH
+cp ~/Documents/homebrew-vedic/vedic.rb ~/Documents/homebrew-core/Formula/v
+cd ~/Documents/homebrew-core
 git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
-git checkout -b 2.0.6-vedic-formula origin/master
-git add Formula/vedic.rb
+git checkout -b 2.0.6-vedic-new-formula origin/master
+git add Formula/v/vedic.rb
 git commit -m "vedic 2.0.6: add new formula
 
-
-vedic lang is a Sanskrit Programming language.
-It aims to assist native speakers, and learners to communiate
-and program with Sanskrit characters with a fast and growing 
-performance rich language and community to support them.
-GitHub project located here: https://github.com/vedic-lang"
-git push --set-upstream SumeetSinghJi 2.0.6-vedic-formula
-# create PULL request on Fork for merging with main
+This formula installs the Vedic package for version 2.0.6."
+git push --set-upstream SumeetSinghJi 2.0.6-vedic-new-formula
