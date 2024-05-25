@@ -21,7 +21,7 @@ git fetch --prune # delete remote deleted branch reference
 git branch -r # view remote branches
 git checkout -b SUMEETS_BRANCH # create a new branch
 
-OPTIONAL IF FILE WINDOWS EDITED/CREATED
+OPTIONAL - BREW ONLY - IF FILE WINDOWS EDITED/CREATED
 sed -i '' 's/\r//' /Users/sumeetsingh/Documents/homebrew-vedic/vedic.rb # removes carraige returns
 chmod +x vedic.rb # give all write access to run on macos/unix like machines
 
@@ -33,10 +33,11 @@ git push origin SUMEETS_BRANCH
 STEP 5 - PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
 
-STEP 6 - RESET/SYNC FORK
+STEP 6 - SYNC FORK
 git remote -v
 git remote add upstream https://github.com/vedic-lang/vedic
 git fetch upstream
+git merge upstream/main
 git reset --hard upstream/main
 
 ________________________________________________________________________________________________
