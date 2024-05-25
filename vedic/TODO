@@ -1,20 +1,14 @@
 Description changes
 
-1. repo description typo a suggestion is: vedic-lang the first Turing complete Sanskrit Programming language
-2. Include in documentation: tab indentation rule e.g. 2 spaces or 4 spaces
-3. Footer in documentation says "Devloped". It should say “Developed”
-4. Could you possible write in documentation मान is Type Inference. The compiler automatically deduces
+* repo description typo a suggestion is: vedic-lang the first Turing complete Sanskrit Programming language
+* Include in documentation: tab indentation rule e.g. 2 spaces or 4 spaces
+* Footer in documentation says "Devloped". It should say “Developed”
+* Could you possible write in documentation मान is Type Inference. The compiler automatically deduces
 the type based on the variables value.
 
 Code changes
 
-* Can you use it with cargo? or embed with underlying Rust?
-* Can we interface with underlying platform e.g. for windows gui window, or system sleep, or linux arpa for curl
-* We need an poll key input for event driven programming
-* Can you have a variable in a string e.g. वद("परिणामः " + अ)
-* By default all cout vada cost statements are new lines. Is there anyway to have it on one line? and have
-a new method to make it 2 lines? e.g. std::cout << "Hello world" << std::endl;
-
-Project changes
-
-* Need official package manager location
+* How to string concatenate e.g, वद("परिणामः " + अ)
+* need to interface with host platform so we can create libs for Random, Sleep, Window
+* need a poll key event
+* All vada (cout) statements have new line. Can we instead have a special character for new lines?
