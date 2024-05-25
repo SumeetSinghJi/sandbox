@@ -46,13 +46,21 @@ cd "$(brew --repository homebrew/core)"
 cp ~/Documents/sandbox/vedic.rb Formula/v
 cd Formula/v
 HOMEBREW_VERBOSE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall --build-from-source vedic.rb
+
+
+# RUN TESTS
 brew test vedic
 brew audit --strict --online vedic
-# brew uninstall vedic
-# brew cleanup vedic
-# brew cleanup --prune=all
-# rm -rf $(brew --cache)/*
-# rm -rf $(brew --repository)/Library/Logs/Homebrew/*
+brew audit --new vedic
+brew style --fix vedic
+
+
+# RUN CLEANUP
+brew uninstall vedic
+brew cleanup vedic
+brew cleanup --prune=all
+rm -rf $(brew --cache)/*
+rm -rf $(brew --repository)/Library/Logs/Homebrew/*
 
 # COMMIT + PUSH + PR (requires 2 new lines in commit message)
 git remote add SumeetSinghJi https://github.com/SumeetSinghJi/homebrew-core.git
