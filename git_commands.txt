@@ -19,6 +19,10 @@ git reset --hard upstream/main
 STEP 3 - CREATE BRANCH
 git checkout -b SUMEETS_BRANCH
 
+OPTIONAL IF FILE WINDOWS EDITED/CREATED
+sed -i '' 's/\r//' /Users/sumeetsingh/Documents/homebrew-vedic/vedic.rb # removes carraige returns
+chmod +x vedic.rb # give all write access to run on macos/unix like machines
+
 STEP 4 - COMMIT/PUSH
 git add .
 git commit -m "Add your descriptive commit message here"
@@ -27,9 +31,7 @@ git push origin SUMEETS_BRANCH
 STEP 5 - PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
 
-OPTIONAL - SYNC FORK/CLONE
-# Go to fork online, click SYNC FORK - UPDATE BRANCH: https://github.com/SumeetSinghJi/vedic
-cd vedic
+STEP 6 - RESET/SYNC FORK
 git remote add upstream https://github.com/vedic-lang/vedic
 git fetch upstream
 git merge upstream/main
