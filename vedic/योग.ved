@@ -19,6 +19,7 @@
 # @return results of addition of both avariables
 सूत्र योग(अ, आ)
 {
+  मान इ = अ + आ;
   फल अ + आ;
 }
 

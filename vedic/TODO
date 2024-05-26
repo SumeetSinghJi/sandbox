@@ -1,8 +1,6 @@
 Description changes
 
-* repo description typo a suggestion is: vedic-lang the first Turing complete Sanskrit Programming language
 * Include in documentation: tab indentation rule e.g. 2 spaces or 4 spaces
-* Footer in documentation says "Devloped". It should say “Developed”
 * Could you possible write in documentation मान is Type Inference. The compiler automatically deduces
 the type based on the variables value.
 

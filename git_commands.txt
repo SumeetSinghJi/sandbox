@@ -80,3 +80,6 @@ git commit -m "vedic 2.0.6: add new formula
 
 This formula installs the Vedic package for version 2.0.6."
 git push --set-upstream SumeetSinghJi 2.0.6-vedic-new-formula
+
+# STEP 5 - CLEANUP
+brew untap homebrew/core # revert environment to default
