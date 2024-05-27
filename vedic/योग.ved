@@ -18,12 +18,13 @@
 # १
 # परिणाम अ + आ = 
 # २
-#
 
 # @brief function to return addition results of 2 user input variables
 # will return an sanskrit character e.g. १ only if entered in Sanskrit 
+#
 # sutra yog(a, ā)
 # function add(a, ā)
+#
 # @param a the first letter of Sanskrit alphabet is first number to add
 # @param ā the second letter of Sanskrit alphabet is the second number to add
 # @return results of addition of both avariables
