@@ -1,26 +1,46 @@
-# Example addition software written in vedic lang https://vedic-lang.github.io/
+# Example vedic-lang addition program 
+# 
+# written in vedic lang https://vedic-lang.github.io/
 #
-# Enter a number at both prompts and press enter to see results
+# Program name: योग.ved (add.ved)
+#
+# #brief Enter a number at both prompts and press enter to see results
 # The main function is not required but included for demonstration
 # Translations in Sanskrit and English are above each function
+#
+# @example
+# 
+# PS C:\Users\testuser\Documents\sandbox\vedic> vedic योग.ved
+# नमस्ते आरम्भ तन्त्रांश
+# योजयितुं प्रथमं सङ्ख्यां प्रविशन्तु | 
+# १ 
+# योजयितुं द्वितीयं सङ्ख्यां प्रविशन्तु | 
+# १
+# परिणाम अ + आ = 
+# २
+#
 
 # @brief function to return addition results of 2 user input variables
 # will return an sanskrit character e.g. १ only if entered in Sanskrit 
-# else will return results in Arabic number characters
-# TRANSLATION
 # sutra yog(a, ā)
 # function add(a, ā)
-# {
-#  phal a + ā;
-#  return a + ā;
-# }
 # @param a the first letter of Sanskrit alphabet is first number to add
 # @param ā the second letter of Sanskrit alphabet is the second number to add
 # @return results of addition of both avariables
 सूत्र योग(अ, आ)
 {
-  मान इ = अ + आ;
-  फल अ + आ;
+  # a = ank(a)
+  # a = convert_string_to_interger(a)
+  अ = अंक(अ);
+  # man ā = ank(ā)
+  # variable a = convert_string_to_interger(a)
+  आ = अंक(आ);
+  # man parinama = a + ā
+  # variable result = a + ā
+  मान परिणाम = अ + आ;
+  # phal parinama
+  # return results
+  फल परिणाम;
 }
 
 # sutra sukhya
@@ -33,18 +53,19 @@
 
   # vada(yojayitum prathamam sankhyam pravishantu)
   # say(enter first number to add)
-  वद("योजयितुं प्रथमं सङ्ख्यां प्रविशन्तु ");
+  वद("योजयितुं प्रथमं सङ्ख्यां प्रविशन्तु | ");
   # mana a = pathan
   # variable a = reading
   मान अ = पठन();
+
   # vada(yojayitum dvitiyam sankhyam pravishantu)
   # say(enter second number to add)
-  वद("योजयितुं द्वितीयं सङ्ख्यां प्रविशन्तु ");
+  वद("योजयितुं द्वितीयं सङ्ख्यां प्रविशन्तु | ");
   # mana ā = pathan
   # variable b  = reading
   मान आ = पठन(); 
 
-  # vada(parinamah a + b)
+  # vada(parinama a + b)
   # say(result of a + b)
   वद("परिणाम अ + आ = ");
 
