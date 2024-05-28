@@ -4,6 +4,17 @@ TERMINOLOGY
 upstream: the original repo e.g, vedic-lang
 origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
 
+________________________________________________________________________________________________
+
+CREATE NEW REPO from CLI
+
+1. (MacOS) brew install gh
+2. gh auth login # follow setup steps
+3. gh repo create SumeetSinghJi/Heroes3MapLiker --public
+
+________________________________________________________________________________________________
+
+FORK, CLONE, COMMIT, PUSH
 
 STEP 1 - FORK REPO
 # e.g here click CREATE FORK: https://github.com/vedic-lang/vedic
@@ -35,10 +46,13 @@ STEP 5 - PULL REQUEST
 
 STEP 6 - SYNC FORK
 git remote -v
+git remote remove origin # optional to delete wrong remote
 git remote add upstream https://github.com/vedic-lang/vedic
 git fetch upstream
 git merge upstream/main
 git reset --hard upstream/main
+
+
 
 ________________________________________________________________________________________________
 
