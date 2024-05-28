@@ -32,6 +32,8 @@ git fetch --prune # delete remote deleted branch reference
 git branch -r # view remote branches
 git checkout -b SUMEETS_BRANCH # create a new branch
 
+git pull --rebase # OPTIONAL IF SHARING SAME BRANCH - sync your local branch with latest updates
+
 OPTIONAL - BREW ONLY - IF FILE WINDOWS EDITED/CREATED
 sed -i '' 's/\r//' /Users/sumeetsingh/Documents/homebrew-vedic/vedic.rb # removes carraige returns
 chmod +x vedic.rb # give all write access to run on macos/unix like machines

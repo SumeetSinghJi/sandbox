@@ -4,8 +4,8 @@
 # function now
 सूत्र अब(currentTimeinMilliseconds) {
 
-    # parinama = current time in milliseconds
-    # results = current time in milliseconds
+    # parinama = current time in milliseconds since unix Epoch
+    # results = current time in milliseconds since unix Epoch
     मान परिणाम = currentTimeinMilliseconds;
 
     # phal parinama
