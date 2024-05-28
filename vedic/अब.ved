@@ -1,0 +1,28 @@
+# Find current time
+
+# sutra ab
+# function now
+सूत्र अब(currentTimeinMilliseconds) {
+
+    # parinama = current time in milliseconds
+    # results = current time in milliseconds
+    मान परिणाम = currentTimeinMilliseconds;
+
+    # phal parinama
+    # return results
+    फल परिणाम;
+}
+
+# sutra sukhya
+# function main
+सूत्र मुख्य() {
+
+    # समय returns milliseconds since Unix Epoch time
+    मान currentTimeinMilliseconds = समय(); # Expect: १७१६७९७७०७६९२
+
+    # say(time)
+    # vada(time)
+    वद(अब(currentTimeinMilliseconds));
+}
+
+मुख्य();

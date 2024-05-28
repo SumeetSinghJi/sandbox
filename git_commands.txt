@@ -64,6 +64,9 @@ rm -rf $(brew --cache)/*
 rm -rf $(brew --repository)/Library/Logs/Homebrew/*
 
 # STEP 3 - RUN TESTS
+# NOTE: If you get error wrong constant name, reading as formulae not brew
+# or error cannot read from source, ignore. These are auto fixed when formulae
+# is accepted, homebrew bot will add bottle data to the formula to fix
 brew test vedic
 brew audit --strict --online vedic
 brew audit --new vedic
