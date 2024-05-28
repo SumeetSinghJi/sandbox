@@ -24,7 +24,12 @@ git clone https://github.com/SumeetSinghJi/vedic
 cd vedic
 git remote add upstream https://github.com/vedic-lang/vedic
 
-STEP 3 - VIEWING/CREATING/DELETING BRANCHES
+STEP 3 - COMMIT/PUSH
+git add .
+git commit -m "Add your descriptive commit message here"
+git push origin SUMEETS_BRANCH
+
+STEP 4A - NEW BRANCH
 git branch # view local branches
 git branch -r # view remote branches
 git branch -D 2.0.6_vedic_formula # delete branch
@@ -32,16 +37,10 @@ git fetch --prune # delete remote deleted branch reference
 git branch -r # view remote branches
 git checkout -b SUMEETS_BRANCH # create a new branch
 
-git pull --rebase # OPTIONAL IF SHARING SAME BRANCH - sync your local branch with latest updates
-
-OPTIONAL - BREW ONLY - IF FILE WINDOWS EDITED/CREATED
-sed -i '' 's/\r//' /Users/sumeetsingh/Documents/homebrew-vedic/vedic.rb # removes carraige returns
-chmod +x vedic.rb # give all write access to run on macos/unix like machines
-
-STEP 4 - COMMIT/PUSH
-git add .
-git commit -m "Add your descriptive commit message here"
-git push origin SUMEETS_BRANCH
+# STEP 4B - SHARED BRANCH
+git pull --rebase # sync your local branch with latest updates
+git rebase --abort # if there are merge conflicts then abort to pull normally
+git pull # merge your commits with the latest online branch
 
 STEP 5 - PULL REQUEST
 # Go to your forked repo and click COMPARE PULL REQUEST and accept
@@ -88,6 +87,10 @@ brew audit --strict --online vedic
 brew audit --new vedic
 brew style --fix vedic
 # if fails run CLEANUP STEP and try again
+
+OPTIONAL - IF FILE MODIFIED IN WINDOWS
+sed -i '' 's/\r//' /Users/sumeetsingh/Documents/homebrew-vedic/vedic.rb # removes higgen carraige returns text from file
+chmod +x vedic.rb # give all write access to run on macos/unix like machines
 
 # STEP 4 - COMMIT PUSH
 cp ~/Documents/homebrew-vedic/vedic.rb ~/Documents/homebrew-core/Formula/v
