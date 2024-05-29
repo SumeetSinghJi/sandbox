@@ -1,7 +1,3 @@
-/**
- * EXAMPLE C++ SDL Multiplayer game
- */
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -21,14 +17,6 @@
 #include <netinet/in.h>
 #endif
 #include <filesystem>
-
-/**
- * MISSING
- * 1. Camera
- * 2. Game world is one continous scene e.g. size 100000x100000, only update() and draw() entities within your camera view x 2 for performance
- * 3. Separate web server
- * 4. Tiles
- */
 
 // FORWARD DECLARATIONS
 class Entity
@@ -55,7 +43,7 @@ public:
         std::cout << "Constructed: Entity" << std::endl;
         lastFrameChange = std::chrono::steady_clock::now();
     }
-    ~Entity()
+    virtual ~Entity()
     {
         std::cout << "Deconstructed: Entity" << std::endl;
         for (auto &texture : textureMap)
@@ -158,10 +146,8 @@ public:
             texturePath = walkingTextures[currentAnimationFrame];
         }
     }
-    void draw_entity(int cameraX, int cameraY)
+    void draw_entity(SDL_Renderer *renderer)
     {
-        rect.x = cameraX;
-        rect.y = cameraY;
         SDL_RenderCopy(renderer, texture, nullptr, &rect);
     }
     void update_collission_logic(std::vector<Entity *> &entities)
@@ -176,22 +162,18 @@ public:
                 continue;
             }
 
-            // Check for intersection between two players
             if (SDL_HasIntersection(&thisRect, &collidedEntity))
             {
-                std::cout << this->get_player_id() << "collided with: " << e->get_player_id() << std::endl;
+                std::cout << this->get_player_id() << " collided with: " << e->get_player_id() << std::endl;
 
-                // Determine the direction of collision
                 int dx = thisRect.x + thisRect.w / 2 - collidedEntity.x - collidedEntity.w / 2;
                 int dy = thisRect.y + thisRect.h / 2 - collidedEntity.y - collidedEntity.h / 2;
 
                 int penetrationX = (thisRect.w + collidedEntity.w) / 2 - std::abs(dx);
                 int penetrationY = (thisRect.h + collidedEntity.h) / 2 - std::abs(dy);
 
-                // Resolve collision
                 if (penetrationX < penetrationY)
                 {
-                    // Horizontal collision
                     if (dx < 0)
                     {
                         thisRect.x -= penetrationX / 2;
@@ -205,7 +187,6 @@ public:
                 }
                 else
                 {
-                    // Vertical collision
                     if (dy < 0)
                     {
                         thisRect.y -= penetrationY / 2;
@@ -218,37 +199,77 @@ public:
                     }
                 }
 
-                // Adjust player positions
-                this->set_position(thisRect.x, thisRect.y);
-                e->set_position(collidedEntity.x, collidedEntity.y);
+                this->rect = thisRect;
+                e->rect = collidedEntity;
             }
         }
     }
+    void update_collision_world_bounds()
+    {
+        if (rect.x < 0)
+        {
+            rect.x = 0;
+        }
+        if (rect.y < 0)
+        {
+            rect.y = 0;
+        }
+        if (rect.x + rect.w > WORLD_WIDTH)
+        {
+            rect.x = WORLD_WIDTH - rect.w;
+        }
+        if (rect.y + rect.h > WORLD_HEIGHT)
+        {
+            rect.y = WORLD_HEIGHT - rect.h;
+        }
+    }
+    void update_camera_displacement(SDL_Rect &cameraRect)
+    {
+        rect.x -= cameraRect.x;
+        rect.y -= cameraRect.y;
+    }
 };
-class Player : public Entity{
-    private:
-    public:
-    Player(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
-    Entity(playerID, x, y, w, h, walkingTextures) {}
+class Player : public Entity
+{
+public:
+    Player(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) 
+        : Entity(playerID, x, y, w, h, walkingTextures) {}
 
+    SDL_Point get_camera_displacement()
+    {
+        SDL_Point cameraDisplacement;
+        cameraDisplacement.x = (this->get_rect().x + (this->get_rect().w / 2)) - (SCREEN_WIDTH / 2);
+        cameraDisplacement.y = (this->get_rect().y + (this->get_rect().h / 2)) - (SCREEN_HEIGHT / 2);
+        return cameraDisplacement;
+    }
+
+    void update_camera_follow_player()
+    {
+        if (clientPlayerID == get_player_id())
+        {
+            SDL_Point displacement = get_camera_displacement();
+            cameraRect.x += displacement.x * 0.1;
+            cameraRect.y += displacement.y * 0.1;
+        }
+    }
 };
-class Item : public Entity{
-    private:
-    public:
-    Item(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
-    Entity(playerID, x, y, w, h, walkingTextures) {}
+class Item : public Entity
+{
+private:
+public:
+    Item(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : Entity(playerID, x, y, w, h, walkingTextures) {}
 };
-class Enemy : public Entity{
-    private:
-    public:
-    Enemy(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
-    Entity(playerID, x, y, w, h, walkingTextures) {}
+class Enemy : public Entity
+{
+private:
+public:
+    Enemy(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : Entity(playerID, x, y, w, h, walkingTextures) {}
 };
-class Obstacle : public Entity{
-    private:
-    public:
-    Obstacle(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : 
-    Entity(playerID, x, y, w, h, walkingTextures) {}
+class Obstacle : public Entity
+{
+private:
+public:
+    Obstacle(int playerID, int x, int y, int w, int h, std::vector<std::string> walkingTextures) : Entity(playerID, x, y, w, h, walkingTextures) {}
 };
 std::vector<Entity *> entities{};
 
@@ -275,9 +296,9 @@ public:
         {
             if (p->get_player_id() == playerID)
             {
-                p->set_position(p->get_x_position() + x, p->get_y_position() + y);
+                p->set_position(p->get_rect().x + x, p->get_rect().y + y);
                 p->set_direction(direction);
-                std::cout << "Server updated player " << playerID << " position: x: " << p->get_x_position() << " y: " << p->get_y_position() << " Direction: " << p->get_direction() << std::endl;
+                std::cout << "Server updated player " << playerID << " position: x: " << p->get_rect().x << " y: " << p->get_rect().y << " Direction: " << p->get_direction() << std::endl;
                 return;
             }
         }
@@ -335,8 +356,8 @@ public:
 
 WebserverClient client{};
 
-const int WORLD_WIDTH = 1600;  // double screen/camera size
-const int WORLD_HEIGHT = 1200; // double screen/camera size
+const int WORLD_WIDTH = 2000;  // double screen/camera size
+const int WORLD_HEIGHT = 2000; // double screen/camera size
 const int SCREEN_WIDTH = 800;  // double screen/camera size
 const int SCREEN_HEIGHT = 600; // double screen/camera size
 int clientPlayerID{};
@@ -346,9 +367,15 @@ SDL_Renderer *renderer{};
 TTF_Font *font{};
 SDL_Rect cameraRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 SDL_Texture *backgroundTexture{};
-SDL_Texture *houseTexture{};
-SDL_Rect houseRect = {200, 200, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6};
+SDL_Texture *houseExteriorDayTexture{};
+SDL_Texture *houseExteriorNightTexture{};
+SDL_Texture *houseInteriorDayTexture{};
+SDL_Texture *houseInteriorNightTexture{};
+SDL_Rect houseRect = {200, 200, 200, 200};
+SDL_Rect houseDoorRect = {100, 100, 50, 50};
 bool isMultiplayerGame{};
+int scene = 2;
+int isNight{};
 
 std::mt19937 gen(std::random_device{}());                    // for bot simulation
 std::uniform_int_distribution<> dis(0, 3);                   // for bot simulation
@@ -474,75 +501,60 @@ SDL_Texture *load_texture(const std::string &textureFilePath)
 void load_textures()
 {
     backgroundTexture = load_texture("assets/farm-day.png");
-    houseTexture = load_texture("assets/house-day.png");
+    houseExteriorDayTexture = load_texture("assets/house-day.png");
+    houseExteriorNightTexture = load_texture("assets/house-night.png");
+    houseInteriorDayTexture = load_texture("assets/house-day.png");
+    houseInteriorNightTexture = load_texture("assets/house-night.png");
 }
 void load_fonts()
 {
     font = load_font("assets/fonts/noto-sans/NotoSans-Regular.ttf", 24);
 }
 
-void update_camera_follow_player()
+void update_collisions_new_zone()
 {
-    int minX = INT_MAX;
-    int minY = INT_MAX;
-    int maxX = INT_MIN;
-    int maxY = INT_MIN;
-
-    for (auto *p : entities)
+    for (Entity *e : entities)
     {
-        int playerX = p->get_x_position();
-        int playerY = p->get_y_position();
-
-        if (playerX < minX)
-            minX = playerX;
-        if (playerY < minY)
-            minY = playerY;
-        if (playerX + SCREEN_WIDTH > maxX)
-            maxX = playerX + SCREEN_WIDTH;
-        if (playerY + SCREEN_HEIGHT > maxY)
-            maxY = playerY + SCREEN_HEIGHT;
-    }
-
-    // Adjust camera position to keep all entities in view
-    cameraRect.x = minX - (SCREEN_WIDTH / 2);
-    cameraRect.y = minY - (SCREEN_HEIGHT / 2);
-
-    // Clamp camera position to world boundaries
-    if (cameraRect.x < 0)
-        cameraRect.x = 0;
-    if (cameraRect.y < 0)
-        cameraRect.y = 0;
-    if (cameraRect.x + SCREEN_WIDTH > WORLD_WIDTH)
-        cameraRect.x = WORLD_WIDTH - SCREEN_WIDTH;
-    if (cameraRect.y + SCREEN_HEIGHT > WORLD_HEIGHT)
-        cameraRect.y = WORLD_HEIGHT - SCREEN_HEIGHT;
-}
-void update_player_stay_within_world_bounds()
-{
-    for (auto *p : entities)
-    {
-        if (p->get_x_position() < 0)
+        if (Player *player = dynamic_cast<Player *>(e))
         {
-            p->set_position(p->get_y_position(), 0);
-        }
-        if (p->get_y_position() < 0)
-        {
-            p->set_position(0, p->get_x_position());
-        }
-        if (p->get_x_position() + SCREEN_WIDTH > WORLD_WIDTH)
-        {
-            p->set_position(p->get_y_position(), WORLD_WIDTH - SCREEN_WIDTH);
-        }
-        if (p->get_y_position() + SCREEN_HEIGHT > WORLD_HEIGHT)
-        {
-            p->set_position(WORLD_HEIGHT - SCREEN_HEIGHT, p->get_x_position());
+            if (clientPlayerID == player->get_player_id())
+            {
+                // Go inside house
+                if (player->get_rect().x == houseDoorRect.x || player->get_rect().y == houseDoorRect.y)
+                {
+                    scene = 3;
+                }
+                // go outside house
+                if (player->get_rect().x == houseDoorRect.x || player->get_rect().y == houseDoorRect.y)
+                {
+                    scene = 2;
+                }
+            }
         }
     }
 }
 
-void draw_house()
+void draw_house_exterior()
 {
-    SDL_RenderCopy(renderer, houseTexture, nullptr, &houseRect);
+    if (!isNight)
+    {
+        SDL_RenderCopy(renderer, houseExteriorDayTexture, nullptr, &houseRect);
+    }
+    else
+    {
+        SDL_RenderCopy(renderer, houseExteriorNightTexture, nullptr, &houseRect);
+    }
+}
+void draw_house_interior()
+{
+    if (!isNight)
+    {
+        SDL_RenderCopy(renderer, houseInteriorDayTexture, nullptr, &houseRect);
+    }
+    else
+    {
+        SDL_RenderCopy(renderer, houseInteriorNightTexture, nullptr, &houseRect);
+    }
 }
 
 void handle(bool &quit)
@@ -615,22 +627,42 @@ void handle(bool &quit)
 }
 void update()
 {
-    update_camera_follow_player();
-    update_player_stay_within_world_bounds();
     if (isMultiplayerGame)
     {
         if (update_should_bot_move())
         {
-            update_bot_movement_simulation_POST(); // bot handle
-            lastBotMovementTime = std::chrono::steady_clock::now(); // Update time after movement
+            update_bot_movement_simulation_POST();
+            lastBotMovementTime = std::chrono::steady_clock::now();
         }
         client.GET_network_messages();
     }
+
+    // First, update all entity positions and check collisions
     for (Entity *e : entities)
     {
         e->update_collission_logic(entities);
+        e->update_collision_world_bounds();
+    }
+
+    // Then, update camera positions based on the player
+    for (Entity *e : entities)
+    {
+        if (Player *player = dynamic_cast<Player *>(e))
+        {
+            if (clientPlayerID == player->get_player_id())
+            {
+                player->update_camera_follow_player();
+            }
+        }
+    }
+
+    // Finally, update the camera displacement for all entities
+    for (Entity *e : entities)
+    {
+        e->update_camera_displacement(cameraRect);
     }
 }
+
 void draw(SDL_Renderer *renderer)
 {
     // Clear screen
@@ -640,13 +672,19 @@ void draw(SDL_Renderer *renderer)
 
     render_text("Turtle Story कूर्म कथा", (SCREEN_WIDTH * 0.15), (SCREEN_HEIGHT * 0.1), 255, 255, 255, 255, font);
 
-    draw_house();
-    for (auto p : entities)
+    for (auto e : entities)
     {
-        p->draw_entity(p->get_x_position() - cameraRect.x, p->get_y_position() - cameraRect.y);
+        e->draw_entity(renderer);
+    }
+    if (scene == 2)
+    {
+        draw_house_exterior();
+    }
+    if (scene == 3)
+    {
+        draw_house_interior();
     }
 
-    // Render present
     SDL_RenderPresent(renderer);
 }
 
@@ -761,11 +799,14 @@ int main(int argc, char *argv[])
     load_textures();
     load_fonts();
     isMultiplayerGame = true;
-    if (isMultiplayerGame) {
+    if (isMultiplayerGame)
+    {
         initialise_players(2); // create 2 players, bot is second
         clientPlayerID = 1;
         botPlayerID = 2;
-    } else {
+    }
+    else
+    {
         initialise_players(1);
         clientPlayerID = 1;
     }
