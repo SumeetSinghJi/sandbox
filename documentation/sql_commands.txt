@@ -1,0 +1,98 @@
+
+___________________________________________________________________________
+
+                            MySQL DETAILS
+___________________________________________________________________________
+
+
+Steps to connect to AWS RDS MySQL DB and modify
+
+const connection = await mysql.createConnection({
+    host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
+    user: 'admin',
+    password: '___REDACTED___',
+    database: 'agnisamoohmysql'
+});
+
+___________________________________________________________________________
+
+                            MySQL COMMANDS
+___________________________________________________________________________
+
+1. LOGIN: 
+mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
+
+2. FIND ALL MYSQL USERS (Must be logged in as root)
+SELECT user, host FROM mysql.user;
+
+3. CREATE A USER
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+
+4. CHANGE PASSWORD FOR ANY USER
+ALTER USER 'user'@'localhost' IDENTIFIED BY 'new_password_goes_here';
+
+5 .SHOW DATABASES
+show databases;
+
+6. CREATE DATABASE
+CREATE DATABASE agnisamooh_database;
+
+7. GRANT DATABASE ACCESS TO USER
+GRANT ALL PRIVILEGES ON agnisamooh_database.* TO 'user'@'localhost';
+
+8. ACCESS DATABASE
+USE agnisamooh_database;
+
+9. VIEW ALL DATABASES
+mysql> show databases;
++---------------------+
+| Database            |
++---------------------+
+| agnisamooh_database |
+| information_schema  |
+| mysql               |
+| performance_schema  |
+| sys                 |
++---------------------+
+
+10. SHOW TABLES
+show tables;
+mysql> show tables;
++-------------------------------+
+| Tables_in_agnisamooh_database |
++-------------------------------+
+| users                         |
++-------------------------------+
+
+11. CREATE TABLE
+CREATE TABLE users (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(20) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(20) NOT NULL
+);
+
+12. SHOW COLUMNS
+DESCRIBE users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| userID   | int         | NO   | PRI | NULL    | auto_increment |
+| username | varchar(20) | NO   |     | NULL    |                |
+| email    | varchar(50) | NO   |     | NULL    |                |
+| password | varchar(20) | NO   |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.12 sec)
+
+13. QUERY TABLE
+SELECT * FROM users;
+
+14. CREATE NEW COLUMN
+ALTER TABLE users ADD COLUMN password VARCHAR(50) NOT NULL;
+
+15. CREATE NEW USER
+INSERT INTO users (username, email) VALUES ('sum337', 'kurta.kursi@gmail.com');
+
+16. CHANGE PASSWORD
+SET @password = 'user_password'; -- Define the new password
+UPDATE users SET password = @password WHERE username = 'sum337';

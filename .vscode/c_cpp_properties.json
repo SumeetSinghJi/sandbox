@@ -18,8 +18,8 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.22621.0",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
             "intelliSenseMode": "windows-gcc-x64"
         },
         { // Mac build
@@ -34,8 +34,8 @@
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/opt/homebrew/opt/llvm/bin/clang",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
             "intelliSenseMode": "macos-clang-arm64"
         },
         { // Linux build
@@ -62,8 +62,8 @@
                 */
             ],
             "defines": [],
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
             "intelliSenseMode": "gcc-x64"
         }
     ],

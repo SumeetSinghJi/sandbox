@@ -1,0 +1,58 @@
+LINUX COMMANDS CHEAT SHEET
+
+________________________________________________________
+
+                    FIRST TIME SETUP
+________________________________________________________
+
+1. ADD ADMIN
+su
+usermod -aG sudo vboxuser # or wheel group
+cat /etc/sudoers
+exit
+sudo reboot # necessary to reset admin cache
+
+2. UPDATE
+sudo apt update
+sudo apt upgrade -y
+sudo apt dist-upgrade -y
+sudo reboot
+
+3. INSTALLS
+sudo apt install openssh-server -y # for incomming SSH
+
+4. HARDEN
+sudo apt install ufw
+sudo ufw enable
+sudo ufw allow ssh
+sudo ufw status
+
+
+________________________________________________________
+
+                    COMMON COMMANDS
+________________________________________________________
+
+SEARCH
+sudo apt search xxxx
+sudo apt list --installed xxxxx
+find /usr -iname "*sdl.h*"
+ls | grep SDL.h
+
+FORMAT
+ls | sort -h
+
+LOGONS
+w
+
+DISPLAY
+sudo systemctl status display-manager
+
+DISK USAGE
+df -h # top level root only
+du -h -d 1
+
+FLATPAK
+sudo apt install flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remotes

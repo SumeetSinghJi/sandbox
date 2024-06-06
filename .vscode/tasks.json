@@ -6,6 +6,8 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
+                "-std=c++23",
+                "-fmodules-ts",
                 "-I${workspaceFolder}/headers",
                 "-IC:/Program Files/boost",
                 "-IC:/Program Files/SDL2/x86_64-w64-mingw32/include",
