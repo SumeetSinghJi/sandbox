@@ -4,3 +4,6 @@ out
 
 # Development folders
 .vs
+
+# react packages
+node_modules

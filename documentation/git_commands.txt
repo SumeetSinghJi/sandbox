@@ -29,6 +29,9 @@ git add .
 git commit -m "Add your descriptive commit message here"
 git push origin SUMEETS_BRANCH
 
+OPTIONAL - Safely reset last stage commit
+git reset HEAD~1 # will remove last staged commit while not touching new code
+
 STEP 4A - NEW BRANCH
 git branch # view local branches
 git branch -r # view remote branches
