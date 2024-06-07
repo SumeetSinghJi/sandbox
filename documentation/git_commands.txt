@@ -1,20 +1,41 @@
-GITHUB COMMANDS
+________________________________________________________
+
+                    GIT COMMANDS
+________________________________________________________
 
 TERMINOLOGY
+
 upstream: the original repo e.g, vedic-lang
 origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
 
-________________________________________________________________________________________________
+________________________________________________________
 
-CREATE NEW REPO from CLI
+                FIRST TIME SETUP
+________________________________________________________
 
-1. (MacOS) brew install gh
+Windows: https://git-scm.com/downloads
+Mac: brew install git
+Linux: sudo apt install git
+
+Note: You will be asked to sign in web browser first time
+
+git config --global user.name "Sumeet Singh"
+git config --global user.email "sumeet.singhji@outlook.com"
+
+________________________________________________________
+
+                CREATE NEW REPO from CLI
+________________________________________________________
+
+
+Mac: brew install gh
 2. gh auth login # follow setup steps
 3. gh repo create SumeetSinghJi/Heroes3MapLiker --public
 
-________________________________________________________________________________________________
+________________________________________________________
 
-FORK, CLONE, COMMIT, PUSH
+                FORK, CLONE, COMMIT, PUSH
+________________________________________________________
 
 STEP 1 - FORK REPO
 # e.g here click CREATE FORK: https://github.com/vedic-lang/vedic
@@ -58,10 +79,10 @@ git reset --hard upstream/main
 
 
 
-________________________________________________________________________________________________
+________________________________________________________
 
-
-BREW FORMULA COMMIT WORKFLOW
+            BREW FORMULA COMMIT WORKFLOW
+________________________________________________________
 
 STEP 1 - FORK REPO
 # e.g here click CREATE FORK: https://github.com/Homebrew/homebrew-core
