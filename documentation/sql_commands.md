@@ -7,12 +7,14 @@ ___________________________________________________________________________
 
 Steps to connect to AWS RDS MySQL DB and modify
 
+```javascript
 const connection = await mysql.createConnection({
     host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
     user: 'admin',
     password: '___REDACTED___',
     database: 'agnisamoohmysql'
 });
+```
 
 ___________________________________________________________________________
 
