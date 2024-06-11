@@ -1,9 +1,0 @@
-________________________________________________________
-
-                    NPM COMMANDS
-________________________________________________________
-
-1. npm cache clean --force # clear npm start cache
-2. npm install react-router-dom # for installing libs if needed
-3. npm start
-4. npm run build # if no errors with npm start then build it

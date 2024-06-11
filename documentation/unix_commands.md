@@ -52,8 +52,10 @@ ________________________________________________________
 Your startup scripts, environmental variables, alias and more are documented
 in your shell script located under /home/username/ hidden found with "ls -la"
 They need to be added there and the shell restarted for the change to take place.
-
-Each unix uses a different shell e.g. MacOS uses ~/.zshrc, linux uses ~/.bash or ~/.bash_profile
+There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or ~/.bash_profile.
+edit 1 to include the envionmental variable as per below steps, and remove any outdated version
+form the other shell scripts
+for MacOS add the path only to: ~/.zshrc
 
 EXAMPLE
 
@@ -143,12 +145,19 @@ LOGONS
 w
 ```
 
+SHUTDOWNS
+```bash
+sudo shutdown now
+# or
+sudo reboot now
+```
+
 DISPLAY
 ```bash
 sudo systemctl status display-manager
 ```
 
-DISK USAGE
+DISK FREE/USAGE
 ```bash
 df -h # top level root only
 du -h -d 1

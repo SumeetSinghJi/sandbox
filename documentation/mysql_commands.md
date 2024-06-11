@@ -184,8 +184,11 @@ ___________________________________________________________________________
                             EXAMPLE JSON POSTS
 ___________________________________________________________________________
 
+USING REACT
 
-1. USING REACT
+1A. USING REACT submit.html
+
+1B. USING REACT submit.js
 ```javascript
 const SubmitSignUp = () => {
     const [formData, setFormData] = useState({
