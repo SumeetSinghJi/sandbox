@@ -3,8 +3,9 @@ ________________________________________________________
                     REACT WORKFLOW
 ________________________________________________________
 
-Note: all .js files should start with capital letter e.g. Footer.js
-to match best practice class naming conventions
+Note: React files use CamelScript naming convention. Capitalise
+the first letter of every word in a class and matching filename
+e.g. HomePage class within HomePage.js
 
 1. SETUP REACT
 ```bash
@@ -45,7 +46,7 @@ reportWebVitals();
 7. Edit your App.js to the below
 ```javascript
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage';
@@ -67,19 +68,19 @@ function App() {
         <Header />
         <div className="column1"></div>
         <div className="column2">
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/games" component={Games} />
-            <Route path="/news" component={News} />
-            <Route path="/contactus" component={ContactUs} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/privacypolicy" component={PrivacyPolicy} />
-            <Route path="/refundandreturnpolicy" component={RefundAndReturnPolicy} />
-            <Route path="/termsandconditions" component={TermsAndConditions} />
-            <Route path="/promotionalcontent" component={PromotionalContent} />
-            <Route path="/unsubscribe" component={Unsubscribe} />
-            <Route component={NotFound} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/contactus" element={<ContactUs />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/refundandreturnpolicy" element={<RefundAndReturnPolicy />} />
+            <Route path="/termsandconditions" element={<TermsAndConditions />} />
+            <Route path="/promotionalcontent" element={<PromotionalContent />} />
+            <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
         <div className="column3"></div>
         <Footer />
@@ -89,9 +90,10 @@ function App() {
 }
 
 export default App;
+
 ```
 
-8. Create a /src/components/Header.js and add the below
+8. Create 1st component /src/components/Header.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -119,7 +121,7 @@ const Header = () => {
 export default Header;
 ```
 
-9. Create a /src/components/Footer.js and add the below
+9. Create 2nd component /src/components/Footer.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
@@ -169,44 +171,82 @@ const Footer = () => {
 export default Footer;
 ```
 
-10. Create 1st test page Homepage.js
+10. Create 1st test page /src/components/Homepage.js and add the below
 ```javascript
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 
-const Error = () => {
+const HomePage = () => {
   return (
     <div>
-      <Header />
       <div className="row">
         <div className="column1"></div>
         <div className="column2">
-          <h2>Page not found</h2>
-          <p>Error 404: The page you are looking for doesn't exist. Use the search bar to navigate elsewhere.</p>
-          <p>Email: kurta.kursi@gmail.com for any questions</p>
+        <div className="centre_text"><b>This is a fictional website learning project</b></div>
+          <br />
+          <br />
+          Agnisamooh.com is a global gaming community aspiring to grow with indie members of diverse castes
+          all around the world. We hope to have a curated source for gamers of minority communities as well as
+          anyone to have a promotional place to showcase their culture to the world.
+          <br />
+          <br />
+          We invite passionate game developers and enthusiasts to join us in building a platform where creativity and
+          collaboration thrive. Agni is Sanskrit for Fire, and Samooh for Group.
+          Together they spell AgniSamooh translated to FireGroup.
+          <br />
+          <br />
+          Sanskrit is an ancient language said to be well developed for programming code, and this community brings ancient wisdom to new age
+          gamers. The word represents the collective community of game developers all around the world to have
+          a universal space open to the community. We aim to bring about Gaming as a hobby to areas of the
+          world in strife to bring about peaceful hobbies in harsh environments. We believe there are new
+          ideas for worlds, stories, and games that people globally haven't experienced from unique cultures
+          and perspectives. Thus AgniSamooh was born.
+          <br />
+          <br />
+          <div className="centre_text"><b>Submit Your Games</b></div>
+          <br />
+          <br />
+          We encourage game developers to contribute by submitting their creations. You can easily share your
+          games by linking your Github repositories, Itch.io pages, or any other repositories or executables. We
+          believe in the power of open collaboration, and your games are a valuable addition to our collection.
+          <br />
+          <br />
+          <div className="centre_text"><b>Play, Share, and Download</b></div>
+          <br />
+          <br />
+          At Agnisamooh.com, you can play, share, and download games from a diverse range of developers. Explore
+          new worlds, discover innovative gameplay, and connect with fellow gamers. It's all about community and a
+          love for gaming.
+          <br />
+          <br />
+          <div className="centre_text"><b>Volunteers Needed</b></div>
+          <br />
+          <br />
+          We are actively seeking volunteers to help maintain and moderate this website. If you're passionate
+          about gaming and want to contribute to our community, consider joining us. Your efforts will play a
+          crucial role in keeping this platform a welcoming and enjoyable space for all. Please reach out to us
+          through the contact information provided on the website if you're interested in volunteering. Together,
+          we can make Agnisamooh.com even better!
+          <br />
+          <br />
         </div>
         <div className="column3"></div>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default Error;
+export default HomePage;
+
 ```
 
-11. Create 2nd test page ContactUs.js
+11. Create 2nd test page /src/components/ContactUs.js and add the below
 ```javascript
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import GoogleMaps from './backend/services/GoogleMaps';
 
 const ContactUs = () => {
   return (
     <div>
-      <Header />
       <div className="row">
         <div className="column1"></div>
         <div className="column2">
@@ -264,7 +304,6 @@ const ContactUs = () => {
         </div>
         <div className="column3"></div>
       </div>
-      <Footer />
     </div>
   );
 };
@@ -272,16 +311,13 @@ const ContactUs = () => {
 export default ContactUs;
 ```
 
-12. Create 3rd test page NotFound.js and add the below
+12. Create 3rd test page /src/components/NotFound.js and add the below
 ```javascript
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 
 const NotFound = () => {
   return (
     <div>
-      <Header />
       <div className="column1"></div>
       <div className="column2">
         <br />
@@ -298,7 +334,6 @@ const NotFound = () => {
         </p>
       </div>
       <div className="column3"></div>
-      <Footer />
     </div>
   );
 };

@@ -3,7 +3,15 @@ ________________________________________________________
                     COMMON COMMANDS
 ________________________________________________________
 
-1. CLEAR NPM CACHE
+1. If cloning React website for first time
+if the /node_modules is missing the dependencies to run the app
+you will first need to cd into folder with file package.json then run the below
+to create the node_modules folder. Then skip to START WEBSITE step
+```bash
+npm install
+```
+
+OPTIONAL - RESET/CLEAR NPM CACHE
 ```bash
 npm cache clean --force
 ```
