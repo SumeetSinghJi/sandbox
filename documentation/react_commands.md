@@ -1,20 +1,51 @@
 ________________________________________________________
 
-                    REACT WORKFLOW
+                    CREATE WEBSITE
 ________________________________________________________
 
-Note: React files use CamelScript naming convention. Capitalise
-the first letter of every word in a class and matching filename
-e.g. HomePage class within HomePage.js
-
-1. SETUP REACT
+1. Install node.js
 ```bash
-npm install react-router-dom, create-react-app
+Windows: winget install Node.js
+MacOS: brew install node
+Linux: apt install node
 ```
 
-2. INITIALISE WEBSITE
+2a. (OPTIONAL) If cloning React website for first time
+if the /node_modules is missing the dependencies to run the app
+you will first need to cd into folder with file package.json then run the below
+to create the node_modules folder. Then skip to START WEBSITE step
+```bash
+npm install
+```
+
+2b. (OPTIONAL) - RESET/CLEAR NPM CACHE
+```bash
+npm cache clean --force
+```
+
+3a. INSTALL LIBS - CWD e.g, ```C:\Users\<YourUsername>\Documents\My-React-Website\node_modules```
+# The recommended approach. You can just use a .gitignore to exclude these files from version control
+# but keep them within this space so it's easier to port across different computers to work from
+# without rebuilding your environment
+```bash
+npm install react-router-dom, create-react-app
+
+```
+3b. INSTALL LIBS - GLOBALLY e.g. ```C:\Users\<YourUsername>\AppData\Roaming\npm\node_modules```
+```bash
+npm install -g react-router-dom, create-react-app
+```
+
+4. RUNNING LIB TO CREATE REACT WEBSITE TEMPLATE
+# This will setup a template react website in current working directory. You can test with npm start within
 ```bash
 create-react-app my-app
+```
+
+5. START WEBSITE FOR TESTING LOCALLY
+# If any errors they will display in webpage, fix before building and try again
+```bash
+npm start
 ```
 
 3. Create assets folder under /src e.g. /my-app/src/assets
@@ -23,9 +54,24 @@ put all your assets here e.g. assets/graphics, videos, documents
 4. Create components folder under /src e.g. /my-app/src/components
 This holds your page includes e.g. footer, header, contactus, etc.,
 
-5. Add your css to /src/App.css
+5. Create a new folder /src/backend to hold all backend code e.g. SubmtiSignUp.js, SubmitLogin.js
 
-6. Edit index.js to the below
+6. Replace /public/favicon.ico with your favicon icon. 
+
+7. Reaplce logo192/512.png's with your logo
+
+8. Create a new API key file /src/config.js and add the below
+```javascript
+const API_POST_SIGNUP_URL = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/agnisamooh-database-connect";
+
+export default API_POST_SIGNUP_URL;
+```
+
+9. Add your css to /src/App.css
+```css
+```
+
+10. Edit index.js to the below
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -43,10 +89,10 @@ root.render(
 reportWebVitals();
 ```
 
-7. Edit your App.js to the below
+11. Edit your App.js to the below
 ```javascript
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage';
@@ -59,41 +105,57 @@ import RefundAndReturnPolicy from './components/RefundAndReturnPolicy';
 import TermsAndConditions from './components/TermsAndConditions';
 import PromotionalContent from './components/PromotionalContent';
 import Unsubscribe from './components/Unsubscribe';
+import Account from './components/Account';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 import NotFound from './components/NotFound';
+import './App.css';
 
 function App() {
+  const location = useLocation();
+  const excludePaths = ['/cart', '/checkout'];
+
+  return (
+    <div className="App">
+      {!excludePaths.includes(location.pathname) && <Header />}
+      <div className="column1"></div>
+      <div className="column2">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/refundandreturnpolicy" element={<RefundAndReturnPolicy />} />
+          <Route path="/termsandconditions" element={<TermsAndConditions />} />
+          <Route path="/promotionalcontent" element={<PromotionalContent />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+      <div className="column3"></div>
+      {!excludePaths.includes(location.pathname) && <Footer />}
+    </div>
+  );
+}
+
+function AppWrapper() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <div className="column1"></div>
-        <div className="column2">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/games" element={<Games />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/contactus" element={<ContactUs />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-            <Route path="/refundandreturnpolicy" element={<RefundAndReturnPolicy />} />
-            <Route path="/termsandconditions" element={<TermsAndConditions />} />
-            <Route path="/promotionalcontent" element={<PromotionalContent />} />
-            <Route path="/unsubscribe" element={<Unsubscribe />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-        <div className="column3"></div>
-        <Footer />
-      </div>
+      <App />
     </Router>
   );
 }
 
-export default App;
+export default AppWrapper;
 
 ```
 
-8. Create 1st component /src/components/Header.js and add the below
+12. Create 1st component /src/components/Header.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -121,7 +183,7 @@ const Header = () => {
 export default Header;
 ```
 
-9. Create 2nd component /src/components/Footer.js and add the below
+13. Create 2nd component /src/components/Footer.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
@@ -171,11 +233,11 @@ const Footer = () => {
 export default Footer;
 ```
 
-10. Create 1st test page /src/components/Homepage.js and add the below
+14. Create 1st test page /src/components/Homepage.js and add the below
 ```javascript
 import React from 'react';
 
-const HomePage = () => {
+const Error = () => {
   return (
     <div>
       <div className="row">
@@ -235,72 +297,29 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Error;
 
 ```
 
-11. Create 2nd test page /src/components/ContactUs.js and add the below
+15. Create 2nd test page /src/components/ContactUs.js and add the below
 ```javascript
 import React from 'react';
-import GoogleMaps from './backend/services/GoogleMaps';
+import SubmitSignUp from './backend/SubmitSignUp';
+import LoginForm from './backend/LoginForm';
 
-const ContactUs = () => {
+const SignUp = () => {
   return (
     <div>
       <div className="row">
         <div className="column1"></div>
         <div className="column2">
-          <h2>Contact us</h2>
-          <br />
-          <h2>CONTACT US FORM</h2>
-          <br />
-          <form id="contactus" action="https://formspree.io/f/xeqbdzpn" method="POST">
-            <label htmlFor="first_name">First name:</label><br />
-            <input type="text" id="first_name" name="first_name" maxLength="20" /><br />
-            <label htmlFor="last_name">Last name:</label><br />
-            <input type="text" id="last_name" name="last_name" maxLength="20" /><br />
-            <label htmlFor="email">Email:</label><br />
-            <input type="text" id="email" name="email" maxLength="20" /><br />
-            <label htmlFor="mobile">Mobile:</label><br />
-            <input type="tel" id="mobile" name="mobile" maxLength="15" /><br />
-            <label htmlFor="subject">Subject</label><br />
-            <input type="text" id="subject" name="subject" maxLength="200" /><br />
-            <label htmlFor="message">Message</label><br />
-            <textarea id="message" name="subject" placeholder="Type your message here..."></textarea>
-            <br />
-            <input type="submit" value="send" />
-            <input type="reset" value="reset" />
-            <div id="submissionConfirmation">Your message has been sent.</div>
-          </form>
+          <h2>Online Services</h2>
+          <h3>Create new account</h3>
+          <SignUpForm />
           <br />
           <br />
-          <h3>Find us below</h3>
-          This is a fictional website learning project open source community website with no fixed location.
-          <br />
-          <br />
-          Address: NSW, 2018, Australia
-          <br />
-          Phone: 0411 111 111
-          <br />
-          Hours of Operations: This is a fictional website learning project.
-          <br />
-          Email: support@agnisamooh.com
-          <br />
-          <br />
-          <GoogleMaps />
-          <br />
-          <br />
-          <br />
-          <h2>Subscribe to Company updates</h2>
-          <form id="contactus" action="https://formspree.io/f/xwkdzqak" method="POST">
-            <label htmlFor="email">Email:</label><br />
-            <input type="text" id="email" name="email" maxLength="20" /><br />
-            <br />
-            <input type="submit" value="send" />
-            <div id="submissionConfirmation">You have signed up successfully.</div>
-          </form>
-          <br />
-          <br />
+          <h3>Login</h3>
+          <LoginForm />
         </div>
         <div className="column3"></div>
       </div>
@@ -308,10 +327,10 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default SignUp;
 ```
 
-12. Create 3rd test page /src/components/NotFound.js and add the below
+16. Create 3rd test page /src/components/NotFound.js and add the below
 ```javascript
 import React from 'react';
 
@@ -323,14 +342,9 @@ const NotFound = () => {
         <br />
         <br />
         <p>
-          <div className="centre_text"><b>ERROR: 404 FILE NOT FOUND</b></div>
-          <br />
-          <br />
-          Error: The page you are looking for does not exist or is mispelt. Please use the search
-          option to type the webpage you are searching for and click search. Similar results will
-          be displayed for your selection.
-          <br />
-          <br />
+          <h2>Page not found</h2>
+          <p>Error 404: The page you are looking for doesn't exist. Use the search bar to navigate elsewhere.</p>
+          <p>Email: kurta.kursi@gmail.com for any questions</p>
         </p>
       </div>
       <div className="column3"></div>
@@ -339,4 +353,134 @@ const NotFound = () => {
 };
 
 export default NotFound;
+```
+
+17. Create a new file /src/components/backend/SignUpForm.js and add the below
+```javascript
+import React, { useState } from 'react';
+import API_POST_SIGNUP_URL from '../../config';
+
+const SignUpForm = () => {
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Sending the registration data to the API endpoint
+        fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error: Backend signup server response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Success: Registered successfully: ", data);
+            alert("Success: Registration successful");
+            // Redirect user to account page if registration successful
+            // window.location.href = "account.html";
+        })
+        .catch(error => {
+            console.error("Error: ", error);
+            alert("Error: Registration failed. Contact support@agnisamooh.com");
+        });
+    };
+
+    const togglePasswordVisibility = (e) => {
+        const input = e.target.previousSibling;
+        input.type = input.type === 'password' ? 'text' : 'password';
+    };
+
+    return (
+        <form id="SignUpForm" onSubmit={handleSubmit}>
+            <label htmlFor="username">Username:</label><br />
+            <input type="text" name="username" value={formData.username} onChange={handleInputChange} maxLength="20" required /><br />
+            <label htmlFor="email">Email:</label><br />
+            <input type="email" name="email" value={formData.email} onChange={handleInputChange} maxLength="50" required /><br />
+            <label htmlFor="password">Password:</label><br />
+            <input type="password" name="password" value={formData.password} onChange={handleInputChange} maxLength="30" required /><br />
+            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
+            <br />
+            <button type="submit">Register</button>
+            <button type="reset">Reset</button>
+        </form>
+    );
+};
+
+export default SignUpForm;
+
+
+```
+
+18. Create a new file /src/components/backend/SubmitLogin.js and add the below
+```javascript
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Your login logic using formData
+    };
+
+    const togglePasswordVisibility = (e) => {
+        const input = e.target.previousSibling;
+        input.type = input.type === 'password' ? 'text' : 'password';
+    };
+
+    return (
+        <form id="loginForm" onSubmit={handleSubmit}>
+            <label htmlFor="email">Email:</label><br />
+            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required /><br />
+            <label htmlFor="password">Password:</label><br />
+            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required /><br />
+            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
+            <br />
+            <button type="submit">Login</button>
+            <button type="reset">Reset</button>
+        </form>
+    );
+};
+
+export default LoginForm;
+```
+
+19. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
+# for hosting e.g, uploading in Godaddy to host website
+```bash
+npm run build
+```
+
+20a. CI/CD/UPLOAD WEBSITE - Using Github actions + AWS S3
+# Create file: .github\workflows\actions.yml and add data below then push repo to upload
+```bash
 ```
