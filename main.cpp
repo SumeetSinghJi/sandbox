@@ -1,5 +1,10 @@
 /**
- * EXAMPLE C++ SDL Multiplayer game
+ * EXAMPLE C++ SDL Multiplayer game.
+ * 
+ * To play just compile and run. It uses a example webserverhost and client model
+ * which simulates sending a vector of serialised data to and from, in which a 
+ * simulated bot and your own player send data to the webserver and your local client
+ * updates the rendering and logic state based on reading the deserialised webserver host data
  */
 
 #include <iostream>
@@ -13,9 +18,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
+#include <boost/asio.hpp> // for online services
 #ifdef _WIN32
 #include <winsock2.h>
-#include <boost/asio.hpp> // for online services
 #else
 #include <arpa/inet.h>
 #include <netinet/in.h>

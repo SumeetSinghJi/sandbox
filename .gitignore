@@ -1,9 +1,9 @@
-# CMAKE Build folders
+# Build folders
 build
 out
-
-# Development folders
-.vs
-
-# react packages
+main.dSYM
 node_modules
+
+# Binaries
+main
+main.exe
