@@ -58,7 +58,7 @@
                 "-lSDL2_image",
                 "-lSDL2_ttf",
                 "-lSDL2_mixer",
-                "-v" // add verbose output
+                // "-v" // add verbose output
             ],
             "options": {
                 "cwd": "${fileDirname}"

@@ -1,8 +1,0 @@
-Starting build...
-clang++ -std=gnu++14 -fcolor-diagnostics -fansi-escape-codes -std=c++17 -stdlib=libc++ -I/opt/homebrew/include -I/Users/sumeetsingh/Documents/sandbox/headers -g /Users/sumeetsingh/Documents/sandbox/main.cpp /Users/sumeetsingh/Documents/sandbox/src/*.cpp -o /Users/sumeetsingh/Documents/sandbox/main -L/opt/homebrew/lib -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-Undefined symbols for architecture arm64:
-  "std::exception_ptr::__from_native_exception_pointer(void*)", referenced from:
-      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-c95e3b.o
-  "___cxa_init_primary_exception", referenced from:
-      std::exception_ptr std::make_exception_ptr[abi:ne180100]<boost::asio::multiple_exceptions>(boost::asio::multiple_exceptions) in main-c95e3b.o
-ld: symbol(s) not found for architecture arm64
