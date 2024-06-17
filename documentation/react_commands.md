@@ -479,8 +479,3 @@ export default LoginForm;
 ```bash
 npm run build
 ```
-
-20a. CI/CD/UPLOAD WEBSITE - Using Github actions + AWS S3
-# Create file: .github\workflows\actions.yml and add data below then push repo to upload
-```bash
-```
