@@ -180,12 +180,6 @@ export default AppWrapper;
 
 ```
 
-___________________________________________________________________________
-
-                          CREATE COMPONENTS
-___________________________________________________________________________
-
-
 14. Create 1st component /src/components/Header.js and add the below
 ```javascript
 import React from 'react';
@@ -436,31 +430,7 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-21. Create 5th page /src/pages/Cart.js and add the below
-```javascript
-import React from 'react';
-
-const NotFound = () => {
-  return (
-    <div>
-      <div className="column1"></div>
-      <div className="column2">
-        <br />
-        <br />
-        <p>
-          <h2>Shopping cart</h2>
-          <p>Add items to cart</p>
-        </p>
-      </div>
-      <div className="column3"></div>
-    </div>
-  );
-};
-
-export default NotFound;
-```
-
-22. Create 5th page /src/pages/Account.js and add the below
+21. Create 6th page /src/pages/Account.js and add the below
 ```javascript
 import React from 'react';
 
@@ -484,7 +454,7 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-21. Create 1st backend /src/components/backend/SignUpForm.js and add the below
+22. Create 1st backend /src/components/backend/SignUpForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 import API_POST_SIGNUP_URL from '../../config';
@@ -558,7 +528,7 @@ export default SignUpForm;
 
 ```
 
-22. Create 2nd backend /src/components/backend/LoginForm.js and add the below
+23. Create 2nd backend /src/components/backend/LoginForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 
@@ -603,7 +573,7 @@ const LoginForm = () => {
 export default LoginForm;
 ```
 
-23. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
+24. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 
@@ -648,7 +618,7 @@ const LoginForm = () => {
 export default LoginForm;
 ```
 
-24. Create 4th backend /src/components/backend/GetAccount.js and add the below
+25. Create 4th backend /src/components/backend/GetAccount.js and add the below
 ```javascript
 const express = require('express');
 const router = express.Router();
@@ -673,11 +643,11 @@ module.exports = router;
 
 ```
 
-25. Create 5th backend /src/components/backend/ReplaceAccountForm.js and add the below
+26. Create 5th backend /src/components/backend/ReplaceAccountDetailsForm.js and add the below
 ```javascript
 ```
 
-26. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
+27. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
 # for hosting e.g, uploading in Godaddy to host website
 ```bash
 npm run build
