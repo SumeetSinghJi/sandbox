@@ -8,6 +8,7 @@ ___________________________________________________________________________
 https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/users/
 attach permissione e.g. the minimum policies needed so that a contractor could upload
 a React website and give all backend permissions to a DB are below;
+```bash
 AmazonAPIGatewayAdministrator
 AmazonRoute53FullAccess
 AmazonS3FullAccess
@@ -15,6 +16,7 @@ AWSCertificateManagerFullAccess
 AWSCloudFormationFullAccess
 AWSLambda_FullAccess
 CloudFrontFullAccess
+```
 
 2. Generate a secret key pair
 
@@ -22,7 +24,7 @@ CloudFrontFullAccess
 
 ___________________________________________________________________________
 
-                            SETUP DOMAIN AND BUCKET
+                  SETUP DOMAIN, BUCKET and UPLOAD TEST WEBPAGE
 ___________________________________________________________________________
 
 1. In AWS Route 53 by a domain name e.g. agnisamooh.com
@@ -34,41 +36,81 @@ e.g, www.agnisamooh.com
 https://us-east-1.console.aws.amazon.com/cloudfront/v4/home?region=us-east-1#/distributions
 
 create a new distribution and add the websites names;
-
+```bash
 Alternate domain names
 agnisamooh.com
 www.agnisamooh.com
+```
 
 3. Under custom SSL certificate choose the cert from AWS certificate manager
+```bash
 Custom SSL certificate
 agnisamooh.com 
+```
 
 5. In Route53 point your CNAME to your cloudfront distribution with default values
 e.g.
-Record name
-www.agnisamooh.com
-Record type
-CNAME
-Value
-d3ju41dm7641hd.cloudfront.net
-Alias
-No
-TTL (seconds)
-300
-Routing policy
-Simple
+```bash
+Record name: www.agnisamooh.com
+Record type: CNAME
+Value: d3ju41dm7641hd.cloudfront.net
+Alias: No
+TTL (seconds): 300
+Routing policy: Simple
+```
 
 6. Create a S3 static hosting butcket. You can use a similar name to your website
 e.g. S3 bucket name "agnisamooh.com"
 with values
+```bash
 Static website hosting: Enabled
 Hosting type: Bucket hosting
 Block all public access: Off
+```
+
+7. Create a test page index.html with code below;
+
+```html
+<!-- WEBSITE UNDER CONSTRUCTION TEMPLATE -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Construction</title>
+    <style>
+
+        body {
+            background-color: gray;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            height: 100vh; /* make the body an single flex box, by assigning it 100% of viewport */
+            justify-content: center; /* allign in centre of row */
+            align-items: center; /*  allign in centre of column */
+        }
+        h1 {
+            font-size: 30;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Under Construction</h1>
+</body>
+</html>
+
+```
+
+8. In AWS S3 bucket upload the single page.
+
+9. Wait 20 minutes then test website is active
+
 
 ___________________________________________________________________________
 
                         UPLOADING WEBSITE
 ___________________________________________________________________________
+
 
 Using CI/CD - to upload React website to S3 static bucket
 
@@ -103,11 +145,3 @@ jobs:
           AWS_REGION: us-east-1
           SOURCE_DIR: './build/'
 ```
-
-
-___________________________________________________________________________
-
-                        LAMbDA API's FOR GET/POST
-___________________________________________________________________________
-
-see ```AWS_Lambda_API_workflow.md```

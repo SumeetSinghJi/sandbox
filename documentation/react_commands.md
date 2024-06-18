@@ -1,6 +1,6 @@
 ___________________________________________________________________________
 
-                    CREATE WEBSITE
+                          INSTALLING REACT
 ___________________________________________________________________________
 
 1. Install node.js
@@ -10,68 +10,93 @@ MacOS: brew install node
 Linux: apt install node
 ```
 
-2a. (OPTIONAL) If cloning React website for first time
-if the /node_modules is missing the dependencies to run the app
-you will first need to cd into folder with file package.json then run the below
-to create the node_modules folder. Then skip to START WEBSITE step
+___________________________________________________________________________
+
+                  OPTIONAL - INSTALL CLONED WEBSITE
+___________________________________________________________________________
+
+1. IF CLONING REACT FOR FIRST TIME
 ```bash
 npm install
 ```
 
-2b. (OPTIONAL) - RESET/CLEAR NPM CACHE
+OPTIONAL - RESET/CLEAR NODE MODULES CACHE IF ERRORS OCCUR DURING INSTALLATION
 ```bash
 npm cache clean --force
 ```
 
-3a. INSTALL LIBS - CWD e.g, ```C:\Users\<YourUsername>\Documents\My-React-Website\node_modules```
-# The recommended approach. You can just use a .gitignore to exclude these files from version control
-# but keep them within this space so it's easier to port across different computers to work from
-# without rebuilding your environment
-```bash
-npm install react-router-dom, create-react-app
+___________________________________________________________________________
 
-```
-3b. INSTALL LIBS - GLOBALLY e.g. ```C:\Users\<YourUsername>\AppData\Roaming\npm\node_modules```
-```bash
-npm install -g react-router-dom, create-react-app
-```
+                          CREATE WEBSITE
+___________________________________________________________________________
 
-4. RUNNING LIB TO CREATE REACT WEBSITE TEMPLATE
-# This will setup a template react website in current working directory. You can test with npm start within
+
+1. Change to parent directory to host website project directory
 ```bash
-create-react-app my-app
+cd c:\users\sumeetsingh\Documents ; #windows
+cd /Users/sumeetsingh/Documents ; #macos
 ```
 
-5. START WEBSITE FOR TESTING LOCALLY
-# If any errors they will display in webpage, fix before building and try again
+2. Install create-react-app globally. Recommended as it will hold all other libs
+```bash
+npm install -g create-react-app
+```
+
+3. CREATE REACT WEBSITE TEMPLATE
+# will initialise git, create .gitignore configured to ignore node_modules. Ready to commit
+```bash
+create-react-app sumeet-singh.com
+```
+
+4. MOVE INTO PROJECT
+```bash
+cd sumeet-singh.com
+```
+
+5. INSTALL LIBS IN PROJECT DIRECTORY
+# Example on Windows: C:\Users\<YourUsername>\Documents\sumeet-singh.com\node_modules
+# Example on MacOS: /Users\<YourUsername>\Documents\sumeet-singh.com\node_modules
+```bash
+npm install react-router-dom
+```
+
+6. START WEBSITE FOR TESTING LOCALLY
 ```bash
 npm start
 ```
 
-3. Create assets folder under /src e.g. /my-app/src/assets
-put all your assets here e.g. assets/graphics, videos, documents
-
-4. Create components folder under /src e.g. /my-app/src/components
-This holds your page includes e.g. footer, header, contactus, etc.,
-
-5. Create a new folder /src/backend to hold all backend code e.g. SubmtiSignUp.js, SubmitLogin.js
-
-6. Replace /public/favicon.ico with your favicon icon. 
-
-7. Reaplce logo192/512.png's with your logo
-
-8. Create a new API key file /src/config.js and add the below
-```javascript
-const API_POST_SIGNUP_URL = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/agnisamooh-database-connect";
-
-export default API_POST_SIGNUP_URL;
+7. CD TO SRC
+```bash
+cd src
 ```
 
-9. Add your css to /src/App.css
+8. Create all folders
+```bash
+mkdir assets # for assets e.g. graphics, sounds, images, videos to display on webpage
+mkdir assets/graphics
+mkdir assets/graphics/icons
+mkdir assets/sounds
+mkdir pages # for pages e.g. homepage.js, contactus.js, news.js
+mkdir components # for reusable assets e.g. header.js, footer.js
+mkdir backend # for backend code e.g. SubmtiSignUp.js, SubmitLogin.js
+```
+
+9. REPLACE DEFAULT FAVICON
+```bash
+cp path_to_your_favicon.ico /public/favicon.ico
+```
+
+10. GENERATE AND ADD API TO NEW FILE
+# e.g. Follow ```AWS_Lambda_commands.md``` to create an API then replace below command with key
+```bash
+echo 'const API_POST_SIGNUP_URL = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/agnisamooh-database-connect"; export default API_POST_SIGNUP_URL;' > config.js
+```
+
+11. REPLACE DEFAULT CSS /src/App.css
 ```css
 ```
 
-10. Edit index.js to the below
+12. Edit index.js to the below
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -89,7 +114,7 @@ root.render(
 reportWebVitals();
 ```
 
-11. Edit your App.js to the below
+13. Edit your App.js to the below
 ```javascript
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
@@ -155,7 +180,13 @@ export default AppWrapper;
 
 ```
 
-12. Create 1st component /src/components/Header.js and add the below
+___________________________________________________________________________
+
+                          CREATE COMPONENTS
+___________________________________________________________________________
+
+
+14. Create 1st component /src/components/Header.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -170,11 +201,11 @@ const Header = () => {
       <h2>AgniSamooh</h2>
       <ul>
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/games">Games</Link></li>
         <li><Link to="/news">News</Link></li>
+        <li><Link to="/downloads">downloads</Link></li>
         <li><Link to="/contactus">Contact us</Link></li>
         <li><Link to="/cart"><i className="fa-solid fa-cart-shopping fa-xl"></i></Link></li>
-        <li><Link to="/signup"><i className="fa-solid fa-user fa-xl"></i></Link></li>
+        <li><Link to="/account"><i className="fa-solid fa-user fa-xl"></i></Link></li>
       </ul>
     </div>
   );
@@ -183,7 +214,7 @@ const Header = () => {
 export default Header;
 ```
 
-13. Create 2nd component /src/components/Footer.js and add the below
+15. Create 2nd component /src/components/Footer.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
@@ -233,7 +264,7 @@ const Footer = () => {
 export default Footer;
 ```
 
-14. Create 1st test page /src/components/Homepage.js and add the below
+16. Create 1st page /src/pages/Homepage.js and add the below
 ```javascript
 import React from 'react';
 
@@ -301,7 +332,57 @@ export default Error;
 
 ```
 
-15. Create 2nd test page /src/components/ContactUs.js and add the below
+17. Create 2nd page /src/pages/News.js and add the below
+```javascript
+import React from 'react';
+
+const NotFound = () => {
+  return (
+    <div>
+      <div className="column1"></div>
+      <div className="column2">
+        <br />
+        <br />
+        <p>
+          <h2>Page not found</h2>
+          <p>Error 404: The page you are looking for doesn't exist. Use the search bar to navigate elsewhere.</p>
+          <p>Email: kurta.kursi@gmail.com for any questions</p>
+        </p>
+      </div>
+      <div className="column3"></div>
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+18. Create 3rd page /src/pages/Downloads.js and add the below
+```javascript
+import React from 'react';
+
+const NotFound = () => {
+  return (
+    <div>
+      <div className="column1"></div>
+      <div className="column2">
+        <br />
+        <br />
+        <p>
+          <h2>Page not found</h2>
+          <p>Error 404: The page you are looking for doesn't exist. Use the search bar to navigate elsewhere.</p>
+          <p>Email: kurta.kursi@gmail.com for any questions</p>
+        </p>
+      </div>
+      <div className="column3"></div>
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+19. Create 4th page /src/pages/ContactUs.js and add the below
 ```javascript
 import React from 'react';
 import SubmitSignUp from './backend/SubmitSignUp';
@@ -330,7 +411,7 @@ const SignUp = () => {
 export default SignUp;
 ```
 
-16. Create 3rd test page /src/components/NotFound.js and add the below
+20. Create 5th page /src/pages/NotFound.js and add the below
 ```javascript
 import React from 'react';
 
@@ -355,7 +436,55 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-17. Create a new file /src/components/backend/SignUpForm.js and add the below
+21. Create 5th page /src/pages/Cart.js and add the below
+```javascript
+import React from 'react';
+
+const NotFound = () => {
+  return (
+    <div>
+      <div className="column1"></div>
+      <div className="column2">
+        <br />
+        <br />
+        <p>
+          <h2>Shopping cart</h2>
+          <p>Add items to cart</p>
+        </p>
+      </div>
+      <div className="column3"></div>
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+22. Create 5th page /src/pages/Account.js and add the below
+```javascript
+import React from 'react';
+
+const NotFound = () => {
+  return (
+    <div>
+      <div className="column1"></div>
+      <div className="column2">
+        <br />
+        <br />
+        <p>
+          <h2>Account</h2>
+          <p>Account details</p>
+        </p>
+      </div>
+      <div className="column3"></div>
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+21. Create 1st backend /src/components/backend/SignUpForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 import API_POST_SIGNUP_URL from '../../config';
@@ -429,7 +558,7 @@ export default SignUpForm;
 
 ```
 
-18. Create a new file /src/components/backend/SubmitLogin.js and add the below
+22. Create 2nd backend /src/components/backend/LoginForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 
@@ -474,7 +603,81 @@ const LoginForm = () => {
 export default LoginForm;
 ```
 
-19. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
+23. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
+```javascript
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Your login logic using formData
+    };
+
+    const togglePasswordVisibility = (e) => {
+        const input = e.target.previousSibling;
+        input.type = input.type === 'password' ? 'text' : 'password';
+    };
+
+    return (
+        <form id="loginForm" onSubmit={handleSubmit}>
+            <label htmlFor="email">Email:</label><br />
+            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required /><br />
+            <label htmlFor="password">Password:</label><br />
+            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required /><br />
+            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
+            <br />
+            <button type="submit">Login</button>
+            <button type="reset">Reset</button>
+        </form>
+    );
+};
+
+export default LoginForm;
+```
+
+24. Create 4th backend /src/components/backend/GetAccount.js and add the below
+```javascript
+const express = require('express');
+const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
+const User = require('../models/User'); // Assuming you have a User model
+
+// GET /api/user/profile
+router.get('/profile', authMiddleware, async (req, res) => {
+    try {
+        // Fetch user details based on authenticated user (from JWT)
+        const user = await User.findById(req.user.id).select('-password'); // Excluding password field
+        if (!user) {
+            throw new Error('User not found');
+        }
+        res.json(user);
+    } catch (err) {
+        res.status(404).json({ error: err.message });
+    }
+});
+
+module.exports = router;
+
+```
+
+25. Create 5th backend /src/components/backend/ReplaceAccountForm.js and add the below
+```javascript
+```
+
+26. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
 # for hosting e.g, uploading in Godaddy to host website
 ```bash
 npm run build

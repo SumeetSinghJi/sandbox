@@ -5,6 +5,13 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 
+OPTIONAL - Zsh shell only - enable inline comments with setopt
+```bash
+testusr@ubuntu Documents % setopt interactive_comments
+testusr@ubuntu Documents % echo test # test
+test
+```
+
 1. ADMINS
 ```bash
 su
@@ -46,7 +53,7 @@ sudo snap remove firefox
 
 ___________________________________________________________________________
 
-                        SHELL SETUP
+                        SHELL STARTUP SCRIPT
 ___________________________________________________________________________
 
 Your startup scripts, environmental variables, alias and more are documented
@@ -57,12 +64,23 @@ edit 1 to include the envionmental variable as per below steps, and remove any o
 form the other shell scripts
 for MacOS add the path only to: ~/.zshrc
 
-EXAMPLE
+
+1. Open your shells startup script
+```bash
+open -e ~/.zshrc # MacOS only? Please confirm this also works on Ubuntu or not
+# or
+nano ~/.zshrc
+```
+
+2. Add your startup code
 
 ```bash
 sumeetsingh@Sumeets-Air-2 sandbox % cat ~/.zshrc   
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/opt/homebrew/Cellar/ruby/3.3.2/bin:$PATH" # brew install ruby
+
+# ZSH SHELL ONLY
+setopt interactive_comments # enables inline CLI comments in zsh with # e.g. % echo test # test comment
 
 runlolcat() {
     local cmd="$1"
@@ -78,15 +96,6 @@ alias tail='runlolcat tail'
 alias head='runlolcat head'
 ```
 
-1. OPEN IN TEXT EDITOR
-```bash
-open -e ~/.zshrc
-```
-
-2. ADD ENVIRONMENTAL VARIABLE
-```bash
-export PATH="/opt/homebrew/Cellar/ruby/3.3.2/bin:$PATH"
-```
 
 ___________________________________________________________________________
 
@@ -110,6 +119,22 @@ ___________________________________________________________________________
 
                     COMMON COMMANDS
 ___________________________________________________________________________
+
+COMMENTS
+Zsh shell only - enable inline comments with setopt
+```bash
+testusr@ubuntu Documents % setopt interactive_comments
+testusr@ubuntu Documents % echo test # test
+test
+```
+1) in shell script use #
+```bash
+cd c:\users\sumeetsingh\Documents #windows
+```
+2) in CLI use line break ; followed by comment next line
+```bash
+cd c:\users\sumeetsingh\Documents ; #windows
+```
 
 SEARCH
 ```bash
