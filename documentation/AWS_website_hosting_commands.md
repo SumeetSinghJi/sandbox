@@ -27,48 +27,39 @@ ___________________________________________________________________________
                   SETUP DOMAIN, BUCKET and UPLOAD TEST WEBPAGE
 ___________________________________________________________________________
 
-1. In AWS Route 53 by a domain name e.g. agnisamooh.com
 
-2. In AWS Certificate Manager create a new SSL certificate and assign it to the website
-e.g, www.agnisamooh.com
 
-2. In your region, click on aws service "cloudfront" e.g.
-https://us-east-1.console.aws.amazon.com/cloudfront/v4/home?region=us-east-1#/distributions
-
-create a new distribution and add the websites names;
+1. Buy a domain name in AWS Route 53
+URL: https://us-east-1.console.aws.amazon.com/route53/domains/home
+# e.g. 
 ```bash
-Alternate domain names
-agnisamooh.com
-www.agnisamooh.com
+sumeet-singh.com
 ```
 
-3. Under custom SSL certificate choose the cert from AWS certificate manager
+2. Choose a region for your website
+URL: https://ap-southeast-2.console.aws.amazon.com/s3/home?region=ap-southeast-2  
+# e.g. Sydney
 ```bash
-Custom SSL certificate
-agnisamooh.com 
+ap-southeast-2
 ```
 
-5. In Route53 point your CNAME to your cloudfront distribution with default values
-e.g.
+3. In AWS Certificate Manager request certificate - Must use us-east-1 (Virginia) ONLY, Cloudfront only uses North America SSL's
+URL: https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/list
 ```bash
-Record name: www.agnisamooh.com
-Record type: CNAME
-Value: d3ju41dm7641hd.cloudfront.net
-Alias: No
-TTL (seconds): 300
-Routing policy: Simple
+
+1. Request certificate
+2. Amazon issued public SSL certificate
+3. Enter FQDN e.g, sumeet-singh.com
+Click add another domain name and enter the www version e.g. www.sumeet-singh.com
+4. Default DNS validation
+5. Default Key Algorithm RSA 2048
+6. Go to list certificates and click on the new certificate
+7. Click "create records in Route 53" - NOTE: Ensure there are no existing CNAME records in that domain
+for existing accounts. If present delete all CNAME records in Route53 before clicking to add these new records
+8. Wait until certificates say success/validated/verified
 ```
 
-6. Create a S3 static hosting butcket. You can use a similar name to your website
-e.g. S3 bucket name "agnisamooh.com"
-with values
-```bash
-Static website hosting: Enabled
-Hosting type: Bucket hosting
-Block all public access: Off
-```
-
-7. Create a test page index.html with code below;
+4. Create a test page index.html with code below;
 
 ```html
 <!-- WEBSITE UNDER CONSTRUCTION TEMPLATE -->
@@ -101,14 +92,66 @@ Block all public access: Off
 
 ```
 
-8. In AWS S3 bucket upload the single page.
+5. In AWS Service S3 Create a bucket
+URL: https://ap-southeast-2.console.aws.amazon.com/s3/home?region=ap-southeast-2
+```bash
+1. Click Create bucket
+2. Add values below
+Bucket name = sumeet-singh.com
+Block Public access settings for this bucket - Uncheck
+Check warning confirmation bucket will be public
+In bucket policy enter code below
 
-9. Wait 20 minutes then test website is active
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadForGetBucketObjects",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::sumeet-singh.com/*"
+        }
+    ]
+}
+Then click create bucket
+3. Click on bucket https://ap-southeast-2.console.aws.amazon.com/s3/buckets/sumeet-singh.com?region=ap-southeast-2&bucketType=general&tab=objects 
+4. Under properties scroll down to Static website hosting - click edit - enable
+index document index.html
+Then click save
+5. Under Objects - click upload - add files - select the index.html - then click upload
+```
+
+6. In service AWS Cloudfront create a new distribution
+URL: https://us-east-1.console.aws.amazon.com/cloudfront 
+# IMPORTANT: only AWS Certificate's made in us-east-1 can be used
+```bash
+1. Create distribution
+2. In choose origin domain select the new bucket sumeet-singh.com.s3 - then click use website endpoint - then repeat until confirmed
+3. Allowed HTTP methods = The last option GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE - which will allow API usage
+4. For cost saving method select Do not enable AWS WAF
+5. In Custom SSL certificate select your cert e.g, sumeet-singh.com 
+6. Click create distribution
+7. Make note of the Distrbution domain name e.g, https://d3hvilctvbbd7e.cloudfront.net
+```
+
+8. In Route53 point your CNAME to your cloudfront distribution with default values
+e.g.
+```bash
+Record name: www.sumeet-singh.com
+Record type: CNAME
+Value: https://d3hvilctvbbd7e.cloudfront.net
+Alias: No
+TTL (seconds): 300
+Routing policy: Simple
+```
+
+9. Now you need to wait up to 7 days so Google finds it. Then test your website www.sumeet-singh.com
 
 
 ___________________________________________________________________________
 
-                        UPLOADING WEBSITE
+                        UPLOADING REACT WEBSITE
 ___________________________________________________________________________
 
 
@@ -145,3 +188,4 @@ jobs:
           AWS_REGION: us-east-1
           SOURCE_DIR: './build/'
 ```
+
