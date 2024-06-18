@@ -128,11 +128,12 @@ URL: https://us-east-1.console.aws.amazon.com/cloudfront
 ```bash
 1. Create distribution
 2. In choose origin domain select the new bucket sumeet-singh.com.s3 - then click use website endpoint - then repeat until confirmed
-3. Allowed HTTP methods = The last option GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE - which will allow API usage
-4. For cost saving method select Do not enable AWS WAF
-5. In Custom SSL certificate select your cert e.g, sumeet-singh.com 
-6. Click create distribution
-7. Make note of the Distrbution domain name e.g, https://d3hvilctvbbd7e.cloudfront.net
+3. Add alternate domain name: sumeet-singh.com, and the www record www.sumeet-singh.com
+4. Allowed HTTP methods = The last option GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE - which will allow API usage
+5. For cost saving method select Do not enable AWS WAF
+6. In Custom SSL certificate select your cert e.g, sumeet-singh.com 
+7. Click create distribution
+8. Make note of the Distrbution domain name e.g, https://d3hvilctvbbd7e.cloudfront.net
 ```
 
 8. In Route53 point your CNAME to your cloudfront distribution with default values
@@ -146,8 +147,19 @@ TTL (seconds): 300
 Routing policy: Simple
 ```
 
-9. Now you need to wait up to 7 days so Google finds it. Then test your website www.sumeet-singh.com
+9. In Route53 create a A record using the wizard to a endpoint distribution pointing to the
+Cloudfront distribution
+```bash
+1. click create record
+2. Click record wizard - simple record
+3. Choose select a endpoint - cloudfront distribution
+4. In distribution select the previous cloudfront distribution
+5. Save record
+```
 
+10. Now test website should be instantly available as its an AWS resource/nameserver e.g, www.sumeet-singh.com
+Note: If website doesn't appear you can diagnose by entering the domain name here: https://mxtoolbox.com/
+and seeing what the A record points to
 
 ___________________________________________________________________________
 
