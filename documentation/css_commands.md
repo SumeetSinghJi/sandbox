@@ -15,70 +15,115 @@ Uses a HTML structure as below
 <footer>
 </div>
 */
-
-body html #root{
-  font-family: Arial, sans-serif; /* if Arial isn't available on browser, use next font*/
-  display: flex; /*make the body all flex*/
-  padding: 0;
+/* Reset and basic styles */
+body, html, #root {
+  font-family: Arial, sans-serif; /* Fallback font */
   margin: 0;
+  padding: 0;
   height: 100%;
-  box-sizing: border-box
+  box-sizing: border-box; /* Ensures padding and border are included in total width/height */
 }
+
+/* Wrapper for entire layout */
 .wrapper {
-  display: flex; /* Wraps children in flex e.g,  <div className="wrapper"><header><footer><main></wrapper>*/
-  flex-direction: column; /* Stacks the children of the .wrapper (header, main, and footer) vertically. */
-  min-height: 100vh;
-}
-header {
   display: flex;
-  justify-content: space-between; /* makes logo on left, and nav links on right */
-  align-items: center; /* elements e.g. logo are vertically centered in header */
-  padding: 1rem; /* scale the padding to font-size. If browser font size is increased by user
-  then the padding will grow. So for bad eyesight people increasing browser font, spaces everything out. padding in this case means the distance from the elements to the edges of the header */
-}
-header .logo {
-    width: 100px;
-    height: auto; /* Maintain aspect ratio */
+  flex-direction: column; /* Stacks header, main content, and footer vertically */
+  min-height: 100vh; /* Ensures wrapper spans the full viewport height */
 }
 
-header nav{
+/* Header styles */
+.header {
   display: flex;
-  gap: 1rem; /* Whereas padding defines the distances between the element and the outer edge, gap
-  is specific to flex that defines the gap between flex objects */
+  justify-content: space-between; /* Space between logo and nav links */
+  align-items: center; /* Center items vertically */
+  padding: 1rem; /* Padding around header content */
+  background-color: #f8f9fa; /* Background color for header */
 }
-header nav a{
-  text-decoration: none; /* remove default underline that browsers add to html links */
+
+.header a {
+  text-decoration: none; /* Remove underline from links */
+  color: black; /* Set link color */
 }
-header nav a:hover{
-  text-decoration: underline; /* hovering over link adds underline */
+
+.header a:hover {
+  text-decoration: underline; /* Add underline on hover */
 }
-main {
+
+.header img {
+  width: 100px; /* Fixed width for logo */
+  height: 100px; /* Fixed height for logo */
+}
+
+/* Navigation links styles specific to header */
+.header .nav-links {
+  display: flex; /* Align links horizontally */
+  list-style: none; /* Remove default list styles */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.header .nav-links li {
+  margin: 0 1rem; /* Space between each link */
+}
+
+.header .nav-links li a {
+  text-decoration: none; /* Remove underline from links */
+  color: black; /* Set link color */
+}
+
+.header .nav-links li a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+/* Main content area */
+.main {
   display: flex;
-  padding: 2rem;
-  background-color: #f5f5f5;
+  justify-content: space-between; /* Evenly distributes columns */
+  align-items: flex-start; /* Aligns columns at the top */
+  padding: 2rem; /* Provides padding around main content */
 }
-footer {
+
+.column1,
+.column3 {
+  flex: 0 0 calc((100% - 4rem) * 0.15); /* 15% width, fixed */
+  padding: 1rem; /* Provides padding inside each column */
+}
+
+.column2 {
+  flex: 0 0 calc((100% - 4rem) * 0.7); /* 70% width, fixed */
+  padding: 1rem; /* Provides padding inside column2 */
+}
+
+/* Footer styles */
+.footer {
   display: flex;
-  justify-content: space-around;
-  padding: 1rem;
+  justify-content: space-between; /* Evenly distributes footer columns */
+  padding: 1rem; /* Provides padding around footer content */
+  background-color: antiquewhite;
 }
 
-footer .column {
-  flex: 1;
-  padding: 0 1rem;
+.footer a {
+  text-decoration: none; /* Remove underline from links */
+  color: black; /* Set link color */
 }
 
-footer .column h4 {
-    margin-top: 0;
+.footer .footercolumn {
+  flex: 1; /* Each footer column takes equal space */
+  padding: 0 1rem; /* Provides padding inside each footer column */
 }
 
-footer .column p, footer .column ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.footer .footercolumn h4 {
+  margin-top: 0; /* Removes margin on top of heading */
 }
 
-footer .column ul li {
-    margin: 0.5rem 0;
+.footer .footercolumn ul,
+.footer .footercolumn p {
+  margin: 0;
+  padding: 0;
+  list-style: none; /* Removes default list styles */
+}
+
+.footer .footercolumn ul li {
+  margin: 0.5rem 0; /* Provides margin between list items */
 }
 ```
