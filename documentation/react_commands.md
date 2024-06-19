@@ -91,17 +91,15 @@ sed -i "" '4d' ./index.js
 sed -i "" '12,15d' ./index.js
 ```
 
-6. START WEBSITE FOR TESTING LOCALLY
-```bash
-npm start
-```
+7. CHANGE TITLE
+change the <title> tag in /public/index.html to the websites name e.g. <title>Sumeet Singh</title>
 
-7. CD TO SRC
+8. CD TO SRC
 ```bash
 cd src
 ```
 
-8. Create all folders
+9. Create all folders
 ```bash
 mkdir assets # for assets e.g. graphics, sounds, images, videos to display on webpage
 mkdir assets/graphics
@@ -113,13 +111,13 @@ mkdir components # for reusable assets e.g. header.js, footer.js
 mkdir components/backend # for backend code e.g. SubmtiSignUp.js, SubmitLogin.js
 ```
 
-9. ADD FAVICON AND LOGO
+10. ADD FAVICON AND LOGO
 ```bash
 cp path_to_your/favicon.ico /public/favicon.ico
 cp path_to_your/logo.png /src/assets/graphics/logos/logo.png
 ```
 
-10. GENERATE AND ADD API TO NEW FILE
+11. GENERATE AND ADD API TO NEW FILE
 e.g. Follow ```AWS_Lambda_commands.md``` to create API's for GET/POSTing account details then replace below default API keys
 ```bash
 echo '
@@ -138,7 +136,7 @@ export const API_GET_ACCOUNTDETAILS = "https://v4a9f9qoml.execute-api.ap-southea
 ' > config.js
 ```
 
-11. REPLACE DEFAULT CSS /src/App.css
+12. REPLACE DEFAULT CSS /src/App.css
 ```css
 /* 
 The example CSS below is for a flex website for more information on how to
@@ -264,7 +262,7 @@ body, html, #root {
 }
 ```
 
-12. Edit your App.js to the below
+13. Edit your App.js to the below
 ```javascript
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -314,7 +312,7 @@ function AppWrapper() {
 export default AppWrapper;
 ```
 
-13. Create 1st component /src/components/Header.js and add the below
+14. Create 1st component /src/components/Header.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -340,7 +338,7 @@ const Header = () => {
 export default Header;
 ```
 
-14. Create 2nd component /src/components/Footer.js and add the below
+15. Create 2nd component /src/components/Footer.js and add the below
 ```javascript
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -374,7 +372,7 @@ const Footer = () => {
 export default Footer;
 ```
 
-15. Create 1st page /src/pages/Homepage.js and add the below
+16. Create 1st page /src/pages/Homepage.js and add the below
 ```javascript
 import React from 'react';
 import image1 from '../assets/graphics/me.jpeg';
@@ -410,7 +408,7 @@ export default Homepage;
 
 ```
 
-16. Create 2nd page /src/pages/News.js and add the below
+17. Create 2nd page /src/pages/News.js and add the below
 ```javascript
 import React from 'react';
 
@@ -443,7 +441,7 @@ export default News;
 
 ```
 
-17. Create 3rd page /src/pages/Biography.js and add the below
+18. Create 3rd page /src/pages/Biography.js and add the below
 ```javascript
 import React from 'react';
 import image1 from '../assets/graphics/biography-1.png';
@@ -487,7 +485,7 @@ const Biography = () => {
 export default Biography;
 ```
 
-18. Create 4th page /src/pages/ContactUs.js and add the below
+19. Create 4th page /src/pages/ContactUs.js and add the below
 ```javascript
 import React from 'react';
 import ContactUsForm from '../components/backend/ContactUsForm';
@@ -524,7 +522,7 @@ const ContactUs = () => {
 export default ContactUs;
 ```
 
-19. Create 6th page /src/pages/NotFound.js and add the below
+20. Create 6th page /src/pages/NotFound.js and add the below
 ```javascript
 import React from 'react';
 
@@ -555,7 +553,7 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-20. Create 5th page /src/pages/SignUp.js and add the below
+21. Create 5th page /src/pages/SignUp.js and add the below
 ```javascript
 import React from 'react';
 import SubmitSignUp from './backend/SubmitSignUp';
@@ -584,7 +582,7 @@ const SignUp = () => {
 export default SignUp;
 ```
 
-21. Create 7th page /src/pages/Account.js and add the below
+22. Create 7th page /src/pages/Account.js and add the below
 ```javascript
 import React from 'react';
 
@@ -608,7 +606,7 @@ const Account = () => {
 export default Account;
 ```
 
-22. Create 1st backend /src/components/backend/SignUpForm.js and add the below
+23. Create 1st backend /src/components/backend/SignUpForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 import API_POST_SIGNUP_URL from '../../config';
@@ -682,7 +680,7 @@ export default SignUpForm;
 
 ```
 
-23. Create 2nd backend /src/components/backend/LoginForm.js and add the below
+24. Create 2nd backend /src/components/backend/LoginForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
 
@@ -727,7 +725,7 @@ const LoginForm = () => {
 export default LoginForm;
 ```
 
-24. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
+25. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
 Note: the below code uses formspree.com free API, however it's limited to only 2 fields
 email and message. So if you copy the below change to your liking and replace the API key
 ```javascript
@@ -855,7 +853,7 @@ export default ContactUsForm;
 
 ```
 
-25. Create 4th backend /src/components/backend/GetAccountDetails.js and add the below
+26. Create 4th backend /src/components/backend/GetAccountDetails.js and add the below
 ```javascript
 const express = require('express');
 const router = express.Router();
@@ -880,18 +878,23 @@ module.exports = router;
 
 ```
 
-26. Create 5th backend /src/components/backend/ReplaceAccountDetailsForm.js and add the below
+27. Create 5th backend /src/components/backend/ReplaceAccountDetailsForm.js and add the below
 ```javascript
 ```
 
-27. In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
+28. In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
 the build folder contents
 
-28. CONVERT REACT WEBSITE TO STATIC PAGES IN ./build
+29. CONVERT REACT WEBSITE TO STATIC PAGES IN ./build
 for hosting e.g, uploading in Godaddy to host website
 ```bash
 npm run build
 ```
 
-29. UPLOAD WEBSITE
+30. START WEBSITE FOR TESTING LOCALLY
+```bash
+npm start
+```
+
+31. UPLOAD WEBSITE
 Follow ```AWS_website_hosting_workflow.md```
