@@ -113,27 +113,30 @@ URL: https://us-east-1.console.aws.amazon.com/cloudfront
 8. In Route53 point your CNAME to your cloudfront distribution with default values
 e.g.
 ```bash
-Record name: www.sumeet-singh.com
+Create the first record
+Record name: www
 Record type: CNAME
-Value: https://d3hvilctvbbd7e.cloudfront.net
+Value: d3hvilctvbbd7e.cloudfront.net
 Alias: No
 TTL (seconds): 300
 Routing policy: Simple
-```
 
-9. In Route53 create a A record using the wizard to a endpoint distribution pointing to the
-Cloudfront distribution
-```bash
+Now create another record
 1. click create record
 2. Click record wizard - simple record
 3. Choose select a endpoint - cloudfront distribution
 4. In distribution select the previous cloudfront distribution
 5. Save record
 ```
+You should have the following records
+Recrord - URL - value
+A - sumeet.singh.com - d3hvilctvbbd7e.cloudfront.net
+CNAME - www.sumeet-singh.com - d3hvilctvbbd7e.cloudfront.net
 
-10. Now test website should be instantly available as its an AWS resource/nameserver e.g, www.sumeet-singh.com
-Note: If website doesn't appear you can diagnose by entering the domain name here: https://mxtoolbox.com/
-and seeing what the A record points to
+10. Now test website from both URL's
+sumeet-singh.com
+www.sumeet-singh.com
+If any failures diagnose with mxtoolbox.com by searching the relevant error domain and fixing errors
 
 
 ___________________________________________________________________________
