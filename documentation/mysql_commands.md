@@ -4,24 +4,135 @@ ________________________________________________________________________________
                             CREATE DATABASE
 ______________________________________________________________________________________________
 
+MacOS
+OPTIONAL - check brew already installed and if so start
+1. brew services
+2. brew services start mysql
+IF BREW NOT INSTALLED
+1. brew install mysql
+2. brew services start mysql
+OPTIONAL - to find the database directory on host
+1. mysql -u root -e "SHOW VARIABLES LIKE 'datadir';"\n
 
-1. CREATE MYSQL DATABASE - THROUGH AWS RDS
+
+AWS RDS
+1. Go to AWS RDS REGION
 https://ap-southeast-2.console.aws.amazon.com/rds/home?region=ap-southeast-2
-
+2. Click "Create database "- mysql - set password - use security group with settings
+Incomming
+Port 22 SSH open for incomming
+Outgoing
 
 ______________________________________________________________________________________________
 
-                            REMOTE CONNECTION
+                            CONNECT TO DATABASE - CLI
 ______________________________________________________________________________________________
 
+MacOS
+```bash
+mysql -u root
+```
 
-1. CONNECT THROUGH CLI (AWS RDS)
+AWS RDS
 ```bash
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
 
+______________________________________________________________________________________________
 
-2. CONNECT THROUGH JAVASCRIPT (DO NOT LEAVE PUBLICALLY FOR TESTING ONLY)
+                            CONNECT TO DATABASE - JAVASCRIPT
+______________________________________________________________________________________________
+
+
+JAVASCRIPT API/LAMBDA - LOCAL DB's
+
+1. Create a login form e.g. LoginForm.js for React below
+```javascript
+```
+
+2. Create a backend node.js lambda
+```javascript
+```
+
+4. Create a a new test user in the MySQL DB following common commands with details below
+username: testuser
+password: Testuser$
+
+
+
+JAVASCRIPT API/LAMBDA - REMOTE DB's (e.g, AWS RDS)
+
+1. Create a login form e.g. LoginForm.js for React below
+
+```javascript
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
+
+function LoginForm() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory(); // Initialize useHistory hook
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('https://ln0w2lsuuc.execute-api.us-east-1.amazonaws.com/$default/login', {
+        username,
+        password,
+      });
+      const token = response.data.token; // Retrieve the JWT token from localStorage
+      localStorage.setItem('authToken', token); // Store the token in localStorage
+      setFormSubmitted(true);
+      setErrorMessage('');  // Clear any previous error messages
+      // Redirect to Account page
+      history.push('/account');
+    } catch (error) {
+      console.error('Login failed', error);
+      setErrorMessage('Login failed. Please check your username and password and try again.');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <div>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button type="button" onClick={togglePasswordVisibility}>
+          {showPassword ? 'Hide' : 'Show'}
+        </button>
+      </div>
+      <button type="submit">Login</button>
+      {formSubmitted && <p className="success-message">Login successful!</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </form>
+  );
+}
+
+export default LoginForm;
+
+```
+
+
+2. Create a backend node.js lambda with permissions below to hold the DB details
+which are hidden to clients. Remember to click "file save" and "deploy"
 ```javascript
 const connection = await mysql.createConnection({
     host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
@@ -31,17 +142,26 @@ const connection = await mysql.createConnection({
 });
 ```
 
+3. in AWS API create a new API with details below
+
+4. Create a a new test user in the MySQL DB following common commands with details below
+username: testuser
+password: Testuser$
+
+5. Test to connect from the Lambda online. Click on the function name in AWS Lambda.
+Click on Test. Enter the below
+{
+    username: testuser
+    password: Testuser$
+}
+
+6. In code tab - in expected results - observe if success
+
 
 ______________________________________________________________________________________________
 
-                            MySQL COMMANDS
+                            COMMON COMMANDS
 ______________________________________________________________________________________________
-
-LOGIN
-1A. LOGIN AWS RDS:
-```bash
-mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
-```
 
 2. FIND ALL MYSQL USERS (Must be logged in as root)
 ```bash

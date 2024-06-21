@@ -30,13 +30,14 @@ ___________________________________________________________________________
                           CREATE WEBSITE
 ___________________________________________________________________________
 
-The steps below will create a website with 
+DESCRIPTION
+The steps below will create a website with
 * Account details form page
 * Contact us form page
 * Shopping cart form page
 
-to create the AWS RDS database see ```MySQL_commands```
-to create the AWS lambda and API's see ```AWS_website_hosting_commands.md```
+REQUIREMENTS
+Creating a remote AWS RDS (but local DB commansd also here) following guide ```MySQL_commands```
 
 1. Change to parent directory to host website project directory
 ```bash
@@ -115,25 +116,6 @@ mkdir components/backend # for backend code e.g. SubmtiSignUp.js, SubmitLogin.js
 ```bash
 cp path_to_your/favicon.ico /public/favicon.ico
 cp path_to_your/logo.png /src/assets/graphics/logos/logo.png
-```
-
-11. GENERATE AND ADD API TO NEW FILE
-e.g. Follow ```AWS_Lambda_commands.md``` to create API's for GET/POSTing account details then replace below default API keys
-```bash
-echo '
-// Import example
-// import { API_POST_SIGNUP_URL, API_GET_USER_URL, API_DELETE_USER_URL } from './config';
-// Usage example
-// console.log(API_POST_SIGNUP_URL);
-
-export const API_POST_SIGNUPFORM = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/sumeet-singh-database_signupform";
-
-export const API_POST_LOGINFORM = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/sumeet-singh-database-loginform";
-
-export const API_POST_REPLACEACCOUNTDETAILS = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/sumeet-singh-database-replaceaccountdetails";
-
-export const API_GET_ACCOUNTDETAILS = "https://v4a9f9qoml.execute-api.ap-southeast-2.amazonaws.com/default/sumeet-singh-database-getaccountdetails";
-' > config.js
 ```
 
 12. REPLACE DEFAULT CSS /src/App.css
@@ -609,7 +591,6 @@ export default Account;
 23. Create 1st backend /src/components/backend/SignUpForm.js and add the below
 ```javascript
 import React, { useState } from 'react';
-import API_POST_SIGNUP_URL from '../../config';
 
 const SignUpForm = () => {
     const [formData, setFormData] = useState({
