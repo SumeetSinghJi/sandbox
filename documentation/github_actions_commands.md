@@ -415,3 +415,303 @@ jobs:
         asset_path: ./dist/Heroes3MapLiker-linux.zip
         asset_name: Heroes3MapLiker-linux.zip
         asset_content_type: application/zip
+
+
+
+___________________________________________________________________________
+
+              REACT BUILD AND UPLOAD TO S3 BUCKET
+___________________________________________________________________________
+
+
+name: Deploy to S3 Bucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build React app
+        run: npm run build
+      
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: sumeet-singh.com
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-southeast-2
+          SOURCE_DIR: './build'
+
+
+
+___________________________________________________________________________
+
+              PYTHON TEST AND RELEASE
+___________________________________________________________________________
+
+
+
+name: test and release software
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test_windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install Pillow requests pyinstaller pyautogui
+
+    - name: Build for Windows
+      run: |
+        pyinstaller --onefile --noconsole --icon=assets/view_earth.ico --name=Heroes3MapLiker Heroes3MapLiker.py # outputs binary to /dist
+
+    - name: Run Windows Tests
+      run: python tests.py
+
+    - name: Package Windows artifacts
+      run: |
+        New-Item -ItemType Directory -Force -Path "dist/windows"
+        Copy-Item -Path "dist/Heroes3MapLiker.exe" -Destination "dist/windows/"
+        Copy-Item -Path "assets" -Destination "dist/windows/" -Recurse
+        Copy-Item -Path "README.md" -Destination "dist/windows/"
+        Compress-Archive -Path "dist/windows/*" -DestinationPath "dist/Heroes3MapLiker-windows.zip"
+
+    - name: Upload Windows artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-zip
+        path: dist/Heroes3MapLiker-windows.zip
+
+  build_and_test_macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install Pillow requests pyinstaller pyautogui
+
+    - name: Build for macOS
+      run: |
+        pyinstaller --onefile --noconsole --icon=assets/view_earth.ico --name=Heroes3MapLiker Heroes3MapLiker.py # outputs binary to /dist
+        chmod -R +rwx dist
+        ls -l dist
+
+    - name: Run macOS Tests
+      run: python tests.py
+
+    - name: Package macOS artifacts
+      run: |
+        mkdir -p dist/macos
+        cp dist/Heroes3MapLiker dist/macos/
+        cp -r assets dist/macos/
+        cp -r README.md dist/macos/
+        zip -r dist/Heroes3MapLiker-macos.zip dist/macos/
+
+    - name: Upload macOS artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-zip
+        path: dist/Heroes3MapLiker-macos.zip
+
+  build_and_test_linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-tk
+        pip install Pillow requests pyinstaller pyautogui
+
+    - name: Build for Linux
+      run: |
+        pyinstaller --onefile --noconsole --icon=assets/view_earth.ico --name=Heroes3MapLiker Heroes3MapLiker.py # outputs binary to /dist
+
+    - name: Run Linux Tests
+      run: python tests.py
+
+    - name: Package Linux artifacts
+      run: |
+        mkdir -p dist/linux
+        cp dist/Heroes3MapLiker dist/linux/
+        cp -r assets dist/linux/
+        cp -r README.md dist/linux/
+        zip -r dist/Heroes3MapLiker-linux.zip dist/linux/
+
+    - name: Upload Linux artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: linux-zip
+        path: dist/Heroes3MapLiker-linux.zip
+
+  # build_and_test_android:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v3
+
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: '3.9'
+
+  #   - name: Set Up JDK
+  #     uses: actions/setup-java@v3
+  #     with:
+  #       distribution: 'zulu'
+  #       java-version: '17'
+
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y python3-tk
+  #       pip install Kivy buildozer Pillow requests pyinstaller pyautogui 
+
+  #   - name: Modify build.spec
+  #     run: | 
+  #       # First create .py code with Kivy framework. Fill details in file build.spec for cross-platform/.apk gen with buildozer
+  #       echo "title = Heroes3MapLiker" >> build.spec
+  #       echo "package.name = Heroes3MapLiker" >> build.spec
+  #       echo "source.dir = ./" >> build.spec
+  #       echo "requirements = kivy" >> build.spec
+  #       echo "android.permissions = INTERNET" >> build.spec
+  #       echo "version = 0.1" >> build.spec
+  #       echo "android.sdk = 21" >> build.spec
+  #       echo "p4a.branch = """ >> build.spec
+
+  #   - name: Build Android APK
+  #     run: |
+  #       buildozer init
+  #       buildozer -v android debug
+
+  #   - name: Set up Android emulator
+  #     run: |
+  #       adb install bin/Heroes3MapLiker.apk
+
+  #   - name: Run Android Tests
+  #     run: |
+  #       adb shell am start -n com.example.heroes3mapliker/.MainActivity \
+  #       adb shell input keyevent KEYCODE_HOME \
+  #       adb uninstall com.example.heroes3mapliker
+
+  create_release:
+    needs: [build_and_test_windows, build_and_test_macos, build_and_test_linux]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download Windows artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: windows-zip
+        path: ./dist
+
+    - name: Download macOS artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: macos-zip
+        path: ./dist
+
+    - name: Download Linux artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: linux-zip
+        path: ./dist
+
+  #   - name: Create GitHub Release
+  #     id: create_release
+  #     uses: actions/create-release@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  #     with:
+  #       tag_name: v1.0.0
+  #       release_name: Release v1.0.0
+  #       draft: false
+  #       prerelease: false
+
+  #   - name: Upload Windows Release Asset
+  #     uses: actions/upload-release-asset@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  #     with:
+  #       upload_url: ${{ steps.create_release.outputs.upload_url }}
+  #       asset_path: ./dist/Heroes3MapLiker-windows.zip
+  #       asset_name: Heroes3MapLiker-windows.zip
+  #       asset_content_type: application/zip
+
+  #   - name: Upload macOS Release Asset
+  #     uses: actions/upload-release-asset@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  #     with:
+  #       upload_url: ${{ steps.create_release.outputs.upload_url }}
+  #       asset_path: ./dist/Heroes3MapLiker-macos.zip
+  #       asset_name: Heroes3MapLiker-macos.zip
+  #       asset_content_type: application/zip
+
+  #   - name: Upload Linux Release Asset
+  #     uses: actions/upload-release-asset@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  #     with:
+  #       upload_url: ${{ steps.create_release.outputs.upload_url }}
+  #       asset_path: ./dist/Heroes3MapLiker-linux.zip
+  #       asset_name: Heroes3MapLiker-linux.zip
+  #       asset_content_type: application/zip

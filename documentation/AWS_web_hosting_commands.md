@@ -5,14 +5,12 @@ ___________________________________________________________________________
 
 1. Buy a domain name in AWS Route 53
 URL: https://us-east-1.console.aws.amazon.com/route53/domains/home
-# e.g. 
 ```bash
 sumeet-singh.com
 ```
 
 2. Choose a region for your website
 URL: https://ap-southeast-2.console.aws.amazon.com/s3/home?region=ap-southeast-2  
-# e.g. Sydney
 ```bash
 ap-southeast-2
 ```
@@ -92,13 +90,14 @@ Then click create bucket
 3. Click on bucket https://ap-southeast-2.console.aws.amazon.com/s3/buckets/sumeet-singh.com?region=ap-southeast-2&bucketType=general&tab=objects 
 4. Under properties scroll down to Static website hosting - click edit - enable
 index document index.html
+5. Set error page to: index.html
 Then click save
-5. Under Objects - click upload - add files - select the index.html - then click upload
+6. Under Objects - click upload - add files - select the index.html - then click upload
 ```
 
 6. In service AWS Cloudfront create a new distribution
 URL: https://us-east-1.console.aws.amazon.com/cloudfront 
-# IMPORTANT: only AWS Certificate's made in us-east-1 can be used
+IMPORTANT: only AWS Certificate's made in us-east-1 can be used
 ```bash
 1. Create distribution
 2. In choose origin domain select the new bucket sumeet-singh.com.s3 - then click use website endpoint - then repeat until confirmed
@@ -108,6 +107,7 @@ URL: https://us-east-1.console.aws.amazon.com/cloudfront
 6. In Custom SSL certificate select your cert e.g, sumeet-singh.com 
 7. Click create distribution
 8. Make note of the Distrbution domain name e.g, https://d3hvilctvbbd7e.cloudfront.net
+9. Click on "error pages" tab - click "create custom error message" - set to 404 - set custom error - seto to 404 - set to /index.html
 ```
 
 8. In Route53 point your CNAME to your cloudfront distribution with default values
