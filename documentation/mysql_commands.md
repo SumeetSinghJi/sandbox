@@ -40,11 +40,44 @@ mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin 
 
 ______________________________________________________________________________________________
 
-                            CONNECT TO DATABASE - JAVASCRIPT
+                      SETUP ADMIN, DATABASE, TABLE, RECORDS
+______________________________________________________________________________________________
+
+```bash
+CREATE USER 'admin'@'localhost' IDENTIFIED BY '__REDACTED__';
+CREATE DATABASE sumeetsinghdb;
+GRANT ALL PRIVILEGES ON sumeetsinghdb.* TO 'admin'@'localhost';
+exit
+mysql -u admin -p
+```
+```bash
+USE sumeetsinghdb;
+CREATE TABLE users (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(20) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    onMailingList TINYINT(1) NOT NULL DEFAULT 0,
+    pending_orders INT NOT NULL DEFAULT 0,
+    order_history INT NOT NULL DEFAULT 0,
+    open_tickets INT NOT NULL DEFAULT 0,
+    closed_tickets INT NOT NULL DEFAULT 0,
+    subscriptions VARCHAR(1000) NOT NULL,
+    notes VARCHAR(1000) NOT NULL
+);
+INSERT INTO users (username, email, password, subscriptions, notes) 
+VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
+exit
+```
+
+
+______________________________________________________________________________________________
+
+                            CONNECT TO DATABASE - JAVASCRIPT | LAMBDA | API
 ______________________________________________________________________________________________
 
 
-JAVASCRIPT API/LAMBDA - LOCAL DB's
+LOCAL DB's (e.g, brew/apt/winget mysql installs)
 
 1. Create a login form e.g. LoginForm.js for React below
 ```javascript
@@ -54,13 +87,12 @@ JAVASCRIPT API/LAMBDA - LOCAL DB's
 ```javascript
 ```
 
-4. Create a a new test user in the MySQL DB following common commands with details below
-username: testuser
-password: Testuser$
+3. Test
 
 
 
-JAVASCRIPT API/LAMBDA - REMOTE DB's (e.g, AWS RDS)
+
+REMOTE DB's (e.g, AWS RDS)
 
 1. Create a login form e.g. LoginForm.js for React below
 
@@ -130,7 +162,6 @@ export default LoginForm;
 
 ```
 
-
 2. Create a backend node.js lambda with permissions below to hold the DB details
 which are hidden to clients. Remember to click "file save" and "deploy"
 ```javascript
@@ -144,18 +175,14 @@ const connection = await mysql.createConnection({
 
 3. in AWS API create a new API with details below
 
-4. Create a a new test user in the MySQL DB following common commands with details below
-username: testuser
-password: Testuser$
-
-5. Test to connect from the Lambda online. Click on the function name in AWS Lambda.
+4. Test to connect from the Lambda online. Click on the function name in AWS Lambda.
 Click on Test. Enter the below
 {
     username: testuser
     password: Testuser$
 }
 
-6. In code tab - in expected results - observe if success
+5. In code tab - in expected results - observe if success
 
 
 ______________________________________________________________________________________________
@@ -178,7 +205,7 @@ CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 ALTER USER 'user'@'localhost' IDENTIFIED BY 'new_password_goes_here';
 ```
 
-5 VIEW ALL DATABASES
+5. VIEW ALL DATABASES
 ```bash
 mysql> show databases;
 +---------------------+
@@ -253,7 +280,7 @@ SELECT * FROM users;
 ALTER TABLE users
 ADD COLUMN onMailingList BOOLEAN NOT NULL DEFAULT 0,
 ADD COLUMN pending_orders INT NOT NULL DEFAULT 0,
-MODIFY order_history INT NOT NULL DEFAULT 0;
+ADD COLUMN order_history INT NOT NULL DEFAULT 0,
 ADD COLUMN open_tickets INT NOT NULL DEFAULT 0,
 ADD COLUMN closed_tickets INT NOT NULL DEFAULT 0,
 ADD COLUMN games TEXT NOT NULL,
@@ -285,7 +312,8 @@ MODIFY order_history TEXT NOT NULL;
 
 15. CREATE NEW USER
 ```bash
-INSERT INTO users (username, email) VALUES ('sum337', 'kurta.kursi@gmail.com');
+INSERT INTO users (username, email, password, subscriptions, notes) 
+VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
 ```
 
 16. CHANGE PASSWORD
