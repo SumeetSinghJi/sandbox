@@ -1,7 +1,7 @@
 
 ______________________________________________________________________________________________
 
-                            CREATE DATABASE
+                                CREATE DATABASE
 ______________________________________________________________________________________________
 
 MacOS
@@ -28,12 +28,17 @@ ________________________________________________________________________________
                             CONNECT TO DATABASE - CLI
 ______________________________________________________________________________________________
 
-MacOS
+LOCAL DB AS ROOT
 ```bash
 mysql -u root
 ```
 
-AWS RDS
+LOCAL DB AS USER
+```bash
+mysql -u admin -p
+```
+
+REMOTE DB - specify url of DB in -h parameter
 ```bash
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
