@@ -18,11 +18,12 @@ OPTIONAL - to find the database directory on host
 AWS RDS
 1. Go to AWS RDS REGION
 https://ap-southeast-2.console.aws.amazon.com/rds/home?region=ap-southeast-2
-2. Click "Create database "- mysql - set password - use security group with settings
+2. Click "Create database "- mysql - set any password - create default security group which
+will auto create with below default settings
 Incomming
-Port 22 SSH open for incomming
+IPv4	MYSQL/Aurora	TCP	3306
 Outgoing
-
+*
 ______________________________________________________________________________________________
 
                             CONNECT TO DATABASE - CLI
@@ -30,7 +31,7 @@ ________________________________________________________________________________
 
 LOCAL DB AS ROOT
 ```bash
-mysql -u root
+mysql -u root -p
 ```
 
 LOCAL DB AS USER
@@ -40,6 +41,7 @@ mysql -u admin -p
 
 REMOTE DB - specify url of DB in -h parameter
 ```bash
+-- you can use -h localhost OR 127.0.0.1
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
 
@@ -49,14 +51,14 @@ ________________________________________________________________________________
 ______________________________________________________________________________________________
 
 ```bash
-CREATE USER 'admin'@'localhost' IDENTIFIED BY '__REDACTED__';
-CREATE DATABASE sumeetsinghdb;
-GRANT ALL PRIVILEGES ON sumeetsinghdb.* TO 'admin'@'localhost';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Password1!';
+CREATE DATABASE agnisamoohdb;
+GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'admin'@'localhost';
 exit
-mysql -u admin -p
+mysql -u root -p
 ```
 ```bash
-USE sumeetsinghdb;
+USE agnisamoohdb;
 CREATE TABLE users (
     userID INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(20) NOT NULL,
@@ -71,14 +73,15 @@ CREATE TABLE users (
     notes VARCHAR(1000) NOT NULL
 );
 INSERT INTO users (username, email, password, subscriptions, notes) 
-VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
+-- for demonstration purposes we will use password: Password1!
+VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password1!', 256), '', '');
 exit
 ```
 
 
 ______________________________________________________________________________________________
 
-                            CONNECT TO DATABASE - JAVASCRIPT | LAMBDA | API
+                      CONNECT TO DATABASE - JAVASCRIPT | LAMBDA | API
 ______________________________________________________________________________________________
 
 
@@ -90,17 +93,56 @@ LOCAL DB's (e.g, brew/apt/winget mysql installs)
 
 2. Create a backend node.js lambda
 ```javascript
+const jwt = require('jsonwebtoken');
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
+
+const dbConfig = {
+  host: '127.0.0.1',
+  user: 'admin',
+  password: 'Password1!',
+  database: 'agnisamoohdb',
+};
+
+exports.handler = async (event) => {
+  const { username, password } = JSON.parse(event.body);
+
+  const connection = await mysql.createConnection(dbConfig);
+  const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+  if (rows.length === 0) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const user = rows[0];
+  
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  
+  if (!passwordMatch) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const token = jwt.sign({ username: user.username, userId: user.id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ token }),
+  };
+};
 ```
 
 3. Test
 
 
-
-
 REMOTE DB's (e.g, AWS RDS)
 
 1. Create a login form e.g. LoginForm.js for React below
-
 ```javascript
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -121,7 +163,7 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://ln0w2lsuuc.execute-api.us-east-1.amazonaws.com/$default/login', {
+      const response = await axios.post('___________REPLACE_ME_WITH_API_____________', {
         username,
         password,
       });
@@ -129,8 +171,7 @@ function LoginForm() {
       localStorage.setItem('authToken', token); // Store the token in localStorage
       setFormSubmitted(true);
       setErrorMessage('');  // Clear any previous error messages
-      // Redirect to Account page
-      history.push('/account');
+      history.push('/account'); // Redirect to Account page
     } catch (error) {
       console.error('Login failed', error);
       setErrorMessage('Login failed. Please check your username and password and try again.');
@@ -169,31 +210,117 @@ export default LoginForm;
 
 2. Create a backend node.js lambda with permissions below to hold the DB details
 which are hidden to clients. Remember to click "file save" and "deploy"
+```bash
+1. Go to lambda functions - create new function - function name: agnisamooh-login-lambda-post
+2. Runtime node.js 20.x
+3. Create function
+4. In code source main page add the code below and click - file - save - then click "deploy"
+```
+url: https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions
 ```javascript
-const connection = await mysql.createConnection({
-    host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
-    user: 'admin',
-    password: '___REDACTED___',
-    database: 'agnisamoohdb'
-});
+const jwt = require('jsonwebtoken');
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
+
+const dbConfig = {
+  host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
+  user: 'admin',
+  password: 'Agnisamooh-1!',
+  database: 'agnisamoohdb',
+};
+
+exports.handler = async (event) => {
+  const { username, password } = JSON.parse(event.body);
+
+  const connection = await mysql.createConnection(dbConfig);
+  const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+  if (rows.length === 0) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const user = rows[0];
+  
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  
+  if (!passwordMatch) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const token = jwt.sign({ username: user.username, userId: user.id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ token }),
+  };
+};
 ```
 
 3. in AWS API create a new API with details below
+url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=us-east-1 
+```bash
+1. In AWS "API Gateway" - click build new HTTP API
+2. API Name e.g,: agnisamooh-login-post-api
+3. Stage name: PROD
+4. Click Create to save the API
+5. Go back to API's then click on the API. It will take you to the routes page
+6. Click "Create a Route"
+7. Route method: POST
+8. Route name: /login
+9. Click create
+10. Click on "integrations" on the left side
+11. Click create an attach an integration
+12. Integration target "lambda function"
+13. In the drop down select the previous created Lambda function
+14. Click create
+15. Click back on the API in the left navigation bar then make note of the
+ARN e.g, https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com
+```
 
-4. Test to connect from the Lambda online. Click on the function name in AWS Lambda.
+4. Go back to the LoginForm.js and add the API to the response url adding the stage and api path
+```javascript
+const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login', {
+        username,
+        password,
+      });
+```
+
+5. On the Lambda function page, Test to connect from the Lambda online. Click on the function name in AWS Lambda.
 Click on Test. Enter the below
 {
-    username: testuser
-    password: Testuser$
+    username: sum337
+    password: Password1!
 }
 
-5. In code tab - in expected results - observe if success
+6. In code tab - in expected results - observe if success
 
 
+
+
+ON API TEST SUCCESS
+
+1. If API test is successfull for login remember to log back into mysql and change the
+admin password and the users table test user record password
+```bash
+-- CHANGE THE -h AND PASSWORD
+mysql -h 127.0.0.1 -u root -p -e "ALTER USER 'admin'@'localhost' IDENTIFIED BY 'new_password_goes_here'; USE agnisamoohdb; UPDATE users SET password = 'new_password_goes_here' WHERE username = 'sum337';"
+```
 ______________________________________________________________________________________________
 
                             COMMON COMMANDS
 ______________________________________________________________________________________________
+
+1. COMMENTS
+```bash
+-- this is first comment
+select * from users; -- this is second comment
+```
 
 2. FIND ALL MYSQL USERS (Must be logged in as root)
 ```bash
@@ -216,12 +343,17 @@ mysql> show databases;
 +---------------------+
 | Database            |
 +---------------------+
-| agnisamoohdb |
+| agnisamoohdb        |
 | information_schema  |
 | mysql               |
 | performance_schema  |
 | sys                 |
 +---------------------+
+```
+
+5.5 DELETE DATABASE
+```bash
+DROP DATABASE xxx
 ```
 
 6. CREATE DATABASE
@@ -321,7 +453,7 @@ INSERT INTO users (username, email, password, subscriptions, notes)
 VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
 ```
 
-16. CHANGE PASSWORD
+16. CHANGE USER RECORD PASSWORD
 ```bash
 SET @password = 'user_password'; -- Define the new password
 UPDATE users SET password = @password WHERE username = 'sum337';
