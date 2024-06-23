@@ -23,11 +23,20 @@ will auto create with below default settings
 Incomming
 IPv4	MYSQL/Aurora	TCP	3306
 Outgoing
-*
+everything/default/*
 ______________________________________________________________________________________________
 
                             CONNECT TO DATABASE - CLI
 ______________________________________________________________________________________________
+
+OPTIONAL - Find DB running port MacOS/Linux
+Result is usually default 3306
+```bash
+sumeetsingh@Sumeets-Air sandbox % lsof -iTCP -sTCP:LISTEN -P | grep mysql 
+
+mysqld    37199 sumeetsingh   18u  IPv4 0x4854526e13fbf6b6      0t0  TCP localhost:33060 (LISTEN)
+mysqld    37199 sumeetsingh   20u  IPv4 0x5d9b0a6e5c20275a      0t0  TCP localhost:3306 (LISTEN)
+```
 
 LOCAL DB AS ROOT
 ```bash
@@ -54,10 +63,6 @@ ________________________________________________________________________________
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Password1!';
 CREATE DATABASE agnisamoohdb;
 GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'admin'@'localhost';
-exit
-mysql -u root -p
-```
-```bash
 USE agnisamoohdb;
 CREATE TABLE users (
     userID INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,75 +80,21 @@ CREATE TABLE users (
 INSERT INTO users (username, email, password, subscriptions, notes) 
 -- for demonstration purposes we will use password: Password1!
 VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password1!', 256), '', '');
-exit
 ```
 
 
 ______________________________________________________________________________________________
 
-                      CONNECT TO DATABASE - JAVASCRIPT | LAMBDA | API
+                          CONNECT TO DATABASE - JAVASCRIPT/REACT
 ______________________________________________________________________________________________
 
+CREATE REACT LOGIN FORM COMPONENT
 
-LOCAL DB's (e.g, brew/apt/winget mysql installs)
-
+1. Create a login form for react named: LoginForm.js
+If using a localhost use post url: http://localhost:5000/login
+if using a remote url API it there e.g. AWS RDS: https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login
+```javascript
 1. Create a login form e.g. LoginForm.js for React below
-```javascript
-```
-
-2. Create a backend node.js lambda
-```javascript
-const jwt = require('jsonwebtoken');
-const mysql = require('mysql2/promise');
-const bcrypt = require('bcryptjs');
-
-const dbConfig = {
-  host: '127.0.0.1',
-  user: 'admin',
-  password: 'Password1!',
-  database: 'agnisamoohdb',
-};
-
-exports.handler = async (event) => {
-  const { username, password } = JSON.parse(event.body);
-
-  const connection = await mysql.createConnection(dbConfig);
-  const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
-
-  if (rows.length === 0) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Invalid credentials' }),
-    };
-  }
-
-  const user = rows[0];
-  
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  
-  if (!passwordMatch) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Invalid credentials' }),
-    };
-  }
-
-  const token = jwt.sign({ username: user.username, userId: user.id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ token }),
-  };
-};
-```
-
-3. Test
-
-
-REMOTE DB's (e.g, AWS RDS)
-
-1. Create a login form e.g. LoginForm.js for React below
-```javascript
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
@@ -163,7 +114,7 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('___________REPLACE_ME_WITH_API_____________', {
+      const response = await axios.post('http://localhost:5000/login', {
         username,
         password,
       });
@@ -205,10 +156,88 @@ function LoginForm() {
 }
 
 export default LoginForm;
-
 ```
 
-2. Create a backend node.js lambda with permissions below to hold the DB details
+2. Create a login page and import the LoginForm.js
+see ```react_commands.md```
+
+3. OPTIONAL - Create a account page to redirect to
+see ```react_commands.md```
+
+LOCALHOST BACKEND FILE CREATE
+
+1. Create a backend node.js named: src/components/backend/Server.js
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+
+const app = express();
+const port = 5000;
+
+const SECRET_KEY = "___YOUR_SECRET_KEY1!___";
+
+app.use(bodyParser.json());
+app.use(cors());
+
+const dbConfig = {
+  host: '127.0.0.1',
+  user: 'admin',
+  password: 'Password1!',
+  database: 'agnisamoohdb',
+};
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = rows[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ username: user.username, userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+```
+
+2. Install backend dependencies in your react project
+```bash
+cd src
+npm install express mysql2 bcryptjs jsonwebtoken body-parser cors
+```
+
+3. Start the server
+```bash
+cd components/backend
+node server.js
+```
+
+
+REMOTE BACKEND FILE CREATE
+
+1. Create a backend node.js lambda with permissions below to hold the DB details
 which are hidden to clients. Remember to click "file save" and "deploy"
 ```bash
 1. Go to lambda functions - create new function - function name: agnisamooh-login-lambda-post
@@ -262,7 +291,7 @@ exports.handler = async (event) => {
 };
 ```
 
-3. in AWS API create a new API with details below
+2. in AWS API create a new API with details below
 url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=us-east-1 
 ```bash
 1. In AWS "API Gateway" - click build new HTTP API
@@ -283,7 +312,7 @@ url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=u
 ARN e.g, https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com
 ```
 
-4. Go back to the LoginForm.js and add the API to the response url adding the stage and api path
+3. Go back to the LoginForm.js and add the API to the response url adding the stage and api path
 ```javascript
 const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login', {
         username,
@@ -291,26 +320,28 @@ const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amaz
       });
 ```
 
-5. On the Lambda function page, Test to connect from the Lambda online. Click on the function name in AWS Lambda.
-Click on Test. Enter the below
-{
-    username: sum337
-    password: Password1!
-}
 
-6. In code tab - in expected results - observe if success
+TESTING
 
+1. Test by starting the react website and testing by going ot t
+```bash
+cd YOUR_REACT_PROJECT_PATH/src
+npm start
+1. www.agnisamooh.com/login
+2. Fill out login form page with 
+username; sum337
+password; Password1!
+3. You should be redirected to the account page
+```
 
-
-
-ON API TEST SUCCESS
-
-1. If API test is successfull for login remember to log back into mysql and change the
-admin password and the users table test user record password
+2. If above test is successfull for login remember to log back into mysql and change the
+admin password and the users table test user record password. Replace the password placeholder with a new
+password
 ```bash
 -- CHANGE THE -h AND PASSWORD
 mysql -h 127.0.0.1 -u root -p -e "ALTER USER 'admin'@'localhost' IDENTIFIED BY 'new_password_goes_here'; USE agnisamoohdb; UPDATE users SET password = 'new_password_goes_here' WHERE username = 'sum337';"
 ```
+
 ______________________________________________________________________________________________
 
                             COMMON COMMANDS
