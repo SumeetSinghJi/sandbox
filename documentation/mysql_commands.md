@@ -234,7 +234,6 @@ cd components/backend
 node server.js
 ```
 
-
 REMOTE BACKEND FILE CREATE
 
 1. Create a backend node.js lambda with permissions below to hold the DB details
@@ -320,10 +319,9 @@ const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amaz
       });
 ```
 
-
 TESTING
 
-1. Test by starting the react website and testing by going ot t
+1. Test by starting the react website and testing the login form page
 ```bash
 cd YOUR_REACT_PROJECT_PATH/src
 npm start

@@ -18,7 +18,6 @@ ap-southeast-2
 3. In AWS Certificate Manager request certificate - Must use us-east-1 (Virginia) ONLY, Cloudfront only uses North America SSL's
 URL: https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/list
 ```bash
-
 1. Request certificate
 2. Amazon issued public SSL certificate
 3. Enter FQDN e.g, sumeet-singh.com
@@ -32,7 +31,6 @@ for existing accounts. If present delete all CNAME records in Route53 before cli
 ```
 
 4. Create a test page index.html with code below;
-
 ```html
 <!-- WEBSITE UNDER CONSTRUCTION TEMPLATE -->
 <!DOCTYPE html>

@@ -1,5 +1,98 @@
 ___________________________________________________________________________
 
+                          REACT VS JAVASCRIPT
+___________________________________________________________________________
+
+The example below shows the differences between vanilla javascript vs react.
+
+Basic Javascript requires getting elements (DOM Manipulation), attaching 
+event listeners (Event Handling) and hardcoding the html tags (non reuseable), 
+whereas React abstracts the former in reusable components.
+
+React uses "state" by assigning variables/functions a state. That dynamically
+update the front end based on actions e.g. the button clicks on return html code.
+
+JAVASCRIPT
+```html
+<body>
+    <div class="counter">
+        <h2>Counter Example</h2>
+        <!-- usage -->
+        <p>Count: <span id="count">0</span></p>
+        <button class="btn" id="incrementBtn">Increment</button>
+        <button class="btn" id="decrementBtn">Decrement</button>
+    </div>
+
+    <script>
+        let count = 0;
+
+        const increment = () => {
+            count++;
+            updateUI();
+        };
+
+        const decrement = () => {
+            count--;
+            updateUI();
+        };
+
+        const updateUI = () => {
+            const countElement = document.getElementById('count');
+            countElement.textContent = count;
+        };
+
+        // Event listeners for buttons
+        document.getElementById('incrementBtn').addEventListener('click', increment);
+        document.getElementById('decrementBtn').addEventListener('click', decrement);
+    </script>
+</body>
+</html>
+```
+
+REACT
+```javascript
+// src/components/Counter.js
+import React, { useState } from 'react';
+
+const Counter = () => {
+    const [count, setCount] = useState(0);
+
+    const increment = () => {
+        setCount(count + 1);
+    };
+
+    const decrement = () => {
+        setCount(count - 1);
+    };
+
+    return (
+        <div>
+            <button onClick={increment}>Increment</button>
+            <button onClick={decrement}>Decrement</button>
+            <p>Count: {count}</p>
+        </div>
+    );
+};
+
+// usage in src/App.js
+import Counter from './components/Counter';
+
+function App() {
+    return (
+        <div>
+          <div class="counter">
+            <h1>Counter example</h1>
+            <Counter />
+          </div>
+        </div>
+    );
+}
+
+export default App;
+```
+
+___________________________________________________________________________
+
                           INSTALLING REACT
 ___________________________________________________________________________
 
@@ -37,7 +130,8 @@ The steps below will create a website with
 * Shopping cart form page
 
 REQUIREMENTS
-Creating a remote AWS RDS (but local DB commansd also here) following guide ```MySQL_commands```
+Creating a remote AWS RDS (but local DB commansd also here) 
+following guide ```MySQL_commands```
 
 1. Change to parent directory to host website project directory
 ```bash
@@ -504,7 +598,7 @@ const ContactUs = () => {
 export default ContactUs;
 ```
 
-20. Create 6th page /src/pages/NotFound.js and add the below
+20. Create 5th page /src/pages/NotFound.js and add the below
 ```javascript
 import React from 'react';
 
@@ -535,11 +629,10 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-21. Create 5th page /src/pages/SignUp.js and add the below
+21. Create 6th page /src/pages/SignUp.js and add the below
 ```javascript
 import React from 'react';
-import SubmitSignUp from './backend/SubmitSignUp';
-import LoginForm from './backend/LoginForm';
+import SubmitSignUp from './backend/SignUpForm';
 
 const SignUp = () => {
   return (
@@ -548,12 +641,10 @@ const SignUp = () => {
         <div className="column1"></div>
         <div className="column2">
           <h2>Online Services</h2>
-          <h3>Create new account</h3>
+          <h3>Sign Up</h3>
           <SignUpForm />
           <br />
           <br />
-          <h3>Login</h3>
-          <LoginForm />
         </div>
         <div className="column3"></div>
       </div>
@@ -564,23 +655,73 @@ const SignUp = () => {
 export default SignUp;
 ```
 
-22. Create 7th page /src/pages/Account.js and add the below
+22. Create 7th page /src/pages/Login.js and add the below
 ```javascript
 import React from 'react';
+import LoginForm from './backend/LoginForm';
 
-const Account = () => {
+const Login = () => {
   return (
     <div>
-      <div className="column1"></div>
-      <div className="column2">
-        <br />
-        <br />
-        <p>
-          <h2>Account</h2>
-          <p>Account details</p>
-        </p>
+      <div className="row">
+        <div className="column1"></div>
+        <div className="column2">
+          <h2>Online Services</h2>
+          <h3>Login</h3>
+          <LoginForm />
+          <br />
+          <br />
+        </div>
+        <div className="column3"></div>
       </div>
-      <div className="column3"></div>
+    </div>
+  );
+};
+
+export default SignUp;
+```
+
+23. Create 8th page /src/pages/Account.js and add the below
+Include button to delete account with confirmation for full CRUD
+Include button to sign up for Mailing list
+```javascript
+import React from 'react';
+import AccountForm from '../components/backend/AccountForm';
+import DeleteButton from '../components/backend/DeleteButton';
+
+const Account = () => {
+  const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
+  const username = authToken ? JSON.parse(atob(authToken.split('.')[1])).username : ''; // Decode token to extract username
+
+  return (
+    <div>
+      <div className="main">
+        <div className="column1">
+          {/* Content for left column (column1) */}
+        </div>
+        <div className="column2">
+          <div style={{ textAlign: 'center' }}>
+            <h1>Account</h1>
+          </div>
+          <br />
+          <p>
+            Welcome, {username}! {/* Display the username */}
+          </p>
+          <p>
+            Modify your account details below
+          </p>
+          <AccountForm />
+          <br />
+          <br />
+          <br />
+          <p>Press the following button to delete your account</p>
+          <DeleteButton />
+          <br />
+        </div>
+        <div className="column3">
+          {/* Content for right column (column3) */}
+        </div>
+      </div>
     </div>
   );
 };
@@ -588,125 +729,7 @@ const Account = () => {
 export default Account;
 ```
 
-23. Create 1st backend /src/components/backend/SignUpForm.js and add the below
-```javascript
-import React, { useState } from 'react';
-
-const SignUpForm = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: ''
-    });
-
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Sending the registration data to the API endpoint
-        fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error: Backend signup server response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Success: Registered successfully: ", data);
-            alert("Success: Registration successful");
-            // Redirect user to account page if registration successful
-            // window.location.href = "account.html";
-        })
-        .catch(error => {
-            console.error("Error: ", error);
-            alert("Error: Registration failed. Contact support@agnisamooh.com");
-        });
-    };
-
-    const togglePasswordVisibility = (e) => {
-        const input = e.target.previousSibling;
-        input.type = input.type === 'password' ? 'text' : 'password';
-    };
-
-    return (
-        <form id="SignUpForm" onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label><br />
-            <input type="text" name="username" value={formData.username} onChange={handleInputChange} maxLength="20" required /><br />
-            <label htmlFor="email">Email:</label><br />
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} maxLength="50" required /><br />
-            <label htmlFor="password">Password:</label><br />
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} maxLength="30" required /><br />
-            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
-            <br />
-            <button type="submit">Register</button>
-            <button type="reset">Reset</button>
-        </form>
-    );
-};
-
-export default SignUpForm;
-
-
-```
-
-24. Create 2nd backend /src/components/backend/LoginForm.js and add the below
-```javascript
-import React, { useState } from 'react';
-
-const LoginForm = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Your login logic using formData
-    };
-
-    const togglePasswordVisibility = (e) => {
-        const input = e.target.previousSibling;
-        input.type = input.type === 'password' ? 'text' : 'password';
-    };
-
-    return (
-        <form id="loginForm" onSubmit={handleSubmit}>
-            <label htmlFor="email">Email:</label><br />
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required /><br />
-            <label htmlFor="password">Password:</label><br />
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required /><br />
-            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
-            <br />
-            <button type="submit">Login</button>
-            <button type="reset">Reset</button>
-        </form>
-    );
-};
-
-export default LoginForm;
-```
-
-25. Create 3rd backend /src/components/backend/ContactUsForm.js and add the below
+24. Create 1st backend /src/components/backend/ContactUsForm.js and add the below
 Note: the below code uses formspree.com free API, however it's limited to only 2 fields
 email and message. So if you copy the below change to your liking and replace the API key
 ```javascript
@@ -834,48 +857,252 @@ export default ContactUsForm;
 
 ```
 
-26. Create 4th backend /src/components/backend/GetAccountDetails.js and add the below
+25. Create 2nd backend /src/components/backend/SignUpForm.js and add the below
 ```javascript
-const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-const User = require('../models/User'); // Assuming you have a User model
+import React, { useState } from 'react';
 
-// GET /api/user/profile
-router.get('/profile', authMiddleware, async (req, res) => {
+const SignUpForm = () => {
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Sending the registration data to the API endpoint
+        fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error: Backend signup server response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Success: Registered successfully: ", data);
+            alert("Success: Registration successful");
+            // Redirect user to account page if registration successful
+            // window.location.href = "account.html";
+        })
+        .catch(error => {
+            console.error("Error: ", error);
+            alert("Error: Registration failed. Contact support@agnisamooh.com");
+        });
+    };
+
+    const togglePasswordVisibility = (e) => {
+        const input = e.target.previousSibling;
+        input.type = input.type === 'password' ? 'text' : 'password';
+    };
+
+    return (
+        <form id="SignUpForm" onSubmit={handleSubmit}>
+            <label htmlFor="username">Username:</label><br />
+            <input type="text" name="username" value={formData.username} onChange={handleInputChange} maxLength="20" required /><br />
+            <label htmlFor="email">Email:</label><br />
+            <input type="email" name="email" value={formData.email} onChange={handleInputChange} maxLength="50" required /><br />
+            <label htmlFor="password">Password:</label><br />
+            <input type="password" name="password" value={formData.password} onChange={handleInputChange} maxLength="30" required /><br />
+            <input type="checkbox" onClick={togglePasswordVisibility} />Show Password
+            <br />
+            <button type="submit">Register</button>
+            <button type="reset">Reset</button>
+        </form>
+    );
+};
+
+export default SignUpForm;
+
+
+```
+
+26. Create 3rd backend /src/components/backend/LoginForm.js and add the below
+```javascript
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
+
+function LoginForm() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory(); // Initialize useHistory hook
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-        // Fetch user details based on authenticated user (from JWT)
-        const user = await User.findById(req.user.id).select('-password'); // Excluding password field
-        if (!user) {
-            throw new Error('User not found');
-        }
-        res.json(user);
-    } catch (err) {
-        res.status(404).json({ error: err.message });
+      const response = await axios.post('https://ln0w2lsuuc.execute-api.us-east-1.amazonaws.com/$default/login', {
+        username,
+        password,
+      });
+      const token = response.data.token; // Retrieve the JWT token from localStorage
+      localStorage.setItem('authToken', token); // Store the token in localStorage
+      setFormSubmitted(true);
+      setErrorMessage('');  // Clear any previous error messages
+      history.push('/account'); // Redirect to Account page
+    } catch (error) {
+      console.error('Login failed', error);
+      setErrorMessage('Login failed. Please check your username and password and try again.');
     }
-});
+  };
 
-module.exports = router;
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <div>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button type="button" onClick={togglePasswordVisibility}>
+          {showPassword ? 'Hide' : 'Show'}
+        </button>
+      </div>
+      <button type="submit">Login</button>
+      {formSubmitted && <p className="success-message">Login successful!</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </form>
+  );
+}
+
+export default LoginForm;
 
 ```
 
-27. Create 5th backend /src/components/backend/ReplaceAccountDetailsForm.js and add the below
+27. Create 4th backend /src/components/backend/AccountForm.js and add the below
 ```javascript
+import React, { useState } from "react";
+
+function AccountForm() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try{
+            const response = "";
+            setFormSubmitted(true);
+            setErrorMessage("");
+        }
+        catch(error) {
+            console.error("Failed to update account data", error);
+            setErrorMessage("Failed to update account data", error);
+        }
+    };
+
+    const togglePasswordVisibility = () => {
+
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder=""
+            />
+            <input
+                type="text"
+                value={password}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder=""
+            />
+            <button type="button" onSubmit={togglePasswordVisibility}></button>
+            <input>
+            </input>
+            <button type="submit">Update</button>
+            {formSubmitted && <p className="success-message">Account details updated</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </form>
+    )
+};
+
+export default AccountForm;
+
 ```
 
-28. In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
+28. Create 5th backend /src/components/backend/DeleteButton.js and add the below
+```javascript
+import React from 'react';
+
+const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
+
+const DeleteButton = ({ onDelete }) => {
+    const handleDelete = async () => {
+        try {
+            const response = await fetch('/api/user/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete account');
+            }
+            onDelete(); // Optional: Implement a callback to handle UI changes after deletion
+        } catch (error) {
+            console.error('Delete account error:', error.message);
+            // Handle error, show a message, or redirect to an error page
+        }
+    };
+
+    return (
+        <button onClick={handleDelete}>Delete Account</button>
+    );
+};
+
+export default DeleteButton;
+```
+
+29. Create 6th backend /src/components/backend/MailingListButton.js and add the below
+```javascript
+
+
+```
+
+30. In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
 the build folder contents
 
-29. CONVERT REACT WEBSITE TO STATIC PAGES IN ./build
+31. CONVERT REACT WEBSITE TO STATIC PAGES IN ./build
 for hosting e.g, uploading in Godaddy to host website
 ```bash
 npm run build
 ```
-
-30. START WEBSITE FOR TESTING LOCALLY
+32. START WEBSITE FOR TESTING LOCALLY
 ```bash
 npm start
 ```
 
-31. UPLOAD WEBSITE
+33. UPLOAD WEBSITE
 Follow ```AWS_website_hosting_workflow.md```
