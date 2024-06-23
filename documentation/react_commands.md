@@ -194,7 +194,7 @@ change the <title> tag in /public/index.html to the websites name e.g. <title>Su
 cd src
 ```
 
-9. Create all folders
+9. CREATE ALL FOLDERS
 ```bash
 mkdir assets # for assets e.g. graphics, sounds, images, videos to display on webpage
 mkdir assets/graphics
@@ -1091,17 +1091,26 @@ export default DeleteButton;
 
 ```
 
-30. In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
+___________________________________________________________________________
+
+                          BUILDING REACT WEBSITE
+___________________________________________________________________________
+
+30. UNCOMMENT ./build in .gitignore for CICD
+In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
 the build folder contents
 
-31. CONVERT REACT WEBSITE TO STATIC PAGES IN ./build
-for hosting e.g, uploading in Godaddy to host website
-```bash
-npm run build
-```
-32. START WEBSITE FOR TESTING LOCALLY
+31. TEST WEBSITE
+Running below code will automatically open the website in localhost Https://127.0.0.1 to view
 ```bash
 npm start
+```
+
+32. CREATE REACT WEBSITE
+Babel: Converts the React ES6+ standard code into an older version code for multiplatform.
+Webpack: Creates the website directory (/build/index.html, /html, /css, /js) to upload anywhere.
+```bash
+npm run build
 ```
 
 33. UPLOAD WEBSITE
