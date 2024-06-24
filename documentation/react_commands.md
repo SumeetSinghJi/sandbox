@@ -879,7 +879,7 @@ const SignUpForm = () => {
         event.preventDefault();
 
         // Sending the registration data to the API endpoint
-        fetch(API_URL, {
+        fetch("API_URL_GOES_HERE", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -926,8 +926,6 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
-
-
 ```
 
 26. Create 3rd backend /src/components/backend/LoginForm.js and add the below
@@ -1085,7 +1083,7 @@ const DeleteButton = ({ onDelete }) => {
 export default DeleteButton;
 ```
 
-29. Create 6th backend /src/components/backend/MailingListButton.js and add the below
+29. Create 6th backend /src/components/backend/JoinMailingList.js.js and add the below
 ```javascript
 
 

@@ -166,7 +166,45 @@ see ```react_commands.md```
 
 LOCALHOST BACKEND FILE CREATE
 
-1. Create a backend node.js named: src/components/backend/Server.js
+1. Find a free port for backend Server.js
+```bash
+# MacOS, Linux
+lsof -i :5000
+# Windows
+netstat -ano | findstr :5000
+
+e.g, 
+sumeetsingh@Sumeets-Air backend % lsof -i :5000
+COMMAND   PID        USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ControlCe 503 sumeetsingh   10u  IPv4 0x7ba65b3bbc2c31c6      0t0  TCP *:commplex-main (LISTEN)
+ControlCe 503 sumeetsingh   11u  IPv6 0x147a291c7d81ae39      0t0  TCP *:commplex-main (LISTEN)
+
+
+#if port is in use then find what the PID is with
+ps -p 503
+
+e.g, 
+sumeetsingh@Sumeets-Air backend % ps -p 503
+  PID TTY           TIME CMD
+  503 ??        14:26.37 /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCe
+
+# since that port is MacOS Airplay e.g. for sharing Apple devices let's use the next port up 5001
+sumeetsingh@Sumeets-Air sandbox % lsof -i :5001
+sumeetsingh@Sumeets-Air sandbox % 
+
+# since port 5001 is free lets use that
+```
+
+2. Install backend dependencies in your react project
+```bash
+cd src
+npm install express mysql2 bcryptjs jsonwebtoken body-parser cors axios
+```
+
+3. Create a backend node.js named: src/components/backend/Server.js
+using free port in variable port ```const port = 5001;```
+In production environment change variable SECRET_KEY to something different
+```const SECRET_KEY = "ChangeThis1!";```
 ```javascript
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -176,7 +214,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 const SECRET_KEY = "___YOUR_SECRET_KEY1!___";
 
@@ -222,16 +260,16 @@ app.listen(port, () => {
 });
 ```
 
-2. Install backend dependencies in your react project
-```bash
-cd src
-npm install express mysql2 bcryptjs jsonwebtoken body-parser cors
-```
-
-3. Start the server
+4. Start the server
 ```bash
 cd components/backend
-node server.js
+node Server.js
+```
+
+5. Start a new terminal window and run the website to test form
+```bash
+cd ../../
+npm start
 ```
 
 REMOTE BACKEND FILE CREATE
