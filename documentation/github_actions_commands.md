@@ -6,6 +6,7 @@ ___________________________________________________________________________
 
 name: test and release software
 
+```yml
 on:
   push:
     branches:
@@ -415,42 +416,39 @@ jobs:
         asset_path: ./dist/Heroes3MapLiker-linux.zip
         asset_name: Heroes3MapLiker-linux.zip
         asset_content_type: application/zip
-
+```
 
 
 ___________________________________________________________________________
 
-              REACT BUILD AND UPLOAD TO S3 BUCKET
+                        UPLOADING REACT WEBSITE
 ___________________________________________________________________________
 
 
-name: Deploy to S3 Bucket
+Using CI/CD - to upload React website to S3 static bucket
 
-on:
-  push:
-    branches:
-      - main
+Assuming you have followed steps above to
+a. setup the AWS environment by following ```AWS_web_hosting_commands.md```
+b. setup the github with aws keys
+c. built the website e.g. by following ```react_commands.md```
+
+1. Create file: .github\workflows\actions.yml in your repo and add data below then push repo to upload
+and test website access
+
+```yml
+name: actions
+run-name: ${{ github.actor }} Deploy to S3 bucket
+
+on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Build React app
-        run: npm run build
-      
-      - name: Deploy to S3
+      - name: Sync to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --delete
@@ -458,18 +456,21 @@ jobs:
           AWS_S3_BUCKET: sumeet-singh.com
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-southeast-2
+          AWS_REGION: us-east-1
           SOURCE_DIR: './build'
+```
+
+
 
 
 
 ___________________________________________________________________________
 
-              PYTHON TEST AND RELEASE
+                        PYTHON TEST AND RELEASE
 ___________________________________________________________________________
 
 
-
+```yml
 name: test and release software
 
 on:
@@ -715,3 +716,4 @@ jobs:
   #       asset_path: ./dist/Heroes3MapLiker-linux.zip
   #       asset_name: Heroes3MapLiker-linux.zip
   #       asset_content_type: application/zip
+```

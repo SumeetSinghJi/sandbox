@@ -178,38 +178,5 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 
-Using CI/CD - to upload React website to S3 static bucket
-
-Assuming you have followed steps above to
-a. setup the AWS environment
-b. setup the github with aws keys
-c. built the website e.g. by following ```react_commands.md```
-
-1. Create file: .github\workflows\actions.yml in your repo and add data below then push repo to upload
-and test website access
-
-```yml
-name: actions
-run-name: ${{ github.actor }} Deploy to S3 bucket
-
-on: [push]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Sync to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --delete
-        env:
-          AWS_S3_BUCKET: sumeet-singh.com
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-          SOURCE_DIR: './build'
-```
-
+Upload manually by uploading output of ```npm run build``` to S3 bucket
+or use CI/CD e.g. with Github actions in ```github_actions_commands.md```
