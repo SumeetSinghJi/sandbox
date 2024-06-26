@@ -54,10 +54,56 @@ REMOTE DB - specify url of DB in -h parameter
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
 
+
+______________________________________________________________________________________________
+
+                                    HASH PASSWORD
+______________________________________________________________________________________________
+
+To securely store a user password into a MySQL DB, we can use insecure SHA, or use bcrypt to
+hash the password securely with an algorithm
+
+1. Create file anywhere, ideally in /src/components/backend/HashPassword.js
+```javascript
+// HashPassword.js
+const bcrypt = require('bcryptjs');
+
+const password = 'Password1!'; // Change this to any value
+const saltRounds = 10;
+
+bcrypt.hash(password, saltRounds, (err, hash) => {
+  if (err) {
+    console.error('Error hashing password:', err);
+  } else {
+    console.log('Hashed password:', hash);
+  }
+});
+```
+
+2. Run code above
+```bash
+cd project-directory/src/components/backend
+node HashPassword.js
+```
+
+3. You will get an output similar to below
+```bash
+sumeetsingh@Sumeets-Air backend % node HashPassword.js
+Hashed password: $2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy
+```
+
 ______________________________________________________________________________________________
 
                       SETUP ADMIN, DATABASE, TABLE, RECORDS
 ______________________________________________________________________________________________
+
+1. Run the below code in MySQL once connected through CLI, remember to change
+the users password to a Hash password e.g. from step earlier to hash a password
+
+If the users password is already set from a different password encryption method
+use AlTER user following steps in COMMON COMMANDS to change it to new hashed password
+
+e.g, update users set password = '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy' where username = 'sum337';
 
 ```bash
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Password1!';
@@ -77,9 +123,8 @@ CREATE TABLE users (
     subscriptions VARCHAR(1000) NOT NULL,
     notes VARCHAR(1000) NOT NULL
 );
-INSERT INTO users (username, email, password, subscriptions, notes) 
--- for demonstration purposes we will use password: Password1!
-VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password1!', 256), '', '');
+INSERT INTO users (username, email, password, subscriptions, notes)
+VALUES ('sum337', 'sumeet.singhji@outlook.com', '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy', '', '');
 ```
 
 
@@ -196,6 +241,11 @@ sumeetsingh@Sumeets-Air sandbox %
 ```
 
 2. Install backend dependencies in your react project
+IMPORTANT axios.delete/post etc., requires full URL e.g;
+const response = await axios.post('http://localhost:5001/login', {
+        username,
+        password,
+      });
 ```bash
 cd src
 npm install express mysql2 bcryptjs jsonwebtoken body-parser cors axios
@@ -228,6 +278,10 @@ const dbConfig = {
   database: 'agnisamoohdb',
 };
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the login server. Use the /login endpoint to log in.');
+});
+
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -246,7 +300,7 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ username: user.username, userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ username: user.username, userId: user.userID }, SECRET_KEY, { expiresIn: '1h' });
 
     return res.status(200).json({ token });
   } catch (error) {
@@ -263,6 +317,10 @@ app.listen(port, () => {
 4. Start the server
 ```bash
 cd components/backend
+node Server.js
+
+e.g,
+cd /Users/sumeetsingh/Documents/agnisamooh.com/src/components/backend
 node Server.js
 ```
 
@@ -522,8 +580,7 @@ VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
 
 16. CHANGE USER RECORD PASSWORD
 ```bash
-SET @password = 'user_password'; -- Define the new password
-UPDATE users SET password = @password WHERE username = 'sum337';
+UPDATE users SET password = 'Password1!' WHERE username = 'sum337';
 ```
 
 17. LOG OFF
