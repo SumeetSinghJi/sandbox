@@ -1089,27 +1089,342 @@ export default DeleteButton;
 
 ```
 
+______________________________________________________________________________________________
+
+                                CONNECT TO DATABASE
+______________________________________________________________________________________________
+
+Assuming you have a database for your website to connect to the below steps can be
+modified to connect to it.
+
+See ```mysql_commands.md``` for details on how to setup an example db for below code to
+connect to.
+
+CREATE REACT LOGIN FORM COMPONENT
+
+1. Create a login form for react named: LoginForm.js
+If using a localhost use post url: http://localhost:5000/login
+if using a remote url API it there e.g. AWS RDS: https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login
+```javascript
+1. Create a login form e.g. LoginForm.js for React below
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
+
+function LoginForm() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory(); // Initialize useHistory hook
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/login', {
+        username,
+        password,
+      });
+      const token = response.data.token; // Retrieve the JWT token from localStorage
+      localStorage.setItem('authToken', token); // Store the token in localStorage
+      setFormSubmitted(true);
+      setErrorMessage('');  // Clear any previous error messages
+      history.push('/account'); // Redirect to Account page
+    } catch (error) {
+      console.error('Login failed', error);
+      setErrorMessage('Login failed. Please check your username and password and try again.');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <div>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button type="button" onClick={togglePasswordVisibility}>
+          {showPassword ? 'Hide' : 'Show'}
+        </button>
+      </div>
+      <button type="submit">Login</button>
+      {formSubmitted && <p className="success-message">Login successful!</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </form>
+  );
+}
+
+export default LoginForm;
+```
+
+2. Create a login page and import the LoginForm.js
+see ```react_commands.md```
+
+3. OPTIONAL - Create a account page to redirect to
+see ```react_commands.md```
+
+LOCALHOST BACKEND FILE CREATE
+
+1. Find a free port for backend Server.js
+```bash
+# MacOS, Linux
+lsof -i :5000
+# Windows
+netstat -ano | findstr :5000
+
+e.g, 
+sumeetsingh@Sumeets-Air backend % lsof -i :5000
+COMMAND   PID        USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ControlCe 503 sumeetsingh   10u  IPv4 0x7ba65b3bbc2c31c6      0t0  TCP *:commplex-main (LISTEN)
+ControlCe 503 sumeetsingh   11u  IPv6 0x147a291c7d81ae39      0t0  TCP *:commplex-main (LISTEN)
+
+
+#if port is in use then find what the PID is with
+ps -p 503
+
+e.g, 
+sumeetsingh@Sumeets-Air backend % ps -p 503
+  PID TTY           TIME CMD
+  503 ??        14:26.37 /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCe
+
+# since that port is MacOS Airplay e.g. for sharing Apple devices let's use the next port up 5001
+sumeetsingh@Sumeets-Air sandbox % lsof -i :5001
+sumeetsingh@Sumeets-Air sandbox % 
+
+# since port 5001 is free lets use that
+```
+
+2. Install backend dependencies in your react project
+IMPORTANT axios.delete/post etc., requires full URL e.g;
+const response = await axios.post('http://localhost:5001/login', {
+        username,
+        password,
+      });
+```bash
+cd src
+npm install express mysql2 bcryptjs jsonwebtoken body-parser cors axios
+```
+
+3. Create a backend node.js named: src/components/backend/Server.js
+using free port in variable port ```const port = 5001;```
+In production environment change variable SECRET_KEY to something different
+```const SECRET_KEY = "ChangeThis1!";```
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+
+const app = express();
+const port = 5001;
+
+const SECRET_KEY = "___YOUR_SECRET_KEY1!___";
+
+app.use(bodyParser.json());
+app.use(cors());
+
+const dbConfig = {
+  host: '127.0.0.1',
+  user: 'admin',
+  password: 'Password1!',
+  database: 'agnisamoohdb',
+};
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the login server. Use the /login endpoint to log in.');
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = rows[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ username: user.username, userId: user.userID }, SECRET_KEY, { expiresIn: '1h' });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+```
+
+4. Start the server
+```bash
+cd components/backend
+node Server.js
+
+e.g,
+cd /Users/sumeetsingh/Documents/agnisamooh.com/src/components/backend
+node Server.js
+```
+
+5. Start a new terminal window and run the website to test form
+```bash
+cd ../../
+npm start
+```
+
+REMOTE BACKEND FILE CREATE
+
+1. Create a backend node.js lambda with permissions below to hold the DB details
+which are hidden to clients. Remember to click "file save" and "deploy"
+```bash
+1. Go to lambda functions - create new function - function name: agnisamooh-login-lambda-post
+2. Runtime node.js 20.x
+3. Create function
+4. In code source main page add the code below and click - file - save - then click "deploy"
+```
+url: https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions
+```javascript
+const jwt = require('jsonwebtoken');
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
+
+const dbConfig = {
+  host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
+  user: 'admin',
+  password: 'Agnisamooh-1!',
+  database: 'agnisamoohdb',
+};
+
+exports.handler = async (event) => {
+  const { username, password } = JSON.parse(event.body);
+
+  const connection = await mysql.createConnection(dbConfig);
+  const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+  if (rows.length === 0) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const user = rows[0];
+  
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  
+  if (!passwordMatch) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Invalid credentials' }),
+    };
+  }
+
+  const token = jwt.sign({ username: user.username, userId: user.id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ token }),
+  };
+};
+```
+
+2. in AWS API create a new API with details below
+url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=us-east-1 
+```bash
+1. In AWS "API Gateway" - click build new HTTP API
+2. API Name e.g,: agnisamooh-login-post-api
+3. Stage name: PROD
+4. Click Create to save the API
+5. Go back to API's then click on the API. It will take you to the routes page
+6. Click "Create a Route"
+7. Route method: POST
+8. Route name: /login
+9. Click create
+10. Click on "integrations" on the left side
+11. Click create an attach an integration
+12. Integration target "lambda function"
+13. In the drop down select the previous created Lambda function
+14. Click create
+15. Click back on the API in the left navigation bar then make note of the
+ARN e.g, https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com
+```
+
+3. Go back to the LoginForm.js and add the API to the response url adding the stage and api path
+```javascript
+const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login', {
+        username,
+        password,
+      });
+```
+
+TESTING
+
+1. Test by starting the react website and testing the login form page
+```bash
+cd YOUR_REACT_PROJECT_PATH/src
+npm start
+1. www.agnisamooh.com/login
+2. Fill out login form page with 
+username; sum337
+password; Password1!
+3. You should be redirected to the account page
+```
+
+2. If above test is successfull for login remember to log back into mysql and change the
+admin password and the users table test user record password. Replace the password placeholder with a new
+password
+```bash
+-- CHANGE THE -h AND PASSWORD
+mysql -h 127.0.0.1 -u root -p -e "ALTER USER 'admin'@'localhost' IDENTIFIED BY 'new_password_goes_here'; USE agnisamoohdb; UPDATE users SET password = 'new_password_goes_here' WHERE username = 'sum337';"
+```
+
+
 ___________________________________________________________________________
 
                           BUILDING REACT WEBSITE
 ___________________________________________________________________________
 
-30. UNCOMMENT ./build in .gitignore for CICD
+1. UNCOMMENT ./build in .gitignore for CICD
 In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect
 the build folder contents
 
-31. TEST WEBSITE
+2. TEST WEBSITE
 Running below code will automatically open the website in localhost Https://127.0.0.1 to view
 ```bash
 npm start
 ```
 
-32. CREATE REACT WEBSITE
+3. CREATE REACT WEBSITE
 Babel: Converts the React ES6+ standard code into an older version code for multiplatform.
 Webpack: Creates the website directory (/build/index.html, /html, /css, /js) to upload anywhere.
 ```bash
 npm run build
 ```
 
-33. UPLOAD WEBSITE
+4. UPLOAD WEBSITE
 Follow ```AWS_website_hosting_workflow.md```

@@ -30,6 +30,10 @@ npm cache clean --force
 ```bash
 npm install react-router-dom, create-react-app
 
+# e.g. for common libs
+
+npm install react-router-dom, create-react-app, express mysql2 bcryptjs jsonwebtoken body-parser cors axios
+
 ```
 3b. INSTALL LIBS - GLOBALLY e.g. ```C:\Users\<YourUsername>\AppData\Roaming\npm\node_modules```
 ```bash
