@@ -114,10 +114,11 @@ GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'admin'@'localhost';
 USE agnisamoohdb;
 CREATE TABLE users (
     userID INT AUTO_INCREMENT PRIMARY KEY,
+    date_account_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     username VARCHAR(20) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    onMailingList TINYINT(1) NOT NULL DEFAULT 0,
+    on_mailing_list TINYINT(1) NOT NULL DEFAULT 0,
     pending_orders INT NOT NULL DEFAULT 0,
     order_history INT NOT NULL DEFAULT 0,
     open_tickets INT NOT NULL DEFAULT 0,
