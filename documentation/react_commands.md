@@ -1803,16 +1803,31 @@ export default UnsubscribeMailingListButton;
 
 ```
 
+
+
+______________________________________________________________________________________________
+
+                                CONNECT TO LOCAL NO-SQL DATABASE
+______________________________________________________________________________________________
+
+The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
+For details on how to setup the NoSQL Db follow the below and skip section 
+```CONNECT TO LOCAL SQL DATABASE```
+
+1. 
+```bash
+npm install mongodb #windows
+xxx #macos
+xxx # debian family 
+```
+
 ______________________________________________________________________________________________
 
                                 CONNECT TO LOCAL SQL DATABASE
 ______________________________________________________________________________________________
 
-Assuming you have a database for your website to connect to the below steps can be
-modified to connect to it.
-
-See ```mysql_commands.md``` for details on how to setup an example db for below code to
-connect to.
+The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
+For details on how to setup the DB that the Server.js db_config variables use follow ```mysql_commands.md```
 
 1. Find a free port for backend Server.js
 ```bash
