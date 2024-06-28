@@ -102,7 +102,7 @@ The best way to implement React is to use Javascript for Full stack. No other La
 So JSON is used in API calls to read from a NoSQL DB such as MongoDB which stores data in BSON
 (Binary JSON) to replace traditional SQL DB's.
 
-Frontend - React (written in Typescript)
+Frontend - React (optionally written in Typescript, and styled in Tailwind)
 Backend - Express running node.js
 Database - MongoDB
 
@@ -139,15 +139,51 @@ ________________________________________________________________________________
                                     CREATE WEBSITE
 ______________________________________________________________________________________________
 
-DESCRIPTION
+## DESCRIPTION
 The steps below will create a website with
 * Account/Login/Logout/Signup/Modification - full API functionality
 * Shopping Cart/Checkout - Full shopping functionality
 * Example game on frontpage
 
-REQUIREMENTS
-Creating a remote AWS RDS (but local DB commansd also here) 
-following guide ```MySQL_commands```
+## IMPLEMENTATION
+There are 2 methods for database connection, Local DB or Remote DB, both methods
+are outlined in the steps below;
+
+The steps below will advise to build both, and the Local DB can be used for testing purposes.
+
+## LOCAL DB STACK
+ * Frontend - React
+ * Backend - Express, Node.js
+ * Database - MySQL
+ * Hosting - http://localhost:5001
+
+
+## REMOTE DB STACK
+ * Frontend - React
+ * Backend - AWS Lambda + AWS API Gateway
+ * Database - AWS RDS MySQL
+ * Hosting - AWS Route 53 + AWS Certificate Manager + AWS Cloudfront + AWS S3 (region: us-east-1)
+
+## REQUIREMENTS
+For the Remote DB if used perform the below;
+Setup an AWS web hosting account by following ```AWS_web_hosting_commands.md```
+Create a remote AWS RDS MySQL DB by following ```MySQL_commands```
+
+## API's
+```bash
+DELETE /delete-account // Listens for DeleteAccountButton.js
+DELETE /logout // Listens for LogoutButton.js 
+GET /get-account-details // Listens for AccountForm.js
+POST /https://formspree.io // Listens for ContactUsForm.js
+POST /login // Listens for LoginForm.js
+POST /signup // Listens for SignUpForm.js
+POST /update-account // Listens for AccountForm.js
+PUT /join-mailing-list // Listens for JoinMailingList.js
+```
+
+## Building, Testing and Deploying
+* Locally (Dev) - Build a backend SQL server and use node.js to run backend Server.js
+* Online (Prod) - Push this repo to Github and Github Actions CI/CD will build/test/publish to S3 bucket
 
 1. Change to parent directory to host website project directory
 ```bash
