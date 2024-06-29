@@ -1,3 +1,24 @@
+___________________________________________________________________________
+
+                            IMPORTANT
+___________________________________________________________________________
+
+The commands below target the Debian family e.g. Debian, Ubuntu, RaspberryPi
+however they can be modified with a quick confirmation with chatGPT to suit
+other OS.
+
+
+___________________________________________________________________________
+
+                            REMOTE CONNECT
+___________________________________________________________________________
+
+SSH
+e.g. by remoting into raspberry pi with default u: pi p: rasbperry
+```bash
+ssh pi@192.168.0.211
+pi@retropi:~ enter password $ raspberry
+```
 
 ___________________________________________________________________________
 
@@ -28,7 +49,7 @@ sudo apt upgrade -y
 sudo apt dist-upgrade -y
 sudo reboot
 ```
-# or
+or
 ```bash
 pacman -Syu
 ```
@@ -99,7 +120,7 @@ alias head='runlolcat head'
 
 ___________________________________________________________________________
 
-                        DEVOPS
+                        DEVOPS - C++
 ___________________________________________________________________________
 
 1. Generic dev
@@ -187,3 +208,41 @@ DISK FREE/USAGE
 df -h # top level root only
 du -h -d 1
 ```
+
+OPEN PORTS
+find all open ports
+```bash
+netstat -tuln
+
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:139             0.0.0.0:*               LISTEN         
+tcp6       0      0 :::22                   :::*                    LISTEN     
+tcp6       0      0 :::445                  :::*                    LISTEN     
+tcp6       0      0 :::139                  :::*                    LISTEN     
+udp        0      0 0.0.0.0:37819           0.0.0.0:*                          
+udp        0      0 0.0.0.0:68              0.0.0.0:*                          
+udp        0      0 192.168.0.255:137       0.0.0.0:*                          
+udp        0      0 192.168.0.211:137       0.0.0.0:*                          
+udp        0      0 0.0.0.0:137             0.0.0.0:*                          
+udp        0      0 192.168.0.255:138       0.0.0.0:*                          
+udp        0      0 192.168.0.211:138       0.0.0.0:*                          
+udp        0      0 0.0.0.0:138             0.0.0.0:*                          
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                          
+udp6       0      0 :::546                  :::*                               
+udp6       0      0 :::5353                 :::*                               
+udp6       0      0 :::36174                :::* 
+```
+
+OPEN PORT 21 - INSTALL FTP
+```bash
+sudo apt install vsftpd
+sudo nano /etc/vsftpd.conf
+Uncomment local_enable=YES # to allow local users to log in.
+Uncomment write_enable=YES # to allow write access to the FTP server.
+netstat -tuln # check if port now open
+pi@retropi:~ $ tcp6       0      0 :::21                   :::*                    LISTEN 
+```
+

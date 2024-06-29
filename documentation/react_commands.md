@@ -197,7 +197,10 @@ cd src
 9. CREATE ALL FOLDERS
 ```bash
 mkdir assets # for assets e.g. graphics, sounds, images, videos to display on webpage
+mkdir assets/documents
+mkdir assets/documents/policies
 mkdir assets/graphics
+mkdir assets/graphics/games
 mkdir assets/graphics/logos
 mkdir assets/sounds
 mkdir assets/videos
@@ -387,6 +390,12 @@ function AppWrapper() {
 
 export default AppWrapper;
 ```
+
+___________________________________________________________________________
+
+                          CREATE PAGES
+___________________________________________________________________________
+
 
 14. Create 1st component /src/components/Header.js and add the below
 ```javascript
@@ -728,6 +737,13 @@ const Account = () => {
 
 export default Account;
 ```
+
+
+___________________________________________________________________________
+
+                          CREATE COMPONENTS
+___________________________________________________________________________
+
 
 24. Create 1st backend /src/components/backend/ContactUsForm.js and add the below
 Note: the below code uses formspree.com free API, however it's limited to only 2 fields
