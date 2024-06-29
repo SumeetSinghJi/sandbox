@@ -1,7 +1,7 @@
-___________________________________________________________________________
+______________________________________________________________________________________________
 
-                          REACT VS JAVASCRIPT
-___________________________________________________________________________
+                                REACT VS JAVASCRIPT
+______________________________________________________________________________________________
 
 The example below shows the differences between vanilla javascript vs react.
 
@@ -91,10 +91,26 @@ function App() {
 export default App;
 ```
 
-___________________________________________________________________________
 
-                          INSTALLING REACT
-___________________________________________________________________________
+______________________________________________________________________________________________
+
+                  FULL STACK JAVASCRIPT - MERN (MongoDB, Express, React, Node) 
+______________________________________________________________________________________________
+
+The best way to implement React is to use Javascript for Full stack. No other Language needed!
+
+So JSON is used in API calls to read from a NoSQL DB such as MongoDB which stores data in BSON
+(Binary JSON) to replace traditional SQL DB's.
+
+Frontend - React (optionally written in Typescript, and styled in Tailwind)
+Backend - Express running node.js
+Database - MongoDB
+
+
+______________________________________________________________________________________________
+
+                                  INSTALLING REACT
+______________________________________________________________________________________________
 
 1. Install node.js
 ```bash
@@ -103,10 +119,10 @@ MacOS: brew install node
 Linux: apt install node
 ```
 
-___________________________________________________________________________
+______________________________________________________________________________________________
 
-                  OPTIONAL - INSTALL CLONED WEBSITE
-___________________________________________________________________________
+                          OPTIONAL - INSTALL CLONED WEBSITE
+______________________________________________________________________________________________
 
 1. IF CLONING REACT FOR FIRST TIME
 ```bash
@@ -118,20 +134,56 @@ OPTIONAL - RESET/CLEAR NODE MODULES CACHE IF ERRORS OCCUR DURING INSTALLATION
 npm cache clean --force
 ```
 
-___________________________________________________________________________
+______________________________________________________________________________________________
 
-                          CREATE WEBSITE
-___________________________________________________________________________
+                                    CREATE WEBSITE
+______________________________________________________________________________________________
 
-DESCRIPTION
+## DESCRIPTION
 The steps below will create a website with
-* Account details form page
-* Contact us form page
-* Shopping cart form page
+* Account/Login/Logout/Signup/Modification - full API functionality
+* Shopping Cart/Checkout - Full shopping functionality
+* Example game on frontpage
 
-REQUIREMENTS
-Creating a remote AWS RDS (but local DB commansd also here) 
-following guide ```MySQL_commands```
+## IMPLEMENTATION
+There are 2 methods for database connection, Local DB or Remote DB, both methods
+are outlined in the steps below;
+
+The steps below will advise to build both, and the Local DB can be used for testing purposes.
+
+## LOCAL DB STACK
+ * Frontend - React
+ * Backend - Express, Node.js
+ * Database - MySQL
+ * Hosting - http://localhost:5001
+
+
+## REMOTE DB STACK
+ * Frontend - React
+ * Backend - AWS Lambda + AWS API Gateway
+ * Database - AWS RDS MySQL
+ * Hosting - AWS Route 53 + AWS Certificate Manager + AWS Cloudfront + AWS S3 (region: us-east-1)
+
+## REQUIREMENTS
+For the Remote DB if used perform the below;
+Setup an AWS web hosting account by following ```AWS_web_hosting_commands.md```
+Create a remote AWS RDS MySQL DB by following ```MySQL_commands```
+
+## API's
+```bash
+DELETE /delete-account // Listens for DeleteAccountButton.js
+DELETE /logout // Listens for LogoutButton.js 
+GET /get-account-details // Listens for AccountForm.js
+POST /https://formspree.io // Listens for ContactUsForm.js
+POST /login // Listens for LoginForm.js
+POST /signup // Listens for SignUpForm.js
+POST /update-account // Listens for AccountForm.js
+PUT /join-mailing-list // Listens for JoinMailingList.js
+```
+
+## Building, Testing and Deploying
+* Locally (Dev) - Build a backend SQL server and use node.js to run backend Server.js
+* Online (Prod) - Push this repo to Github and Github Actions CI/CD will build/test/publish to S3 bucket
 
 1. Change to parent directory to host website project directory
 ```bash
@@ -391,76 +443,274 @@ function AppWrapper() {
 export default AppWrapper;
 ```
 
-___________________________________________________________________________
-
-                          CREATE PAGES
-___________________________________________________________________________
 
 
-14. Create 1st component /src/components/Header.js and add the below
+______________________________________________________________________________________________
+
+                                    CREATE PAGES
+______________________________________________________________________________________________
+
+1. Create page /src/pages/Account.js and add the below
+Include button to delete account with confirmation for full CRUD
+Include button to sign up for Mailing list
 ```javascript
+// src/pages/Account.js
+
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logoImage from '../assets/graphics/logos/logo.png';
+import AccountForm from '../components/backend/AccountForm';
+import DeleteAccountButton from '../components/backend/DeleteAccountButton';
+import SubscribeMailingListButton from '../components/backend/SubscribeMailingListButton';
+import UnsubscribeMailingListButton from '../components/backend/UnsubscribeMailingListButton';
 
-const Header = () => {
+const Account = () => {
+  const authToken = localStorage.getItem('authToken');
+  const username = authToken ? JSON.parse(atob(authToken.split('.')[1])).username : ''; // Decode token to extract username
+
   return (
-    <div className="header">
-      <Link to="/">
-        <img src={logoImage} alt="Sumeet Singh logo" className="logo" />
-      </Link>
-      <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/books">Books</Link></li>
-        <li><Link to="/biography">Biography</Link></li>
-        <li><Link to="/news">News</Link></li>
-        <li><Link to="/contactus">Contact us</Link></li>
-      </ul>
-    </div>
-  );
-}
-
-export default Header;
-```
-
-15. Create 2nd component /src/components/Footer.js and add the below
-```javascript
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const Footer = () => {
-  return (
-    <div className="footer">
-      <div className="footercolumn">
-        <h3>Quick links</h3>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/books">Books</Link></li>
-          <li><Link to="/biographys">Biography</Link></li>
-          <li><Link to="/news">News</Link></li>
-          <li><Link to="/contactus">Contact us</Link></li>
-        </ul>
-      </div>
-      <div className="footercolumn">
-        <h3>Mission</h3>
-        <p>
-          "To humanity I invite you to join me in a world with autonomy to augment our bodies to become better. To merge with the machine and become more than human. To join the next stage of human evolution."
-        </p>
-      </div>
-      <div className="footercolumn">
-        {/* Third column content goes here */}
+    <div>
+      <div className="main">
+        <div className="column1">
+          {/* Content for left column (column1) */}
+        </div>
+        <div className="column2">
+          <div style={{ textAlign: 'center' }}>
+            <h1>Account</h1>
+          </div>
+          <br />
+          <p>
+            Welcome, {username}
+          </p>
+          {/* Render account details form, join mailing list, delete account button */}
+          <AccountForm />
+          <div className="buttonspace">
+            <SubscribeMailingListButton />
+            <UnsubscribeMailingListButton />
+          </div>
+          <DeleteAccountButton />
+        </div>
+        <div className="column3">
+          {/* Content for right column (column3) */}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default Footer;
+export default Account;
+
 ```
 
-16. Create 1st page /src/pages/Homepage.js and add the below
+2. Create page /src/pages/Cart.js and add the below
 ```javascript
+// src/pages/Cart.js
+
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    // Retrieve cart items from localStorage on component mount
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, []);
+
+  const removeFromCart = (itemId) => {
+    // Filter out the item with the given itemId from cartItems
+    const updatedCart = cartItems.filter(item => item.id !== itemId);
+    setCartItems(updatedCart);
+    // Update localStorage with the new cartItems
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
+  return (
+    <div>
+      <div className='main'>
+        <div className="column1"></div>
+        <div className="column2">
+          <br />
+          <br />
+          <div style={{ textAlign: 'center' }}>
+            <h1>Cart</h1>
+          </div>
+          <br />
+          {/* Display each item in the cart */}
+          {cartItems.map(item => (
+            <div key={item.id}>
+              <h3>{item.name}</h3>
+              <p>Price: ${item.price}</p>
+              <button onClick={() => removeFromCart(item.id)}>Remove</button>
+              <hr />
+            </div>
+          ))}
+          {/* Show a message if cart is empty */}
+          {cartItems.length === 0 && <p>Your cart is empty</p>}
+          <br />
+          <Link to="/checkout">
+            <button>Checkout</button>
+          </Link>
+        </div>
+        <div className="column3"></div>
+      </div>
+    </div>
+  );
+};
+
+export default Cart;
+
+```
+
+3. Create page /src/pages/Checkout.js and add the below
+```javascript
+// src/pages/Checkout.js
+
 import React from 'react';
-import image1 from '../assets/graphics/me.jpeg';
+
+const Checkout = () => {
+  return (
+    <div>
+      <div className='main'>
+        <div className="column1"></div>
+        <div className="column2">
+          <br />
+          <br />
+          <div style={{ textAlign: 'center' }}>
+          <h1>Checkout</h1>
+          </div>
+          <br />
+          <h3>Checkout</h3>
+          <p>
+            Please confirm the products to purchase below are correct before purchasing;
+          </p>
+          <br />
+        </div>
+        <div className="column3"></div>
+      </div>
+    </div>
+  );
+};
+
+export default Checkout;
+
+```
+
+4. Create page /src/pages/ContactUs.js and add the below
+```javascript
+// src/pages/ContactUs.js
+
+import React from 'react';
+import ContactUsForm from '../components/backend/ContactUsForm';
+
+const ContactUs = () => {
+  return (
+    <div>
+      <div className="main">
+        <div className="column1"></div>
+        <div className="column2">
+          <div style={{ textAlign: 'center' }}>
+            <h1>Contact Us</h1>
+          </div>
+          <br />
+          <h3>Contact Us Form</h3>
+          <ContactUsForm />
+        </div>
+        <div className="column3"></div>
+      </div>
+    </div>
+  );
+};
+
+export default ContactUs;
+
+```
+
+5. Create page /src/pages/Games.js and add the below
+```javascript
+// src/pages/Games.js
+
+import React, { useState } from 'react';
+import AddCartButton from '../components/AddCartButton';
+import image1 from '../assets/graphics/BubbleUp1.png';
+import image2 from '../assets/graphics/BubbleUp2.png';
+
+const Games = () => {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (item) => {
+    setCart([...cart, item]);
+    localStorage.setItem('cart', JSON.stringify([...cart, item]));
+  };
+
+  return (
+    <div>
+      <div className='main'>
+        <div className="column1"></div>
+        <div className="column2">
+          <br />
+          <br />
+          <div style={{ textAlign: 'center' }}>
+            <h1>Games</h1>
+          </div>
+          <br />
+          <h3>BubbleUp</h3>
+          <p>
+            BubbleUP is a combined C++ 2D Game Engine with a built in feature-rich demonstration 2D game built ontop of the SDL Framework. It includes classes for constructing interactive Buttons and fields to create stunning GUI, Forms and HUD. Includes countless game entities and level editor to create unique stunning 2D games. Has built in scenes for achievements, leaderboards, multiplayer, and more. You can download and easily modify this open-source code to create your own game by following the instructions here.
+          </p>
+          <div style={{ textAlign: 'center' }}>
+            <img src={image1} alt="BubbleUp" style={{ maxWidth: '100%', height: 'auto' }} />
+            <br />
+            <br />
+            <img src={image2} alt="BubbleUp" style={{ maxWidth: '100%', height: 'auto' }} />
+          </div>
+          <br />
+          <br />
+          <h4>Purchase Links</h4>
+          <p>
+            Free version available on itch <a href="https://example.com" target="_blank" rel="noopener noreferrer">here</a>
+          </p>
+          <p>
+            Paid version available here
+            <AddCartButton itemId="bubbleup1" itemName="BubbleUp" itemPrice={10} onAddToCart={addToCart} />
+          </p>
+          <br />
+          <br />
+          <h4>System Requirements</h4>
+          <ul>
+            <li>OS:
+              <ul>
+                <li>Windows 10, 11</li>
+                <li>MacOS 13 - 14</li>
+                <li>Ubuntu 22.04 - 24.04</li>
+              </ul>
+            </li>
+            <li>Processor: at least a Core i3 or AMD CPU equivalent</li>
+            <li>RAM: 4 GB RAM</li>
+            <li>Graphics: at least a HD compatible CPU/GPU</li>
+            <li>Storage: 5 GB Free</li>
+          </ul>
+          <br />
+          <br />
+          <br />
+        </div>
+        <div className="column3"></div>
+      </div>
+    </div>
+  );
+};
+
+export default Games;
+
+```
+
+6. Create page /src/pages/Homepage.js and add the below
+```javascript
+// src/pages/Homepage.js
+
+import React from 'react';
+import SampleGame from '../components/SampleGame';
 
 const Homepage = () => {
     return (
@@ -471,15 +721,26 @@ const Homepage = () => {
                 </div>
                 <div className="column2">
                     <div style={{ textAlign: 'center' }}>
-                        <h1>Sumeet Singh's biography</h1>
+                        <h1>Calling all Gamers</h1>
                     </div>
                     <br />
                     <p>
-                        Sumeet Singh is an author, architect, and advocate on cybernetics,
-                        cyberware and cyborgs from Sydney, Australia. His ambition aspires to a
-                        post-scarcity future where humans have autonomy to augment themselves in becoming
-                        better by merging with machines.
+                        Welcome to the home of niche gaming developers!
                     </p>
+                    <p>
+                        Meet Agnisamooh, your gateway to discovering unique and innovative games that may not be in the spotlight yet.
+                    </p>
+                    <p>
+                        Agnisamooh is dedicated to bridging the gap between niche game developers and a broader audience. Whether you're into indie adventures, artistic puzzles, or experimental simulations, Agnisamooh brings you curated selections that promise fresh experiences.
+                    </p>
+                    <p>
+                        Explore our catalog to find hidden gems, support up-and-coming developers, and expand your gaming horizons.
+                    </p>
+                    <div style={{ textAlign: 'center' }}>
+                        <SampleGame />
+                        <br />
+                        <a href="https://www.agnisamooh.com/games" className="btn-primary">Discover More</a>
+                    </div>
                 </div>
                 <div className="column3">
                     {/* Content for right column (column3) */}
@@ -493,8 +754,52 @@ export default Homepage;
 
 ```
 
-17. Create 2nd page /src/pages/News.js and add the below
+7. Create page /src/pages/Login.js and add the below
 ```javascript
+// src/pages/Login.js
+
+import React from 'react';
+import LoginForm from '../components/backend/LoginForm'
+
+const Login = () => {
+    return (
+        <div>
+            <div className="main">
+                <div className="column1">
+                    {/* Content for left column (column1) */}
+                </div>
+                <div className="column2">
+                    <div style={{ textAlign: 'center' }}>
+                        <h1>Login</h1>
+                    </div>
+                    <br />
+                    <p>
+                        Login to your account below
+                    </p>
+                    <p>NOTE: Because this is a Learning Project and not a real/live business the Database
+                        which would normally be an AWS RDS DB is turned off to save money. 
+                        Possibly in the future a Lambda for start/stopping DB will be triggered by LogOn/Token expire/Logoff
+                        but for now for a demonstration on how it would act you can see a local server code here:
+                        <a href = "https://github.com/SumeetSinghJi/agnisamooh.com/blob/main/src/components/backend/Server.js">https://github.com/SumeetSinghJi/agnisamooh.com/blob/main/src/components/backend/Server.js</a>
+                    </p>
+                    <LoginForm />
+                </div>
+                <div className="column3">
+                    {/* Content for right column (column3) */}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Login;
+
+```
+
+8. Create page /src/pages/News.js and add the below
+```javascript
+// src/pages/News.js
+
 import React from 'react';
 
 const News = () => {
@@ -509,12 +814,13 @@ const News = () => {
           <h1>News</h1>
           </div>
           <br />
-          <h3>Delay with book "Cybernetics, Cyberware and Cyborgs"</h3>
-          <p>Date: 06/09/2023</p>
+          <h3>Delay with BubbleUp</h3>
+          <p>TBA: Christmas 2024</p>
           <p>
-            Sorry everyone. I'm looking for a forward (book introduction) from a person discussed
-            within the book who lives overseas that I would like to personally visit first.
+            Sorry everyone. BubbleUp is delayed. Too much volunteering efforts. Keep a eye out
+            this Christmas for release.
           </p>
+          <br />
         </div>
         <div className="column3"></div>
       </div>
@@ -526,89 +832,10 @@ export default News;
 
 ```
 
-18. Create 3rd page /src/pages/Biography.js and add the below
+9. Create page /src/pages/NotFound.js and add the below
 ```javascript
-import React from 'react';
-import image1 from '../assets/graphics/biography-1.png';
-import image2 from '../assets/graphics/biography-2.png';
+// src/pages/NotFound.js
 
-const Biography = () => {
-  return (
-    <div>
-      <div className="main">
-        <div className="column1"></div>
-        <div className="column2">
-          <br />
-          <br />
-          <div style={{ textAlign: 'center' }}>
-          <h1>Biography</h1>
-          </div>
-          <br />
-          <p>
-            Sumeet Singh, born on September 18, 1991, in Sydney, Australia, is the younger of two sons born
-            to Anilta and Dalip Chand.
-          </p>
-          <p>
-            Anilta Chand, born on January 2, 1956, in Suva, Fiji, began her professional journey after
-            completing high school, initially working in the Housing Authority in Fiji. She showcased her
-            diverse skill set as a legal typist, bookkeeper, and accountant. Anilta migrated to Sydney,
-            Australia, on October 22, 1988, where she found employment with TUTA before Sumeet's birth.
-            Throughout her life, she worked at various medical institutes, including Royal Prince Alfred
-            Hospital (RPA).
-          </p>
-          <img src={image1} alt="Fiji Islands" style={{ maxWidth: '100%', height: 'auto' }} />
-          <p>
-            The Fiji islands, consisting of two major islands Vanua Levu (South) and Viti Levu (North).
-          </p>
-        </div>
-        <div className="column3"></div>
-      </div>
-    </div>
-  );
-};
-
-export default Biography;
-```
-
-19. Create 4th page /src/pages/ContactUs.js and add the below
-```javascript
-import React from 'react';
-import ContactUsForm from '../components/backend/ContactUsForm';
-
-const ContactUs = () => {
-  return (
-    <div>
-      <div className="main">
-        <div className="column1"></div>
-        <div className="column2">
-        <div style={{ textAlign: 'center' }}>
-          <h1>Contact Us</h1>
-          </div>
-          <br />
-          <p>
-            "To humanity I invite you to join me in a world with autonomy to augment our bodies to become
-            better. To merge with the machine and become more than human. To join the next stage of human
-            evolution."
-          </p>
-          <p>Email address: kurta.kursi@gmail.com</p>
-          <p>
-            NOTE: Sumeet has no social media accounts. Please report and ignore any malicious social 
-            media accounts claiming to be Sumeet.
-          </p>
-          <h3>Contact Us Form</h3>
-          <ContactUsForm />
-        </div>
-        <div className="column3"></div>
-      </div>
-    </div>
-  );
-};
-
-export default ContactUs;
-```
-
-20. Create 5th page /src/pages/NotFound.js and add the below
-```javascript
 import React from 'react';
 
 const NotFound = () => {
@@ -638,117 +865,503 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-21. Create 6th page /src/pages/SignUp.js and add the below
+10. Create page /src/pages/SignUp.js and add the below
 ```javascript
+// src/pages/SignUp.js
+
 import React from 'react';
-import SubmitSignUp from './backend/SignUpForm';
+import SignUpForm from '../components/backend/SignUpForm'
 
 const SignUp = () => {
-  return (
-    <div>
-      <div className="row">
-        <div className="column1"></div>
-        <div className="column2">
-          <h2>Online Services</h2>
-          <h3>Sign Up</h3>
-          <SignUpForm />
-          <br />
-          <br />
+    return (
+        <div>
+            <div className="main">
+                <div className="column1">
+                    {/* Content for left column (column1) */}
+                </div>
+                <div className="column2">
+                    <div style={{ textAlign: 'center' }}>
+                        <h1>Sign Up</h1>
+                    </div>
+                    <br />
+                    <p>
+                        Sign up using the form below
+                    </p>
+                    <SignUpForm />
+                </div>
+                <div className="column3">
+                    {/* Content for right column (column3) */}
+                </div>
+            </div>
         </div>
-        <div className="column3"></div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default SignUp;
+
 ```
 
-22. Create 7th page /src/pages/Login.js and add the below
-```javascript
-import React from 'react';
-import LoginForm from './backend/LoginForm';
+______________________________________________________________________________________________
 
-const Login = () => {
+                                CREATE COMPONENTS
+______________________________________________________________________________________________
+
+
+1. Create component /src/components/AddCartButton.js and add the below
+```javascript
+// src/components/AddCartButton.js
+import React from 'react';
+
+const AddCartButton = ({ itemId, itemName, itemPrice, onAddToCart }) => {
+  const addToCartHandler = () => {
+    const item = {
+      id: itemId,
+      name: itemName,
+      price: itemPrice,
+      quantity: 1  // Assuming starting with quantity 1
+    };
+    onAddToCart(item);
+  };
+
   return (
-    <div>
-      <div className="row">
-        <div className="column1"></div>
-        <div className="column2">
-          <h2>Online Services</h2>
-          <h3>Login</h3>
-          <LoginForm />
-          <br />
-          <br />
-        </div>
-        <div className="column3"></div>
-      </div>
-    </div>
+    <button onClick={addToCartHandler}>Add to Cart</button>
   );
 };
 
-export default SignUp;
+export default AddCartButton;
+
 ```
 
-23. Create 8th page /src/pages/Account.js and add the below
-Include button to delete account with confirmation for full CRUD
-Include button to sign up for Mailing list
+2. Create component /src/components/Footer.js and add the below
 ```javascript
+// src/components/Footer.js
+
 import React from 'react';
-import AccountForm from '../components/backend/AccountForm';
-import DeleteButton from '../components/backend/DeleteButton';
+import { Link } from 'react-router-dom';
 
-const Account = () => {
-  const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
-  const username = authToken ? JSON.parse(atob(authToken.split('.')[1])).username : ''; // Decode token to extract username
-
+const Footer = () => {
   return (
-    <div>
-      <div className="main">
-        <div className="column1">
-          {/* Content for left column (column1) */}
-        </div>
-        <div className="column2">
-          <div style={{ textAlign: 'center' }}>
-            <h1>Account</h1>
-          </div>
-          <br />
-          <p>
-            Welcome, {username}! {/* Display the username */}
-          </p>
-          <p>
-            Modify your account details below
-          </p>
-          <AccountForm />
-          <br />
-          <br />
-          <br />
-          <p>Press the following button to delete your account</p>
-          <DeleteButton />
-          <br />
-        </div>
-        <div className="column3">
-          {/* Content for right column (column3) */}
-        </div>
+    <div className="footer">
+      <div className="footercolumn">
+        <h3>Quick links</h3>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/games">Games</Link></li>
+          <li><Link to="/news">News</Link></li>
+          <li><Link to="/contactus">Contact us</Link></li>
+          <li><Link to="/account">Account</Link></li>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/signup">Sign up</Link></li>
+        </ul>
+      </div>
+      <div className="footercolumn">
+        <h3>Mission</h3>
+        <p>
+          "To bring the best games from the niche developers"
+        </p>
+      </div>
+      <div className="footercolumn">
+        {/* Third column content goes here */}
       </div>
     </div>
   );
-};
+}
 
-export default Account;
+export default Footer;
+
 ```
 
+3. Create component /src/components/Header.js and add the below
+```javascript
+// src/components/Header.js
 
-___________________________________________________________________________
+import React from 'react';
+import { Link } from 'react-router-dom';
+import logoImage from '../assets/graphics/logos/Logo-PNG-4097px.png';
 
-                          CREATE COMPONENTS
-___________________________________________________________________________
+const Header = ({ authToken, handleLogout }) => {
+  return (
+    <div className="header">
+      <Link to="/">
+        <img src={logoImage} alt="Agnisamooh logo" className="logo" />
+      </Link>
+      <ul className="nav-links">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/games">Games</Link></li>
+        <li><Link to="/news">News</Link></li>
+        <li><Link to="/contactus">Contact us</Link></li>
+        <li><Link to="/cart">Cart</Link></li>
+        {!authToken ? (
+          <>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/signup">Sign up</Link></li>
+          </>
+        ) : (
+          <>
+            <li><Link to="/account">Account</Link></li>
+            <li><Link to="/logout" onClick={handleLogout}>Logout</Link></li>
+          </>
+        )}
+      </ul>
+    </div>
+  );
+}
 
+export default Header;
 
-24. Create 1st backend /src/components/backend/ContactUsForm.js and add the below
-Note: the below code uses formspree.com free API, however it's limited to only 2 fields
+```
+
+4. Create component /src/components/SampleGame.js and add the below
+```javascript
+// src/components/SampleGame.js
+
+import React, { useState, useEffect, useCallback } from 'react';
+
+const SampleGame = () => {
+    const gameWidth = 400;
+    const gameHeight = 400;
+    const squareSize = 20;
+    const initialPosition = { x: 0, y: 0 };
+
+    // Define generateRandomPosition before its usage
+    const generateRandomPosition = () => {
+        const randomX = Math.floor(Math.random() * (gameWidth / squareSize)) * squareSize;
+        const randomY = Math.floor(Math.random() * (gameHeight / squareSize)) * squareSize;
+        return { x: randomX, y: randomY };
+    };
+
+    const [position, setPosition] = useState(initialPosition);
+    const [direction, setDirection] = useState('right');
+    const [score, setScore] = useState(0);
+    const [gameOver, setGameOver] = useState(false);
+    const [objectPosition, setObjectPosition] = useState(generateRandomPosition());
+    const [bombPosition, setBombPosition] = useState(generateRandomPosition());
+    const [gameStarted, setGameStarted] = useState(false);
+
+    const startGame = () => {
+        setGameOver(false);
+        setScore(0);
+        setPosition(initialPosition);
+        setObjectPosition(generateRandomPosition());
+        setBombPosition(generateRandomPosition());
+        setGameStarted(true);
+    };
+
+    const endGame = () => {
+        setGameStarted(false);
+        setGameOver(true);
+    };
+
+    const checkCollisions = useCallback(() => {
+        if (position.x === objectPosition.x && position.y === objectPosition.y) {
+            setScore(score + 10);
+            setObjectPosition(generateRandomPosition());
+        }
+
+        if (position.x === bombPosition.x && position.y === bombPosition.y) {
+            endGame();
+        }
+    }, [position, objectPosition, bombPosition, score]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            e.preventDefault();
+            if (!gameStarted) return;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    if (direction !== 'down') setDirection('up');
+                    break;
+                case 'ArrowDown':
+                    if (direction !== 'up') setDirection('down');
+                    break;
+                case 'ArrowLeft':
+                    if (direction !== 'right') setDirection('left');
+                    break;
+                case 'ArrowRight':
+                    if (direction !== 'left') setDirection('right');
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [direction, gameStarted]);
+
+    useEffect(() => {
+        if (!gameStarted) return;
+
+        const moveSquare = () => {
+            switch (direction) {
+                case 'up':
+                    setPosition((prevPos) => ({
+                        ...prevPos,
+                        y: Math.max(prevPos.y - squareSize, 0)
+                    }));
+                    break;
+                case 'down':
+                    setPosition((prevPos) => ({
+                        ...prevPos,
+                        y: Math.min(prevPos.y + squareSize, gameHeight - squareSize)
+                    }));
+                    break;
+                case 'left':
+                    setPosition((prevPos) => ({
+                        ...prevPos,
+                        x: Math.max(prevPos.x - squareSize, 0)
+                    }));
+                    break;
+                case 'right':
+                    setPosition((prevPos) => ({
+                        ...prevPos,
+                        x: Math.min(prevPos.x + squareSize, gameWidth - squareSize)
+                    }));
+                    break;
+                default:
+                    break;
+            }
+
+            checkCollisions();
+        };
+
+        const interval = setInterval(() => {
+            moveSquare();
+        }, 200);
+
+        return () => clearInterval(interval);
+    }, [direction, gameStarted, gameWidth, gameHeight, squareSize, checkCollisions]);
+
+    return (
+        <div>
+            {!gameStarted && !gameOver && (
+                <div style={{ textAlign: 'center' }}>
+                    <button onClick={startGame} className="btn-primary">Start Game</button>
+                </div>
+            )}
+
+            {gameStarted && (
+                <div style={{ width: gameWidth, height: gameHeight, border: '1px solid black', position: 'relative', margin: '0 auto' }}>
+                    <div
+                        style={{
+                            width: squareSize,
+                            height: squareSize,
+                            backgroundColor: 'blue',
+                            position: 'absolute',
+                            top: position.y,
+                            left: position.x
+                        }}
+                    ></div>
+
+                    <div
+                        style={{
+                            width: squareSize,
+                            height: squareSize,
+                            backgroundColor: 'green',
+                            position: 'absolute',
+                            top: objectPosition.y,
+                            left: objectPosition.x
+                        }}
+                    ></div>
+
+                    <div
+                        style={{
+                            width: squareSize,
+                            height: squareSize,
+                            backgroundColor: 'red',
+                            position: 'absolute',
+                            top: bombPosition.y,
+                            left: bombPosition.x
+                        }}
+                    ></div>
+
+                    <div style={{ position: 'absolute', bottom: 10, left: 10 }}>
+                        Score: {score}
+                    </div>
+                </div>
+            )}
+
+            {gameOver && (
+                <div style={{ textAlign: 'center' }}>
+                    <h2>Game Over!</h2>
+                    <p>Your score: {score}</p>
+                    <button onClick={startGame} className="btn-primary">Play Again</button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default SampleGame;
+
+```
+
+5. Create component /src/components/YouTubeEmbed.js and add the below
+```javascript
+// src/components/YouTubeEmbed.js
+
+import React from 'react';
+
+const YouTubeEmbed = ({ embedId }) => (
+  <div className="video-responsive">
+    <iframe
+      width="560"
+      height="315"
+      src={`https://www.youtube.com/embed/${embedId}`}
+      title="YouTube video player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      frameBorder="0"
+      allowFullScreen
+    ></iframe>
+  </div>
+);
+
+export default YouTubeEmbed;
+
+```
+
+______________________________________________________________________________________________
+
+                                CREATE COMPONENTS - BACKEND
+______________________________________________________________________________________________
+
+These frontend js codes connect to API's that are in the backend. 
+See below section "CONNECT TO LOCAL DATABASE" - for local DB's
+See below section "CONNECT TO LOCAL DATABASE" - for online DB's
+
+NOTE: HashPassword.js is used for the bcrypt node.js module for encrypting passwords. This is to be
+used in place of password entry for a DB. So when user logs into front end as their commpn password e.g.
+"Password1!" the "Server.js" or remove AWS Lambda endpoint code will encrypt. Same with password changes.
+
+Note: the below contact us form API code uses formspree.com free API, however it's limited to only 2 fields
 email and message. So if you copy the below change to your liking and replace the API key
+
+1. Create 1st backend /src/components/backend/AccountForm.js and add the below
 ```javascript
+// src/components/backend/AccountForm.js
+
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
+function AccountForm() {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [authToken, setAuthToken] = useState('');
+
+    useEffect(() => {
+        // Retrieve JWT token from localStorage on component mount
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            setAuthToken(token);
+            getAccountDetails(token); // Call getAccountDetails with token
+        }
+    }, []); // Empty dependency array ensures this runs only on mount
+
+    const getAccountDetails = async () => {
+        try {
+            const authToken = localStorage.getItem('authToken');
+            setAuthToken(authToken);
+
+            const response = await axios.get("http://localhost:5001/get-account-details", {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            setUsername(response.data.username);
+            setEmail(response.data.email);
+            setErrorMessage('');
+        } catch (error) {
+            console.error("Failed to get account details", error);
+            setErrorMessage("Failed to get account details");
+        }
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5001/update-account", {
+                username,
+                email,
+                password
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to update account data");
+            }
+
+            setFormSubmitted(true);
+            setErrorMessage('');
+            getAccountDetails(); // Call to update the Account form labels
+        } catch (error) {
+            console.error("Failed to update account data", error);
+            setErrorMessage("Failed to update account data");
+        }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="username">Username: {username} </label>
+                <input
+                    type="text"
+                    id="username"
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Enter new username"
+                />
+            </div>
+            <div>
+                <label htmlFor="email">Email: {email} </label>
+                <input
+                    type="text"
+                    id="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter new email"
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password:</label>
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter new password"
+                />
+                <button type="button" onClick={togglePasswordVisibility}>
+                    {showPassword ? 'Hide' : 'Show'}
+                </button>
+            </div>
+            <button type="submit">Update</button>
+            {formSubmitted && <p className="success-message">Account details updated</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </form>
+    );
+}
+
+export default AccountForm
+```
+
+2. Create 1st backend /src/components/backend/ContactUsForm.js and add the below
+```javascript
+// src/components/backend/ContactUsForm.js
+
 import React, { useState } from 'react';
 
 const ContactUsForm = () => {
@@ -836,7 +1449,7 @@ const ContactUsForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      action="https://formspree.io/f/mayrrrez"
+      action="https://formspree.io/f/xwpeeked"
       method="POST"
     >
       <div className="form-group">
@@ -873,9 +1486,162 @@ export default ContactUsForm;
 
 ```
 
-25. Create 2nd backend /src/components/backend/SignUpForm.js and add the below
+3. Create 1st backend /src/components/backend/DeleteAccountButton.js and add the below
 ```javascript
+// src/components/backend/DeleteAccountButton.js
+
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
+
+const DeleteAccountButton = ({ onDelete }) => {
+    const navigate = useNavigate(); // Initialize useNavigate hook for navigation
+    const [errorMessage, setErrorMessage] = useState(null); // State for error message
+
+    const handleDelete = async () => {
+        const confirmed = window.confirm(`Are you sure you want to delete your account?
+            Deleting an account is not recoverable.`);
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:5001/delete-account', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}` // Include 'Bearer' prefix for JWT
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete account');
+            }
+            onDelete(); // Optional: Implement a callback to handle UI changes after deletion
+            navigate('/');
+        } catch (error) {
+            console.error('Delete account error:', error.message);
+            setErrorMessage('Failed to delete account');
+        }
+    };
+
+    return (
+        <div>
+            <p>Click this button to delete your account. 
+                Please understand that deleted accounts cannot be recovered.</p>
+            <button onClick={handleDelete}>Delete Account</button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
+    );
+};
+
+export default DeleteAccountButton;
+
+```
+
+4. Create 1st backend /src/components/backend/HashPassword.js and add the below
+```javascript
+// src/components/backend/HashPassword.js
+// Used for hasing a password to insert in MySQL for first time user creation
+// You can also use this in your SignUpForm backend to create the hashed password
+// for DB insertion
+const bcrypt = require('bcryptjs');
+
+const password = 'Password1!';
+const saltRounds = 10;
+
+bcrypt.hash(password, saltRounds, (err, hash) => {
+  if (err) {
+    console.error('Error hashing password:', err);
+  } else {
+    console.log('Hashed password:', hash);
+  }
+});
+
+```
+
+5. Create 1st backend /src/components/backend/LoginForm.js and add the below
+```javascript
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+      navigate('/account'); // Redirect to account page if logged in
+    }
+  }, [navigate]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5001/login', {
+        username,
+        password,
+      });
+      const token = response.data.token;
+      localStorage.setItem('authToken', token);
+      setFormSubmitted(true);
+      setErrorMessage('');
+      navigate('/account', { replace: true }); // Navigate to Account.js page
+      window.location.reload(); // Refresh the page after navigating
+    } catch (error) {
+      console.error('Login failed', error);
+      setErrorMessage('Login failed. Please check your username and password and try again.');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <div>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button type="button" onClick={togglePasswordVisibility}>
+          {showPassword ? 'Hide' : 'Show'}
+        </button>
+      </div>
+      <button type="submit">Login</button>
+      {formSubmitted && <p className="success-message">Login successful!</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </form>
+  );
+}
+
+export default LoginForm;
+
+```
+
+6. Create 1st backend /src/components/backend/SignUpForm.js and add the below
+```javascript
+// src/components/backend/SignUpForm.js
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
     const [formData, setFormData] = useState({
@@ -883,6 +1649,8 @@ const SignUpForm = () => {
         email: '',
         password: ''
     });
+
+    const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
     const handleInputChange = (e) => {
         setFormData({
@@ -895,7 +1663,7 @@ const SignUpForm = () => {
         event.preventDefault();
 
         // Sending the registration data to the API endpoint
-        fetch("API_URL_GOES_HERE", {
+        fetch("http://localhost:5001/signup", { // Updated API endpoint
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -911,8 +1679,7 @@ const SignUpForm = () => {
         .then(data => {
             console.log("Success: Registered successfully: ", data);
             alert("Success: Registration successful");
-            // Redirect user to account page if registration successful
-            // window.location.href = "account.html";
+            navigate('/account'); // Navigate to Account page
         })
         .catch(error => {
             console.error("Error: ", error);
@@ -942,257 +1709,128 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+
 ```
 
-26. Create 3rd backend /src/components/backend/LoginForm.js and add the below
+7. Create 1st backend /src/components/backend/SubscribeMailingListButton.js and add the below
 ```javascript
+// src/components/backend/SubscribeMailingListButton.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
-
-function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const history = useHistory(); // Initialize useHistory hook
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post('https://ln0w2lsuuc.execute-api.us-east-1.amazonaws.com/$default/login', {
-        username,
-        password,
-      });
-      const token = response.data.token; // Retrieve the JWT token from localStorage
-      localStorage.setItem('authToken', token); // Store the token in localStorage
-      setFormSubmitted(true);
-      setErrorMessage('');  // Clear any previous error messages
-      history.push('/account'); // Redirect to Account page
-    } catch (error) {
-      console.error('Login failed', error);
-      setErrorMessage('Login failed. Please check your username and password and try again.');
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-      />
-      <div>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="button" onClick={togglePasswordVisibility}>
-          {showPassword ? 'Hide' : 'Show'}
-        </button>
-      </div>
-      <button type="submit">Login</button>
-      {formSubmitted && <p className="success-message">Login successful!</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </form>
-  );
-}
-
-export default LoginForm;
-
-```
-
-27. Create 4th backend /src/components/backend/AccountForm.js and add the below
-```javascript
-import React, { useState } from "react";
-
-function AccountForm() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [formSubmitted, setFormSubmitted] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            const response = "";
-            setFormSubmitted(true);
-            setErrorMessage("");
-        }
-        catch(error) {
-            console.error("Failed to update account data", error);
-            setErrorMessage("Failed to update account data", error);
-        }
-    };
-
-    const togglePasswordVisibility = () => {
-
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder=""
-            />
-            <input
-                type="text"
-                value={password}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder=""
-            />
-            <button type="button" onSubmit={togglePasswordVisibility}></button>
-            <input>
-            </input>
-            <button type="submit">Update</button>
-            {formSubmitted && <p className="success-message">Account details updated</p>}
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </form>
-    )
-};
-
-export default AccountForm;
-
-```
-
-28. Create 5th backend /src/components/backend/DeleteButton.js and add the below
-```javascript
-import React from 'react';
 
 const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
 
-const DeleteButton = ({ onDelete }) => {
-    const handleDelete = async () => {
+const SubscribeMailingListButton = () => {
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null); // State for error message
+
+    const handleSubscribeMailingList = async () => {
         try {
-            const response = await fetch('/api/user/delete', {
-                method: 'DELETE',
+            const response = await axios.put('/Subscribe-mailing-list', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': authToken
+                    'Authorization': `Bearer ${authToken}`
                 }
             });
             if (!response.ok) {
-                throw new Error('Failed to delete account');
+                throw new Error('Failed to Subscribe mailing list');
             }
-            onDelete(); // Optional: Implement a callback to handle UI changes after deletion
+            setFormSubmitted(true);
+            setErrorMessage('');
         } catch (error) {
-            console.error('Delete account error:', error.message);
-            // Handle error, show a message, or redirect to an error page
+            console.error('Subscribe mailing list error:', error.message);
+            setErrorMessage('Failed to Subscribe mailing list');
         }
     };
 
     return (
-        <button onClick={handleDelete}>Delete Account</button>
+        <div>
+            <p>Click here to subscribe/unsubscribe to promotional marketing material
+            which includes exclusive sales, events, news and more</p>
+            <button onClick={handleSubscribeMailingList}>Subscribe Mailing List</button>
+            {formSubmitted && <p className="success-message">Succesfully subscribed!</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
     );
 };
 
-export default DeleteButton;
-```
-
-29. Create 6th backend /src/components/backend/JoinMailingList.js.js and add the below
-```javascript
-
+export default SubscribeMailingListButton;
 
 ```
 
-______________________________________________________________________________________________
-
-                                CONNECT TO DATABASE
-______________________________________________________________________________________________
-
-Assuming you have a database for your website to connect to the below steps can be
-modified to connect to it.
-
-See ```mysql_commands.md``` for details on how to setup an example db for below code to
-connect to.
-
-CREATE REACT LOGIN FORM COMPONENT
-
-1. Create a login form for react named: LoginForm.js
-If using a localhost use post url: http://localhost:5000/login
-if using a remote url API it there e.g. AWS RDS: https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login
+8. Create 1st backend /src/components/backend/UnsubscribeMailingListButton.js and add the below
 ```javascript
-1. Create a login form e.g. LoginForm.js for React below
+// src/components/backend/UnsubscribeMailingListButton.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom'; // Import useHistory hook for redirection
 
-function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const history = useHistory(); // Initialize useHistory hook
+const authToken = localStorage.getItem('authToken'); // Retrieve JWT token from localStorage
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+const UnsubscribeMailingListButton = () => {
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null); // State for error message
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/login', {
-        username,
-        password,
-      });
-      const token = response.data.token; // Retrieve the JWT token from localStorage
-      localStorage.setItem('authToken', token); // Store the token in localStorage
-      setFormSubmitted(true);
-      setErrorMessage('');  // Clear any previous error messages
-      history.push('/account'); // Redirect to Account page
-    } catch (error) {
-      console.error('Login failed', error);
-      setErrorMessage('Login failed. Please check your username and password and try again.');
-    }
-  };
+    const handleUnsubscribeMailingList = async () => {
+        try {
+            const response = await axios.put('/Unsubscribe-mailing-list', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to Unsubscribe mailing list');
+            }
+            setFormSubmitted(true);
+            setErrorMessage('');
+        } catch (error) {
+            console.error('Unsubscribe mailing list error:', error.message);
+            setErrorMessage('Failed to Unsubscribe mailing list');
+        }
+    };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-      />
-      <div>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="button" onClick={togglePasswordVisibility}>
-          {showPassword ? 'Hide' : 'Show'}
-        </button>
-      </div>
-      <button type="submit">Login</button>
-      {formSubmitted && <p className="success-message">Login successful!</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </form>
-  );
-}
+    return (
+        <div>
+            <button onClick={handleUnsubscribeMailingList}>Unsubscribe Mailing List</button>
+            {formSubmitted && <p className="success-message">Unsuccesfully subscribed!</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
+    );
+};
 
-export default LoginForm;
+export default UnsubscribeMailingListButton;
+
 ```
 
-2. Create a login page and import the LoginForm.js
-see ```react_commands.md```
 
-3. OPTIONAL - Create a account page to redirect to
-see ```react_commands.md```
 
-LOCALHOST BACKEND FILE CREATE
+______________________________________________________________________________________________
+
+                                CONNECT TO LOCAL NO-SQL DATABASE
+______________________________________________________________________________________________
+
+The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
+For details on how to setup the NoSQL Db follow the below and skip section 
+```CONNECT TO LOCAL SQL DATABASE```
+
+1. 
+```bash
+npm install mongodb #windows
+xxx #macos
+xxx # debian family 
+```
+
+______________________________________________________________________________________________
+
+                                CONNECT TO LOCAL SQL DATABASE
+______________________________________________________________________________________________
+
+The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
+For details on how to setup the DB that the Server.js db_config variables use follow ```mysql_commands.md```
 
 1. Find a free port for backend Server.js
 ```bash
@@ -1239,11 +1877,16 @@ using free port in variable port ```const port = 5001;```
 In production environment change variable SECRET_KEY to something different
 ```const SECRET_KEY = "ChangeThis1!";```
 ```javascript
+// src/components/backend/Server.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+// Cors allows different domains (ports) to communicate e.g. React app on localhost:3001 
+// to communicate with Server.js on localhost:5000. By default the Webserver (express) will
+// block communication from not same origin unless cors is included
 const cors = require('cors');
 
 const app = express();
@@ -1261,10 +1904,26 @@ const dbConfig = {
   database: 'agnisamoohdb',
 };
 
+// Middleware to verify JWT
+function authenticateToken(req, res, next) {
+  const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// if browsing to this file from a browser then display welcome message e.g;
+// node Server.js
+// http://localhost:5001/
 app.get('/', (req, res) => {
   res.send('Welcome to the login server. Use the /login endpoint to log in.');
 });
 
+// Listens for LoginForm.js
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -1292,6 +1951,150 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Listens for SignUpForm.js
+app.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [existingUser] = await connection.execute('SELECT * FROM users WHERE username = ? OR email = ?', [username, email]);
+
+    if (existingUser.length > 0) {
+      return res.status(409).json({ error: 'Username or email already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await connection.execute('INSERT INTO users (username, email, password, subscriptions, notes) VALUES (?, ?, ?, ?, ?)', [username, email, hashedPassword, '', '']);
+
+    return res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    console.error('Signup error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Listens for AccountForm.js
+app.post('/update-account', authenticateToken, async (req, res) => {
+  const { username, email, password } = req.body;
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    let updateQuery = 'UPDATE users SET ';
+    const updateData = [];
+
+    if (username) {
+      updateQuery += 'username = ?, ';
+      updateData.push(username);
+    }
+
+    if (email) {
+      updateQuery += 'email = ?, ';
+      updateData.push(email);
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateQuery += 'password = ?, ';
+      updateData.push(hashedPassword);
+    }
+
+    updateQuery = updateQuery.slice(0, -2); // Remove trailing comma
+    updateQuery += ' WHERE userID = ?';
+    updateData.push(userId);
+
+    await connection.execute(updateQuery, updateData);
+
+    res.json({ message: 'Account details updated successfully' });
+  } catch (error) {
+    console.error('Error during account update:', error);
+    res.status(500).json({ error: 'Failed to update account data' });
+  }
+});
+
+// Listens for AccountForm.js
+app.get('/get-account-details', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.execute('SELECT username, email FROM users WHERE userID = ?', [userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userDetails = rows[0];
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error fetching account details:', error);
+    res.status(500).json({ error: 'Failed to fetch account details' });
+  }
+});
+
+// Listens for DeleteAccountButton.js
+app.delete('/delete-account', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [result] = await connection.execute('DELETE FROM users WHERE userID = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Delete account error:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+});
+
+// Listens for SubscribeMailingList.js
+app.put('/Subscribe-mailing-list', authenticateToken, async (req, res) => {
+  const userId = req.user.userID;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    await connection.execute('UPDATE users SET onMailingList = 1 WHERE userID = ?', [userId]);
+
+    return res.status(200).json({ message: 'Successfully Subscribeed mailing list' });
+  } catch (error) {
+    console.error('Subscribe mailing list error:', error);
+    return res.status(500).json({ error: 'Failed to Subscribe mailing list' });
+  }
+});
+
+// Listens for UnsubscribeMailingList.js
+app.put('/Unsubscribe-mailing-list', authenticateToken, async (req, res) => {
+  const userId = req.user.userID;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    await connection.execute('UPDATE users SET onMailingList = 0 WHERE userID = ?', [userId]);
+
+    return res.status(200).json({ message: 'Successfully Unsubscribeed mailing list' });
+  } catch (error) {
+    console.error('Unsubscribe mailing list error:', error);
+    return res.status(500).json({ error: 'Failed to Unsubscribe mailing list' });
+  }
+});
+
+// Listens for LogoutButton.js
+app.delete('/logout', authenticateToken, async (req, res) => {
+  // No need to access any specific user information since it's handled by JWT
+  try {
+      // Implement any necessary cleanup logic here (if needed)
+      // Typically, clearing any server-side session or cache
+      // For JWT, logging out is simply ensuring the client discards the token
+      return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+      console.error('Logout error:', error);
+      return res.status(500).json({ error: 'Failed to logout' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
@@ -1313,7 +2116,11 @@ cd ../../
 npm start
 ```
 
-REMOTE BACKEND FILE CREATE
+______________________________________________________________________________________________
+
+                                CONNECT TO REMOTE SQL DATABASE
+______________________________________________________________________________________________
+
 
 1. Create a backend node.js lambda with permissions below to hold the DB details
 which are hidden to clients. Remember to click "file save" and "deploy"
@@ -1398,9 +2205,7 @@ const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amaz
       });
 ```
 
-TESTING
-
-1. Test by starting the react website and testing the login form page
+4. Test by starting the react website and testing the login form page
 ```bash
 cd YOUR_REACT_PROJECT_PATH/src
 npm start
@@ -1411,7 +2216,13 @@ password; Password1!
 3. You should be redirected to the account page
 ```
 
-2. If above test is successfull for login remember to log back into mysql and change the
+
+______________________________________________________________________________________________
+
+                                DATABASE FINAL TESTING CLEANUP
+______________________________________________________________________________________________
+
+1. If above tests are successfull for login remember to log back into mysql and change the
 admin password and the users table test user record password. Replace the password placeholder with a new
 password
 ```bash
@@ -1420,10 +2231,10 @@ mysql -h 127.0.0.1 -u root -p -e "ALTER USER 'admin'@'localhost' IDENTIFIED BY '
 ```
 
 
-___________________________________________________________________________
+______________________________________________________________________________________________
 
-                          BUILDING REACT WEBSITE
-___________________________________________________________________________
+                              BUILDING/DEPLOYING REACT WEBSITE
+______________________________________________________________________________________________
 
 1. UNCOMMENT ./build in .gitignore for CICD
 In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect

@@ -1,12 +1,3 @@
-/**
- * EXAMPLE C++ SDL Multiplayer game.
- * 
- * To play just compile and run. It uses a example webserverhost and client model
- * which simulates sending a vector of serialised data to and from, in which a 
- * simulated bot and your own player send data to the webserver and your local client
- * updates the rendering and logic state based on reading the deserialised webserver host data
- */
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -28,6 +19,7 @@
 #include <filesystem>
 
 /**
+ * EXAMPLE C++ SDL Multiplayer game.
  * MISSING
  * 1. Camera
  * 2. Game world is one continous scene e.g. size 100000x100000, only update() and draw() entities within your camera view x 2 for performance
@@ -363,13 +355,23 @@ std::chrono::steady_clock::time_point lastBotMovementTime{}; // for bot simulati
 // CLIENT LOGIC
 void initialise_players(int playerCount)
 {
-    for (int i{}; i < playerCount; ++i)
+    const int initialOffset = 50; // Distance to separate initial positions of players
+
+    for (int i = 0; i < playerCount; ++i)
     {
         int playerID = entities.size() + 1; // Start with 1 if entities vector is not empty
-        Player *player = new Player(playerID, SCREEN_WIDTH / 2 + playerID, SCREEN_HEIGHT / 2 + playerID, 100, 100, std::vector<std::string>{"assets/turtle.png", "assets/turtle.png"});
+        int initialX = SCREEN_WIDTH / 2 + (initialOffset * i); // Offset each player's initial position
+        int initialY = SCREEN_HEIGHT / 2 + (initialOffset * i); // Offset each player's initial position
+        Player* player = new Player(playerID, initialX, initialY, 100, 100, std::vector<std::string>{"assets/turtle.png", "assets/turtle.png"});
         entities.push_back(player);
+
+        // Debugging statement to log the initial position
+        std::cout << "Initialized player " << playerID 
+                  << " at position: x: " << initialX 
+                  << " y: " << initialY << std::endl;
     }
 }
+
 void initialise_players_textures()
 {
     for (auto &p : entities) // Iterate by reference
