@@ -22,7 +22,7 @@ pi@retropi:~ enter password $ raspberry
 
 ___________________________________________________________________________
 
-                    FIRST TIME SETUP
+                            FIRST TIME SETUP
 ___________________________________________________________________________
 
 
@@ -90,7 +90,7 @@ for MacOS add the path only to: ~/.zshrc
 ```bash
 open -e ~/.zshrc # MacOS only? Please confirm this also works on Ubuntu or not
 # or
-nano ~/.zshrc
+sudo nano ~/.zshrc
 ```
 
 2. Add your startup code
@@ -251,6 +251,29 @@ mv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES
 mv -i /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
 rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
 ```
+
+RENAME
+```bash
+mv -r /home/me/oldName /home/me/newName  # just use move with recurse to same location
+```
+
+RESOLUTION CHANGE
+```bash
+# If os doesn't fit inside the window e.g. a Retropi in an arcade cabinet
+# has the bottom screen e.g. the text CLI prompt part cut off, then
+# adjust the overlay
+sudo nano /boot/config.txt
+# uncomment the below and the higher the number the more it moves in so
+overscan_left=16 # padding 16 from left
+overscan_bottom=60 # padding from the bottom
+# if using nano
+# CTRL - X
+# Y
+# PRESS ENTER
+# done. If error, then close file and run with sudo
+sudo reboot now # then view screen, test and adjust accordingly
+```
+
 
 ___________________________________________________________________________
 
