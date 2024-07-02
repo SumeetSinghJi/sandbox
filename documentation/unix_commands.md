@@ -79,11 +79,11 @@ ___________________________________________________________________________
 
 Your startup scripts, environmental variables, alias and more are documented
 in your shell script located under /home/username/ hidden found with "ls -la"
-They need to be added there and the shell restarted for the change to take place.
-There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or ~/.bash_profile.
-edit 1 to include the envionmental variable as per below steps, and remove any outdated version
-form the other shell scripts
-for MacOS add the path only to: ~/.zshrc
+They need to be added there and the shell restarted for the change to take 
+place. There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or ~/.bash_profile.
+edit 1 to include the envionmental variable as per below steps, and remove 
+any outdated version form the other shell scripts for MacOS add the path 
+only to: ~/.zshrc
 
 
 1. Open your shells startup script
@@ -214,6 +214,8 @@ ls | sort -h
 LOGONS
 ```bash
 w
+#or
+who
 ```
 
 SHUTDOWNS
@@ -261,10 +263,10 @@ RESOLUTION CHANGE
 ```bash
 # If os doesn't fit inside the window e.g. a Retropi in an arcade cabinet
 # has the bottom screen e.g. the text CLI prompt part cut off, then
-# adjust the overlay
+# adjust the padding/overlay
 sudo nano /boot/config.txt
 # uncomment the below and the higher the number the more it moves in so
-overscan_left=16 # padding 16 from left
+overscan_left=5 # padding 5 from left
 overscan_bottom=60 # padding from the bottom
 # if using nano
 # CTRL - X

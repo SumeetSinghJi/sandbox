@@ -1,9 +1,96 @@
 ______________________________________________________________________________________________
 
-                                REACT VS JAVASCRIPT
+                            TERMINOLOGIES - REACT
 ______________________________________________________________________________________________
 
-The example below shows the differences between vanilla javascript vs react.
+React "React simplifies state management in JavaScript by introducing hooks, which allow 
+functional components to manage state and perform side effects effectively."
+
+
+______________________________________________________________________________________________
+
+                            TERMINOLOGIES - HOOK
+______________________________________________________________________________________________
+
+Hooks: "Hooks allow management of state within react."
+
+JS has several hooks that are imported from react that allow managing state.
+
+4 Common examples
+
+useState: Manages local component state.
+useEffect: Performs side effects after render.
+useContext: Accesses React context.
+useReducer: Alternative to useState for more complex state management.
+
+EXAMPLE
+
+```javascript
+// To import a hook, import from React
+import React, { useState, useEffect, useContext, useReducer } from 'react';
+```
+
+
+______________________________________________________________________________________________
+
+                            TERMINOLOGIES - FUNCTIONAL COMPONENT
+______________________________________________________________________________________________
+
+
+A React function that returns JSX.
+
+
+EXAMPLE
+
+UserProfile below is a functional component that accepts no props parameter "()" but instead has defined
+variables that are returned as html elements within a page e.g, homepage as <UserProfile />.
+
+
+```javascript
+import React from 'react';
+
+const UserProfile = () => {
+  const firstName = 'John';
+  const surname = 'Doe';
+  const email = 'john.doe@example.com';
+
+  return (
+    <div>
+      <h1>User Profile</h1>
+      <p>Name: {firstName} {surname}</p>
+      <p>Email: {email}</p>
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+Greeting below is a functional component that accepts a props parameter for name. It can be imported into a homepage as <Greeting />.
+
+```javascript
+import React from 'react';
+
+const Greeting = (props) => {
+  return (
+    <div>
+      <h1>Hello, {props.name}!</h1>
+      <p>Welcome to React.</p>
+    </div>
+  );
+};
+
+export default Greeting;
+```
+
+______________________________________________________________________________________________
+
+                            TERMINOLOGIES - STATE - useState
+______________________________________________________________________________________________
+
+
+State: "State dynamically updates the frontend HTML/DOM based on actions such as user 
+interactions (e.g., clicks, inputs) and responses from backend interactions."
 
 Basic Javascript requires getting elements (DOM Manipulation), attaching 
 event listeners (Event Handling) and hardcoding the html tags (non reuseable), 
@@ -12,7 +99,7 @@ whereas React abstracts the former in reusable components.
 React uses "state" by assigning variables/functions a state. That dynamically
 update the front end based on actions e.g. the button clicks on return html code.
 
-JAVASCRIPT
+VANILLA JAVASCRIPT
 ```html
 <body>
     <div class="counter">
@@ -91,6 +178,123 @@ function App() {
 export default App;
 ```
 
+
+______________________________________________________________________________________________
+
+                            TERMINOLOGIES - STATE - useEffect
+______________________________________________________________________________________________
+
+
+```javascript
+import React, { useState, useEffect } from 'react';
+
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
+
+  // useEffect hook to fetch user data when the component mounts
+  useEffect(() => {
+    // Simulating fetching user data from an API
+    const fetchUserData = async () => {
+      const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+      const userData = await response.json();
+      setUser(userData); // Update user state with fetched data
+    };
+
+    fetchUserData(); // Call the fetchUserData function when the component mounts
+  }, []); // Empty dependency array means this effect runs once, similar to componentDidMount
+
+  return (
+    <div>
+      <h1>User Profile</h1>
+      {user ? (
+        <div>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          <p>Phone: {user.phone}</p>
+        </div>
+      ) : (
+        <p>Loading user data...</p>
+      )}
+    </div>
+  );
+  ```
+
+
+______________________________________________________________________________________________
+
+                              TERMINOLOGIES - FACTORY FUNCTION
+______________________________________________________________________________________________
+
+DESCRIPTION
+
+FACTORY FUNCTION
+
+As well as Javascript having a ability to define classes and constructors, dynamically typed langauges like 
+JS can define an object (similar to a struct or class) within an object so it can be returned.
+
+While any function can technically be called a factory function if it returns an object, factory
+functions are used in situations where objects are defined within functions without the need for
+constructors/deconstructors. Similar to a c++ template.
+
+EXAMPLES
+
+```javascript
+// Direct Initialization with a Class
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+  }
+}
+
+// Using Factory Function
+function createPerson(name, age) {
+  let person = {};
+
+  person.name = name;
+  person.age = age;
+
+  person.greet = function() {
+    console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+  };
+
+  return person;
+}
+
+const person1 = createPerson('Alice', 30); // Using factory function
+let person2 = new Person('Sumeet', 33); // Using class initialisation
+
+person1.greet(); // Output: Hello, my name is Alice and I am 30 years old.
+person1.greet(); // Output: Hello, my name is Sumeet and I am 33 years old.
+
+console.log(person1.name);
+```
+
+In c++ you cannot define a class or struct within a function so a similar Python example is below
+
+```python
+# Factory function to create a Person object
+def create_person(name, age):
+    # Define and initialize the object within the function
+    person = {
+        'name': name,
+        'age': age,
+        'greet': lambda: print(f"Hello, my name is {name} and I am {age} years old.")
+    }
+    return person
+
+# Using the factory function to create Person objects
+person1 = create_person('Alice', 30)
+person2 = create_person('Bob', 25)
+
+person1['greet']()  # Output: Hello, my name is Alice and I am 30 years old.
+person2['greet']()  # Output: Hello, my name is Bob and I am 25 years old.
+
+```
 
 ______________________________________________________________________________________________
 
