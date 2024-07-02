@@ -193,15 +193,14 @@ const UserProfile = () => {
 
   // useEffect hook to fetch user data when the component mounts
   useEffect(() => {
-    // Simulating fetching user data from an API
     const fetchUserData = async () => {
       const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
       const userData = await response.json();
-      setUser(userData); // Update user state with fetched data
+      setUser(userData);
     };
 
-    fetchUserData(); // Call the fetchUserData function when the component mounts
-  }, []); // Empty dependency array means this effect runs once, similar to componentDidMount
+    fetchUserData();
+  }, []);
 
   return (
     <div>
@@ -217,6 +216,9 @@ const UserProfile = () => {
       )}
     </div>
   );
+};
+
+  export default userProfile;
   ```
 
 
