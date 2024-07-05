@@ -42,8 +42,9 @@ A React function that returns JSX.
 
 EXAMPLE
 
-UserProfile below is a functional component that accepts no props parameter "()" but instead has defined
-variables that are returned as html elements within a page e.g, homepage as <UserProfile />.
+UserProfile below is a functional component that accepts no props parameter "()" but instead 
+has defined variables that are returned as html elements within a page e.g, 
+homepage as <UserProfile />.
 
 
 ```javascript
@@ -66,7 +67,8 @@ const UserProfile = () => {
 export default UserProfile;
 ```
 
-Greeting below is a functional component that accepts a props parameter for name. It can be imported into a homepage as <Greeting />.
+Greeting below is a functional component that accepts a props parameter for name. It can 
+be imported into a homepage as <Greeting />.
 
 ```javascript
 import React from 'react';
@@ -231,8 +233,9 @@ DESCRIPTION
 
 FACTORY FUNCTION
 
-As well as Javascript having a ability to define classes and constructors, dynamically typed langauges like 
-JS can define an object (similar to a struct or class) within an object so it can be returned.
+As well as Javascript having a ability to define classes and constructors, dynamically typed 
+langauges like JS can define an object (similar to a struct or class) within an object so it 
+can be returned.
 
 While any function can technically be called a factory function if it returns an object, factory
 functions are used in situations where objects are defined within functions without the need for
@@ -389,7 +392,8 @@ PUT /join-mailing-list // Listens for JoinMailingList.js
 
 Building, Testing and Deploying
 * Locally (Dev) - Build a backend SQL server and use node.js to run backend Server.js
-* Online (Prod) - Push this repo to Github and Github Actions CI/CD will build/test/publish to S3 bucket
+* Online (Prod) - Push this repo to Github and Github Actions CI/CD will build/test/publish to 
+S3 bucket
 
 1. Change to parent directory to host website project directory
 ```bash
@@ -462,6 +466,7 @@ mkdir assets/graphics/games
 mkdir assets/graphics/logos
 mkdir assets/sounds
 mkdir assets/videos
+mkdir data # e.g. centralised place for product data eg. ProductData.js contains info on books that are on various pages for sale
 mkdir pages # for pages e.g. homepage.js, contactus.js, news.js
 mkdir components # for reusable assets e.g. header.js, footer.js
 mkdir components/backend # for backend code e.g. SubmtiSignUp.js, SubmitLogin.js
@@ -1482,12 +1487,14 @@ These frontend js codes connect to API's that are in the backend.
 See below section "CONNECT TO LOCAL DATABASE" - for local DB's
 See below section "CONNECT TO LOCAL DATABASE" - for online DB's
 
-NOTE: HashPassword.js is used for the bcrypt node.js module for encrypting passwords. This is to be
-used in place of password entry for a DB. So when user logs into front end as their commpn password e.g.
-"Password1!" the "Server.js" or remove AWS Lambda endpoint code will encrypt. Same with password changes.
+NOTE: HashPassword.js is used for the bcrypt node.js module for encrypting passwords. This 
+is to be used in place of password entry for a DB. So when user logs into front end as their 
+commpn password e.g. "Password1!" the "Server.js" or remove AWS Lambda endpoint code will 
+encrypt. Same with password changes.
 
-Note: the below contact us form API code uses formspree.com free API, however it's limited to only 2 fields
-email and message. So if you copy the below change to your liking and replace the API key
+Note: the below contact us form API code uses formspree.com free API, however it's limited to 
+only 2 fields email and message. So if you copy the below change to your liking and replace 
+the API key
 
 1. Create 1st backend /src/components/backend/AccountForm.js and add the below
 ```javascript
@@ -2079,7 +2086,8 @@ ________________________________________________________________________________
 ______________________________________________________________________________________________
 
 The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
-For details on how to setup the DB that the Server.js db_config variables use follow ```mysql_commands.md```
+For details on how to setup the DB that the Server.js db_config variables use 
+follow ```mysql_commands.md```
 
 1. Find a free port for backend Server.js
 ```bash
@@ -2371,61 +2379,250 @@ ________________________________________________________________________________
 ______________________________________________________________________________________________
 
 
-1. Create a backend node.js lambda with permissions below to hold the DB details
-which are hidden to clients. Remember to click "file save" and "deploy"
+1. Create a Lambda to act as backend called agnisamooh-server.js
 ```bash
-1. Go to lambda functions - create new function - function name: agnisamooh-login-lambda-post
+1. Go to lambda functions - create new function - function name: agnisamooh-server.js
 2. Runtime node.js 20.x
-3. Create function
+3. Add code below to function, note that the SECRET_KEY variable must be unique when deploying so change it, and remember to change password details
 4. In code source main page add the code below and click - file - save - then click "deploy"
 ```
 url: https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions
 ```javascript
-const jwt = require('jsonwebtoken');
+// AWS Lambda function agnisamooh-server.js
+const awsServerlessExpress = require('aws-serverless-express');
+const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
+const app = awsServerlessExpress.createServer(); // Create server directly with aws-serverless-express
+
+// Replace with your actual database configuration
 const dbConfig = {
   host: 'agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com',
   user: 'admin',
-  password: 'Agnisamooh-1!',
+  password: 'Password1!',
   database: 'agnisamoohdb',
 };
 
-exports.handler = async (event) => {
-  const { username, password } = JSON.parse(event.body);
+// Replace with your actual secret key for JWT
+const SECRET_KEY = "___YOUR_SECRET_KEY1!___";
 
-  const connection = await mysql.createConnection(dbConfig);
-  const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+app.use(bodyParser.json());
+app.use(cors());
 
-  if (rows.length === 0) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Invalid credentials' }),
-    };
+// Middleware to verify JWT token
+function authenticateToken(req, res, next) {
+  const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// Welcome endpoint
+app.get('/', (req, res) => {
+  res.send('Welcome to the login server. Use the /login endpoint to log in.');
+});
+
+// Login endpoint
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = rows[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ username: user.username, userId: user.userID }, SECRET_KEY, { expiresIn: '1h' });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
+});
 
-  const user = rows[0];
-  
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  
-  if (!passwordMatch) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Invalid credentials' }),
-    };
+// Signup endpoint
+app.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [existingUser] = await connection.execute('SELECT * FROM users WHERE username = ? OR email = ?', [username, email]);
+
+    if (existingUser.length > 0) {
+      return res.status(409).json({ error: 'Username or email already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await connection.execute('INSERT INTO users (username, email, password, subscriptions, notes) VALUES (?, ?, ?, ?, ?)', [username, email, hashedPassword, '', '']);
+
+    return res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    console.error('Signup error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
+});
 
-  const token = jwt.sign({ username: user.username, userId: user.id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
+// Update account endpoint
+app.post('/update-account', authenticateToken, async (req, res) => {
+  const { username, email, password } = req.body;
+  const userId = req.user.userId;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ token }),
-  };
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    let updateQuery = 'UPDATE users SET ';
+    const updateData = [];
+
+    if (username) {
+      updateQuery += 'username = ?, ';
+      updateData.push(username);
+    }
+
+    if (email) {
+      updateQuery += 'email = ?, ';
+      updateData.push(email);
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateQuery += 'password = ?, ';
+      updateData.push(hashedPassword);
+    }
+
+    updateQuery = updateQuery.slice(0, -2); // Remove trailing comma
+    updateQuery += ' WHERE userID = ?';
+    updateData.push(userId);
+
+    await connection.execute(updateQuery, updateData);
+
+    res.json({ message: 'Account details updated successfully' });
+  } catch (error) {
+    console.error('Error during account update:', error);
+    res.status(500).json({ error: 'Failed to update account data' });
+  }
+});
+
+// Get account details endpoint
+app.get('/get-account-details', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.execute('SELECT username, email, onMailingList FROM users WHERE userID = ?', [userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userDetails = rows[0];
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error fetching account details:', error);
+    res.status(500).json({ error: 'Failed to fetch account details' });
+  }
+});
+
+// Subscribe to mailing list endpoint
+app.put('/subscribe-mailing-list', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [result] = await connection.execute('UPDATE users SET onMailingList = 1 WHERE userID = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found or already subscribed' });
+    }
+
+    return res.status(200).json({ message: 'Successfully subscribed to mailing list' });
+  } catch (error) {
+    console.error('Subscribe mailing list error:', error);
+    return res.status(500).json({ error: 'Failed to subscribe to mailing list' });
+  }
+});
+
+// Unsubscribe from mailing list endpoint
+app.put('/unsubscribe-mailing-list', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [result] = await connection.execute('UPDATE users SET onMailingList = 0 WHERE userID = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found or already unsubscribed' });
+    }
+
+    return res.status(200).json({ message: 'Successfully unsubscribed from mailing list' });
+  } catch (error) {
+    console.error('Unsubscribe mailing list error:', error);
+    return res.status(500).json({ error: 'Failed to unsubscribe from mailing list' });
+  }
+});
+
+// Delete account endpoint
+app.delete('/delete-account', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const [result] = await connection.execute('DELETE FROM users WHERE userID = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Delete account error:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+});
+
+// Logout endpoint
+app.delete('/logout', authenticateToken, async (req, res) => {
+  // No need to access any specific user information since it's handled by JWT
+  try {
+    // Implement any necessary cleanup logic here (if needed)
+    // Typically, clearing any server-side session or cache
+    // For JWT, logging out is simply ensuring the client discards the token
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    return res.status(500).json({ error: 'Failed to logout' });
+  }
+});
+
+// Lambda handler function
+const lambdaHandler = (event, context) => {
+  // Ensure the Express app is initialized once per Lambda container
+  return awsServerlessExpress.proxy(server, event, context);
 };
+
+module.exports = {
+  lambdaHandler
+};
+
 ```
 
-2. in AWS API create a new API with details below
+
+2. in AWS API create new API's with details below
 url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=us-east-1 
 ```bash
 1. In AWS "API Gateway" - click build new HTTP API
@@ -2444,18 +2641,29 @@ url: https://us-east-1.console.aws.amazon.com/apigateway/main/precreate?region=u
 14. Click create
 15. Click back on the API in the left navigation bar then make note of the
 ARN e.g, https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com
-```
-
-3. Go back to the LoginForm.js and add the API to the response url adding the stage and api path
+16. Go back to the LoginForm.js and add the API to the response url adding the stage and api 
+path
 ```javascript
 const response = await axios.post('https://7ok9pqxlg4.execute-api.us-east-1.amazonaws.com/PROD/login', {
         username,
         password,
       });
+17. Repeat steps for to ensure all API's below are created and keys in relevant files
+POST /login // Listens for LoginForm.js # skip this as already done earlier
+POST /signup // Listens for SignUpForm.js
+POST /update-account-details // Listens for AccountForm.js
+GET /get-account-details // Listens for AccountForm.js
+PUT /subscribe-mailing-list // Listens for SubscribeMailingListButton.js
+PUT /unsubscribe-mailing-list // Listens for UnsubscribeMailingList.js
+DELETE /delete-account // Listens for DeleteAccountButton.js
+DELETE /logout // Listens for LogoutButton.js 
 ```
 
-4. Test by starting the react website and testing the login form page
+3. Attach each API above to the relevant Lambda
+
+4. Test login
 ```bash
+# First push react website to production (e.g. S3 bucket) then test login
 cd YOUR_REACT_PROJECT_PATH/src
 npm start
 1. www.agnisamooh.com/login

@@ -243,6 +243,7 @@ cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY 1 FILE
 cp /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES
 cp -i /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES + ASK BEFORE OVERWRITING
 rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
+rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
 ```
 
 MOVE FILES
@@ -252,6 +253,7 @@ mv "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # MOVE 1 FILE
 mv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES
 mv -i /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
 rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
+rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
 
 RENAME
