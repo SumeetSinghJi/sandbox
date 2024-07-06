@@ -120,7 +120,7 @@ alias head='runlolcat head'
 
 ___________________________________________________________________________
 
-                        DEVOPS - C++
+                        SETUP C AND C++
 ___________________________________________________________________________
 
 1. Generic dev
@@ -133,6 +133,14 @@ sudo apt install lolcat, git, flatpak
 sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev 
 libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev 
 zlib1g-dev googletest libgtest-dev yasm
+```
+
+3. Test C code
+```bash
+echo "#include <stdio.h>" > test.c
+echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
+gcc -o test test.c
+./test
 ```
 
 
@@ -214,8 +222,27 @@ ls | sort -h
 LOGONS
 ```bash
 w
-#or
-who
+
+# EXPLANATION
+# The same user pi is logged in twice, once through hardware, once through SSH
+# TTY = hardware sessions, therefore TTY1 means user is logged in through hardware on first port
+# pts = Virtual terminal sessions such as through SSH, therefore pts/0 = a user is logged in through first remote session i.e SSH
+pi@retropie:~ $ w
+ 17:59:46 up 35 min,  2 users,  load average: 0.42, 0.44, 0.38
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+pi       tty1     -                17:24   35:11  10:29  10:28  /opt/retropie/supplementary/emulationstation/emulations
+pi       pts/0    192.168.0.115    17:47    2.00s  0.30s  0.01s w
+```
+
+PERMISSIONS
+```bash
+id pi
+
+# EXAMPLATION
+# user "pi" is the first non root user = id 1000. They are also part of sudo group 27. etc.,
+# So permissions below are for a standard user 'pi' for a raspberrypi AIO computer.
+pi@retropie:~ $ id pi
+uid=1000(pi) gid=1000(pi) groups=1000(pi),4(adm),20(dialout),24(cdrom),27(sudo),29(audio),44(video),46(plugdev),60(games),100(users),105(input),109(netdev),999(spi),998(i2c),997(gpio)
 ```
 
 SHUTDOWNS
@@ -240,8 +267,8 @@ COPY FILES
 ```bash
 # use -i for confirmation before overwriting
 cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY 1 FILE
-cp /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES
-cp -i /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES + ASK BEFORE OVERWRITING
+cp -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FOLDERS
+cp -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES + ASK BEFORE OVERWRITING
 rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
 rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
 ```
@@ -250,8 +277,8 @@ MOVE FILES
 ```bash
 # use -i for confirmation before overwriting
 mv "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # MOVE 1 FILE
-mv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES
-mv -i /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
+mv -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FOLDERS
+mv -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
 rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
 rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
