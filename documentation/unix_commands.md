@@ -234,7 +234,7 @@ pi       tty1     -                17:24   35:11  10:29  10:28  /opt/retropie/su
 pi       pts/0    192.168.0.115    17:47    2.00s  0.30s  0.01s w
 ```
 
-PERMISSIONS
+PERMISSIONS - USER GROUPS
 ```bash
 id pi
 
@@ -243,7 +243,44 @@ id pi
 # So permissions below are for a standard user 'pi' for a raspberrypi AIO computer.
 pi@retropie:~ $ id pi
 uid=1000(pi) gid=1000(pi) groups=1000(pi),4(adm),20(dialout),24(cdrom),27(sudo),29(audio),44(video),46(plugdev),60(games),100(users),105(input),109(netdev),999(spi),998(i2c),997(gpio)
+
+
+# NOTE: You can check your own group by just typing
+groups
 ```
+
+PERMISSIONS - FILE ACCESS
+```bash
+# e.g, making a simple script and granting file access to run
+echo '#!/bin/zsh' > test.sh && echo 'figlet HELLO WORLD | lolcat' >> test.sh
+# NOTE: chmod stands for Change Mode
+chmod a+rwx test.sh # a = anyone, rwx = can read write execute
+
+# you can use a (anyone), g (group), u (user), or o )others∂
+
+# you can also target the current user without specifying a specific user
+chmod +rwx
+# or
+chmod +x # just to give execute permissions e.g. for a cron job to yourself when logged in
+
+# REMOVE PERMISSIONS
+# do the opposite with a substraction (minus) character
+chmod a-rwx
+
+# GROUP ACCESS
+# to give access based on a group e.g. you want anyone in piusers to be able to run script then
+# first change the group ownership of the file to group
+sudo chgrp piusers test.sh
+chmod g+rwx test.sh
+
+sumeetsingh@Sumeets-Air-2 sandbox % ./test.sh
+ _   _ _____ _     _     ___   __        _____  ____  _     ____  
+| | | | ____| |   | |   / _ \  \ \      / / _ \|  _ \| |   |  _ \ 
+| |_| |  _| | |   | |  | | | |  \ \ /\ / / | | | |_) | |   | | | |
+|  _  | |___| |___| |__| |_| |   \ V  V /| |_| |  _ <| |___| |_| |
+|_| |_|_____|_____|_____\___/     \_/\_/  \___/|_| \_\_____|____/ 
+```
+
 
 SHUTDOWNS
 ```bash
@@ -305,6 +342,47 @@ overscan_bottom=60 # padding from the bottom
 sudo reboot now # then view screen, test and adjust accordingly
 ```
 
+
+SCRIPTS - SCRIPTING
+```bash
+# use 2 greater then symbols to use a new line, and use 1 to truncate
+echo '#!/bin/zsh' > test.sh && echo 'figlet HELLO WORLD | lolcat' >> test.sh
+
+#!/bin/zsh
+figlet HELLO WORLD | lolcat
+
+sumeetsingh@Sumeets-Air-2 sandbox % figlet HELLO WORLD | lolcat
+ _   _ _____ _     _     ___   __        _____  ____  _     ____  
+| | | | ____| |   | |   / _ \  \ \      / / _ \|  _ \| |   |  _ \ 
+| |_| |  _| | |   | |  | | | |  \ \ /\ / / | | | |_) | |   | | | |
+|  _  | |___| |___| |__| |_| |   \ V  V /| |_| |  _ <| |___| |_| |
+|_| |_|_____|_____|_____\___/     \_/\_/  \___/|_| \_\_____|____/ 
+```
+
+SCRIPTS - WITH CRON JOBS
+```bash
+# In this example we will create a script that checks for low disk space and warns user if present.
+
+# CRON JOB 1 - on low du/df, alert, log
+
+# CRON JOB 2 - high CPU/MEMORY usage alert, log
+
+# CRON JOB 2 - if unexpected port opened up on box, alert, log
+
+# CRON JOB 4 - alert if crit service down then restart alert , log
+
+
+
+```
+CRON JOBS
+```bash
+# CHECK CRON JOBS
+
+# RESCHEDULE JOB
+
+# CANCEL JOB
+
+```
 
 ___________________________________________________________________________
 
