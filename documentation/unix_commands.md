@@ -165,19 +165,13 @@ clear
 ```
 
 COMMENTS
-Zsh shell only - enable inline comments with setopt
 ```bash
+# Zsh shell only - enable inline comments with setopt
 testusr@ubuntu Documents % setopt interactive_comments
 testusr@ubuntu Documents % echo test # test
 test
-```
-1) in shell script use #
-```bash
-cd c:\users\sumeetsingh\Documents #windows
-```
-2) in CLI use line break ; followed by comment next line
-```bash
-cd c:\users\sumeetsingh\Documents ; #windows
+
+cd c:\users\sumeetsingh\Documents ; # in CLI use line break ; followed by comment
 ```
 
 SEARCH - USERS
@@ -229,10 +223,7 @@ pi@retropi:~ $ emulationstation # to then start it
 FIND BIN ENVIRONMENTAL VARIABLE
 ```bash
 sumeetsingh@Sumeets-Air-2 which ruby
-/usr/bin/ruby
-```
-or
-```bash
+# or 
 sumeetsingh@Sumeets-Air-2 where ruby
 /usr/bin/ruby
 ```
