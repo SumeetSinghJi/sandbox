@@ -178,20 +178,34 @@ cd c:\users\sumeetsingh\Documents #windows
 cd c:\users\sumeetsingh\Documents ; #windows
 ```
 
-SEARCH
+SEARCH - FILES
 ```bash
 find /usr -iname "*xxx*"
 ls | grep xxx
 ```
 
-SEARCH PACKAGE MANAGER
+SEARCH - STRING
+```bash
+# use awk to pattern match strings in file
+awk 'pattern { action }' file
+
+# EXAMPLE
+sumeetsingh@Sumeets-Air-2 sandbox % cat CREDITS.txt                  
+2D asset images from: https://2minutetabletop.com/product-category/free/
+Hourglass icon by icon-icons.com @ icon-icons.com/icon/sand-clock-hourglass/191332%                                          
+sumeetsingh@Sumeets-Air-2 sandbox % awk '/asset/ { print }' CREDITS.txt # <-- LOOK HERE
+
+2D asset images from: https://2minutetabletop.com/product-category/free/
+```
+
+SEARCH - PACKAGE MANAGER
 ```bash
 pacman -Ss xxxxx
 sudo apt search xxxx
 sudo apt list --installed xxxxx
 ```
 
-SEARCH SERVICES - ALL 3 METHODS
+SEARCH - SERVICES - ALL 3 METHODS
 ```bash
 # 1 - through apt
 apt list --installed
@@ -342,16 +356,12 @@ overscan_bottom=60 # padding from the bottom
 sudo reboot now # then view screen, test and adjust accordingly
 ```
 
-
-SCRIPTS - SCRIPTING
+SCRIPTING
 ```bash
 # use 2 greater then symbols to use a new line, and use 1 to truncate
-echo '#!/bin/zsh' > test.sh && echo 'figlet HELLO WORLD | lolcat' >> test.sh
-
-#!/bin/zsh
-figlet HELLO WORLD | lolcat
-
-sumeetsingh@Sumeets-Air-2 sandbox % figlet HELLO WORLD | lolcat
+sumeetsingh@Sumeets-Air-2 sandbox % echo '#!/bin/zsh' > test.sh && echo 'figlet HELLO WORLD | lolcat' >> test.sh
+sumeetsingh@Sumeets-Air-2 sandbox % chmod a+rwx test.sh
+sumeetsingh@Sumeets-Air-2 sandbox % ./test.sh
  _   _ _____ _     _     ___   __        _____  ____  _     ____  
 | | | | ____| |   | |   / _ \  \ \      / / _ \|  _ \| |   |  _ \ 
 | |_| |  _| | |   | |  | | | |  \ \ /\ / / | | | |_) | |   | | | |
@@ -359,30 +369,80 @@ sumeetsingh@Sumeets-Air-2 sandbox % figlet HELLO WORLD | lolcat
 |_| |_|_____|_____|_____\___/     \_/\_/  \___/|_| \_\_____|____/ 
 ```
 
-SCRIPTS - WITH CRON JOBS
-```bash
-# In this example we will create a script that checks for low disk space and warns user if present.
 
-# CRON JOB 1 - on low du/df, alert, log
-
-# CRON JOB 2 - high CPU/MEMORY usage alert, log
-
-# CRON JOB 2 - if unexpected port opened up on box, alert, log
-
-# CRON JOB 4 - alert if crit service down then restart alert , log
-
-
-
-```
 CRON JOBS
 ```bash
-# CHECK CRON JOBS
 
-# RESCHEDULE JOB
+# CREATE CRON JOB
 
-# CANCEL JOB
+# Step 1: Write Your Shell Script
+cat << 'EOF' > /path/to/test.sh
+#!/bin/bash
+echo "Hello, this is a test script executed by cron job" >> /path/to/test.log
+EOF
+
+# Step 2: Make Your Script Executable
+chmod +x /path/to/test.sh
+
+# Step 3: Edit Your Crontab and Add a New Cron Job Entry
+# Open crontab for editing and add the cron job entry
+export EDITOR=nano  # Set your preferred editor (nano, vi, etc.)
+crontab -e << 'CRONJOB'
+# Example: Run test.sh every day at 9 AM
+0 9 * * * /path/to/test.sh
+CRONJOB
+
+# Step 4: Save and Exit
+# Save and exit the editor (e.g., in nano, press Ctrl+O to save, Ctrl+X to exit)
+
+# Step 5: Verify the Cron Job
+crontab -l
+
+# Step 6: CANCEL OR RESCHEDULE JOB
+crontab -e
+```
+
+___________________________________________________________________________
+
+                            COMMON SCRIPTS
+___________________________________________________________________________
+
+
+CRON JOB 1 - On low disk usage - curl post to log server and alert
+```bash
 
 ```
+
+CRON JOB 2 - On high CPU/MEMORY usage - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 3 - On unexpected port change - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 4 - If critical service down restart then - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 5 - Force users to change old passwords on logon
+```bash
+#!/bin/bash
+# Get list of users with expired passwords using chage
+expired_users=$(awk -F: '$2 == "!!"' /etc/shadow | cut -d: -f1)
+
+# Loop through each expired user and force password change
+for user in $expired_users; do
+    echo "Forcing user '$user' to change password on next login..."
+    sudo chage -d 0 "$user"
+done
+
+echo "Password change forced for expired users."
+```
+
 
 ___________________________________________________________________________
 
