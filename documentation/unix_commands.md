@@ -307,10 +307,28 @@ FIND PHYSICAL DISPLAY
 sudo systemctl status display-manager
 ```
 
-DISK FREE/USAGE
+DISK FREE | DISK SPACE | DISK USAGE
 ```bash
-df -h # top level root only
+ # this works on the current directory you are in
+ # -h = human readable format converts the bytes to MB's
+ # -d = depth, to show the subdirectories sizes within
+ # -c = total = total size of this folder so ./sandbox = ~300MB's
+df -h 
 du -h -d 1
+
+sumeetsingh@Sumeets-Air-2 sandbox % du -hc -d 1
+
+188K    ./documentation
+ 47M    ./etc
+8.0K    ./vedic
+8.0K    ./headers
+4.0K    ./templates
+114M    ./.git
+ 12K    ./.vscode
+130M    ./assets
+  0B    ./src
+292M    .
+292M    total
 ```
 
 COPY FILES
