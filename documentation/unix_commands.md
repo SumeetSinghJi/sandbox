@@ -317,10 +317,9 @@ du -h -d 1
 COPY FILES
 ```bash
 # use -i for confirmation before overwriting
-cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY 1 FILE
-cp -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FOLDERS
-cp -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY ALL FILES + ASK BEFORE OVERWRITING
-rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
+cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE 1 FILE
+cp -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE ALL FOLDERS
+cp -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND ASK PERMISSION BEFORE OVERWRITING ALL FOLDERS
 rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
 ```
 
@@ -330,7 +329,6 @@ MOVE FILES
 mv "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # MOVE 1 FILE
 mv -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FOLDERS
 mv -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
-rm -r "/home/pi/RetroPie/roms/psx/Heart of Darkness (Disc 1)" # IF FAILURE THEN REMOVE TARGET FILE THEN COPY AGAIN
 rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
 
