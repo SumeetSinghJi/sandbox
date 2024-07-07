@@ -295,7 +295,6 @@ sumeetsingh@Sumeets-Air-2 sandbox % ./test.sh
 |_| |_|_____|_____|_____\___/     \_/\_/  \___/|_| \_\_____|____/ 
 ```
 
-
 SHUTDOWNS
 ```bash
 sudo shutdown now
@@ -370,34 +369,22 @@ sumeetsingh@Sumeets-Air-2 sandbox % ./test.sh
 
 CRON JOBS
 ```bash
-
-# CREATE CRON JOB
-
-# Step 1: Write Your Shell Script
-cat << 'EOF' > /path/to/test.sh
+cat << 'EOF' > /path/to/test.sh # 1. Write script
 #!/bin/bash
 echo "Hello, this is a test script executed by cron job" >> /path/to/test.log
 EOF
 
-# Step 2: Make Your Script Executable
-chmod +x /path/to/test.sh
+chmod +x /path/to/test.sh # 2. make script executable
 
-# Step 3: Edit Your Crontab and Add a New Cron Job Entry
-# Open crontab for editing and add the cron job entry
-export EDITOR=nano  # Set your preferred editor (nano, vi, etc.)
-crontab -e << 'CRONJOB'
+# export EDITOR=nano  # Set your preferred editor (nano, vi, etc.)
+crontab -e << 'CRONJOB' # 3. add new cron job
 # Example: Run test.sh every day at 9 AM
 0 9 * * * /path/to/test.sh
 CRONJOB
 
-# Step 4: Save and Exit
-# Save and exit the editor (e.g., in nano, press Ctrl+O to save, Ctrl+X to exit)
+crontab -l # 4. verify cronjob
 
-# Step 5: Verify the Cron Job
-crontab -l
-
-# Step 6: CANCEL OR RESCHEDULE JOB
-crontab -e
+crontab -e # 5. reschedule job
 ```
 
 ___________________________________________________________________________
