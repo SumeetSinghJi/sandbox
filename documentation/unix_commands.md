@@ -80,11 +80,10 @@ ___________________________________________________________________________
 Your startup scripts, environmental variables, alias and more are documented
 in your shell script located under /home/username/ hidden found with "ls -la"
 They need to be added there and the shell restarted for the change to take 
-place. There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or ~/.bash_profile.
-edit 1 to include the envionmental variable as per below steps, and remove 
-any outdated version form the other shell scripts for MacOS add the path 
-only to: ~/.zshrc
-
+place. There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or 
+~/.bash_profile. edit 1 to include the envionmental variable as per below 
+steps, and remove any outdated version form the other shell scripts for MacOS 
+add the path only to: ~/.zshrc
 
 1. Open your shells startup script
 ```bash
@@ -94,7 +93,6 @@ sudo nano ~/.zshrc
 ```
 
 2. Add your startup code
-
 ```bash
 sumeetsingh@Sumeets-Air-2 sandbox % cat ~/.zshrc   
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
@@ -144,11 +142,15 @@ gcc -o test test.c
 ```
 
 
-
 ___________________________________________________________________________
 
                     COMMON COMMANDS
 ___________________________________________________________________________
+
+QUITTING CLI
+```bash
+q
+```
 
 NAVIGATION FILTERING
 ```bash
@@ -176,6 +178,13 @@ cd c:\users\sumeetsingh\Documents #windows
 2) in CLI use line break ; followed by comment next line
 ```bash
 cd c:\users\sumeetsingh\Documents ; #windows
+```
+
+SEARCH - USERS
+```bash
+cat /etc/passwd # linux
+# or
+dscl . list /Users # macos
 ```
 
 SEARCH - FILES
@@ -366,7 +375,6 @@ sumeetsingh@Sumeets-Air-2 sandbox % ./test.sh
 |_| |_|_____|_____|_____\___/     \_/\_/  \___/|_| \_\_____|____/ 
 ```
 
-
 CRON JOBS
 ```bash
 cat << 'EOF' > /path/to/test.sh # 1. Write script
@@ -386,6 +394,7 @@ crontab -l # 4. verify cronjob
 
 crontab -e # 5. reschedule job
 ```
+
 
 ___________________________________________________________________________
 
@@ -413,7 +422,12 @@ CRON JOB 4 - If critical service down restart then - curl post to log server and
 
 ```
 
-CRON JOB 5 - Force users to change old passwords on logon
+CRON JOB 5 - Password audit - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 6 - Force users to change old passwords on logon
 ```bash
 #!/bin/bash
 # Get list of users with expired passwords using chage
