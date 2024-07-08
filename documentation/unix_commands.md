@@ -54,6 +54,11 @@ or
 pacman -Syu
 ```
 
+OPTIONAL. DRIVERS
+```bash
+# install your drivers e.g. from browser or apt
+```
+
 3. SSH
 ```bash
 sudo apt install openssh-server -y # for incomming SSH
@@ -208,8 +213,9 @@ sudo apt search xxxx
 sudo apt list --installed xxxxx
 ```
 
-SEARCH - SERVICES - ALL 3 METHODS
+SEARCH - SERVICES
 ```bash
+# 3 methods are below
 # 1 - through apt
 apt list --installed
 # 2 - through system services
@@ -307,10 +313,28 @@ FIND PHYSICAL DISPLAY
 sudo systemctl status display-manager
 ```
 
-DISK FREE/USAGE
+DISK FREE | DISK SPACE | DISK USAGE
 ```bash
-df -h # top level root only
+ # this works on the current directory you are in
+ # -h = human readable format converts the bytes to MB's
+ # -d = depth, to show the subdirectories sizes within
+ # -c = total = total size of this folder so ./sandbox = ~300MB's
+df -h 
 du -h -d 1
+
+sumeetsingh@Sumeets-Air-2 sandbox % du -hc -d 1
+
+188K    ./documentation
+ 47M    ./etc
+8.0K    ./vedic
+8.0K    ./headers
+4.0K    ./templates
+114M    ./.git
+ 12K    ./.vscode
+130M    ./assets
+  0B    ./src
+292M    .
+292M    total
 ```
 
 COPY FILES
