@@ -54,6 +54,11 @@ or
 pacman -Syu
 ```
 
+OPTIONAL. DRIVERS
+```bash
+# install your drivers e.g. from browser or apt
+```
+
 3. SSH
 ```bash
 sudo apt install openssh-server -y # for incomming SSH
@@ -208,8 +213,9 @@ sudo apt search xxxx
 sudo apt list --installed xxxxx
 ```
 
-SEARCH - SERVICES - ALL 3 METHODS
+SEARCH - SERVICES
 ```bash
+# 3 methods are below
 # 1 - through apt
 apt list --installed
 # 2 - through system services
