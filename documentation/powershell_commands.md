@@ -28,9 +28,7 @@ notepad $PROFILE # open profile
 Write-Host "Welcome, $env:USERNAME@$env:COMPUTERNAME Today is $(Get-Date -Format 'dddd, MMMM dd yyyy')." # add line in profile
 . $PROFILE # reset profile
 
-
 # RESULT
 Welcome, Sumeet@SUMEETS-PC Today is Sunday, July 07 2024.
 PS C:\Users\Sumeet\Documents\sandbox> 
-
 ```
