@@ -1,3 +1,47 @@
+
+___________________________________________________________________________
+
+                          WHAT IS RETROPIE?
+___________________________________________________________________________
+
+If you want a gaming device like an arcade machine, or a custom gameboy
+that has every retro game console and game in it you can take and play anywhere
+then you need to install different emulators. RetroPie packages these steps in
+a simple one click setup.
+
+As per: https://www.reddit.com/r/RetroPie/comments/yet5v1/retropie_or_emulation_station/
+
+For any Linux OS (not just RaspberryPi), RetroPie runs a bunch of scripts that
+installs and configures; 
+1. User account "pi" with all necessary permissions
+2. Default drivers (if RaspberryPi)
+3. Retroarch
+4. All emulator cores (even for PS1 games to work without BIOS if not yet added)
+5. All ROM folders, etc.,
+6. Emulation Station (from git pull ./make not from apt)
+7. Autoboot to "emulationstation" launcher
+
+So you can see it does quite alot. If you want a dedicated linux emulator device
+then best use RetroPie to automatically do it all.
+
+If using Windows then you can just use Retroarch.
+
+INSTALLING RETROPIE - https://retropie.org.uk/docs/First-Installation/
+
+[Or just watch the YouTube video here](https://www.youtube.com/watch?v=E1sbnPZ_A8w)
+
+___________________________________________________________________________
+
+                          WHAT IS BIOS?
+___________________________________________________________________________
+
+For CD and up generation gaming consoles you will need to dump your consoles
+operating system called a bios and add it to your emulators folder.
+
+Conveniently they are available online but first ensure you legally own the console first. 
+An example for illustration purposes are here: https://github.com/Abdess/retroarch_system/releases/
+
+
 ___________________________________________________________________________
 
                           RETROPIE SETUP
@@ -52,34 +96,34 @@ Settings - Input - Hotkey Binds
 6. Done
 
 SETUP BOTH ARCADE BUTTONS/JOYSTICK
-# note you can keep a ps controller or keyboard 
-# plugged in while setting up the 2 arcade sticks
-# To setup any controller just hold down any button on it and it will detect
-# just that controller, then setup any buttons and skip any you cant do
+note you can keep a ps controller or keyboard plugged in while setting up the 2 arcade sticks
+To setup any controller just hold down any button on it and it will detect
+just that controller, then setup any buttons and skip any you cant do
 1. https://www.youtube.com/watch?v=uL3K8sZIuWo
 
 
 ADD BIOS
 (Necessary for PS1)
 1. Find the BIOS somewhere e.g. by dumping your own consoles BIOS
-1. Put all files (e.g. for PS1) in BIOS
+or here if you legally own the console: https://github.com/Abdess/retroarch_system/releases/
+2. Put all files (e.g. for PS1) in BIOS
+```bash
 cp scph5500.bin, scph5501.bin, scph5502.bin /home/pi/RetroPie/BIOS
-
+```
 
 CONSOLE BOOT SOUND
 1. Edit config to set boot sound for whichever core e.g. ps1 to start
+```bash
 nano /opt/retropie/configs/all/retroarch-core-options.cfg
 pcsx_rearmed_show_bios_bootlogo = "disabled"
 # change to
 pcsx_rearmed_show_bios_bootlogo = "enabled"
+```
 
-
-AUTO START (ENTER) GAME ON STARTUP
-
-1. nano /opt/retropie/configs/all/autostart.sh
-2. To start any rom on startup type/replace the core and rom path with the game 
-e.g. the below will start Street Fighter 2 on Startup.
+START GAME ON BOOT
 ```bash
+nano /opt/retropie/configs/all/autostart.sh
+# To start any rom on startup type/replace the core and rom path with the game 
 /opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ mame-libretro ~/RetroPie/roms/mame-libretro/sf2ce.zip &&$
 # emulationstation #auto
 ```
@@ -90,3 +134,11 @@ pi@retropie:~ $ cat /opt/retropie/configs/all/autostart.sh
 emulationstation #auto
 pi@retropie:~ $
 ```
+
+ADD GAME ARTWORK | THUMBNAIL IMAGES
+1. In main menu where you select your emulators press start
+2. Press scrapper
+3. Press to configure by having user not worry about conflicts (automatically find images)
+4. Press to start and it will download all images by itself
+5. If Some images are skipped you can go back and choose the second scrapper which scraps images
+from a different website and complete the remaining images
