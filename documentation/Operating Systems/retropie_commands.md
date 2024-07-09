@@ -38,18 +38,18 @@ SWAP A/B BUTTONS
 1. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
 Settings - Input - Menu Controls
 2. Set "Menu swap OK/Cancel buttons" to ON. This will change A/B buttons (or X/O on playstation controller)
-
+3. Go back to Main menu - configuration - save current configuration
+4. Done
 
 SETUP HOTKEYS (TURBO + SAVE STATES + EMULATOR MENU)
 1. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
 Settings - Input - Hotkey Binds
 2. scroll down to Hotkey - set to PS button on Playstation controller 
 (e.g. the PS logo on Dualshock 5)
-3. Select Fast Forward (Toggle) to be R3
-4. Menu toggle gamepad combo - select "Start + Select"
-5. USE FAST FORWARD/TURBO IN GAME = Press PS button + R3 (Hold down)
-6. SAVE STATES - Press both Start + Select buttons anytime to access
-
+3. Select Fast Forward (Toggle) to be R3 (use in game with Press PS button + R3 (Hold down))
+4. Menu toggle gamepad combo - select "Start + Select" (use in game with Press Start + Select)
+5. Go back to Main menu - configuration - save current configuration
+6. Done
 
 SETUP BOTH ARCADE BUTTONS/JOYSTICK
 # note you can keep a ps controller or keyboard 
