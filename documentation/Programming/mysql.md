@@ -1,19 +1,30 @@
 
 ______________________________________________________________________________________________
 
-                                CREATE DATABASE
+                            FIND | CREATE | START DATABASE
 ______________________________________________________________________________________________
 
-MacOS
-OPTIONAL - check brew already installed and if so start
-1. brew services
-2. brew services start mysql
-IF BREW NOT INSTALLED
+
+START DATABASE IF INSTALLED
+```bash
+brew services # MacOS
+brew services start mysql
+# IF BREW NOT INSTALLED
 1. brew install mysql
 2. brew services start mysql
-OPTIONAL - to find the database directory on host
-1. mysql -u root -e "SHOW VARIABLES LIKE 'datadir';"\n
+```
+```powershell
+PS C:\Users\Sumeet\Documents\sandbox> Get-Service -Name MySQL # WINDOWS
 
+Status   Name               DisplayName
+------   ----               -----------
+Running  MySQL              MySQL
+```
+
+FIND DATABASE DIRECTORY
+```bash
+mysql -u root -e "SHOW VARIABLES LIKE 'datadir';"\n
+```
 
 AWS RDS
 1. Go to AWS RDS REGION
@@ -40,7 +51,7 @@ mysqld    37199 sumeetsingh   20u  IPv4 0x5d9b0a6e5c20275a      0t0  TCP localho
 
 LOCAL DB AS ROOT
 ```bash
-mysql -u root -p
+mysql -u root -p # password is: password
 ```
 
 LOCAL DB AS USER
@@ -179,27 +190,32 @@ mysql> show databases;
 +---------------------+
 ```
 
-5.5 DELETE DATABASE
+6. DELETE DATABASE
 ```bash
 DROP DATABASE xxx
 ```
 
-6. CREATE DATABASE
+7. DELETE TABLE
+```bash
+DROP TABLE xxx
+```
+
+8. CREATE DATABASE
 ```bash
 CREATE DATABASE agnisamoohdb;
 ```
 
-7. GRANT DATABASE ACCESS TO USER
+9. GRANT DATABASE ACCESS TO USER
 ```bash
 GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'user'@'localhost';
 ```
 
-8. ACCESS DATABASE
+10. ACCESS DATABASE
 ```bash
 USE agnisamoohdb;
 ```
 
-9. SHOW TABLES
+11. SHOW TABLES
 ```bash
 mysql> show tables;
 +------------------------+
@@ -209,7 +225,7 @@ mysql> show tables;
 +------------------------+
 ```
 
-10. CREATE TABLE
+12. CREATE TABLE
 ```bash
 # RULES for one time users like records, except the private key always try to set NOT NULL, so you cannot have null entries
 # then for ints and booleans set DEFAULT 0;
@@ -221,7 +237,7 @@ CREATE TABLE users (
 );
 ```
 
-11. SHOW COLUMNS
+13. SHOW COLUMNS
 ```bash
 DESCRIBE users;
 +----------+-------------+------+-----+---------+----------------+
@@ -235,58 +251,74 @@ DESCRIBE users;
 4 rows in set (0.12 sec)
 ```
 
-12. QUERY TABLE
+14. QUERY TABLE
 ```bash
 SELECT * FROM users;
 ```
 
-13. CREATE NEW COLUMN
+15. CREATE NEW COLUMN
 ```bash
 ALTER TABLE users
 ADD COLUMN onMailingList BOOLEAN NOT NULL DEFAULT 0,
 ADD COLUMN pending_orders INT NOT NULL DEFAULT 0,
-ADD COLUMN order_history INT NOT NULL DEFAULT 0,
+ADD COLUMN order_history INT NOT NULL,
 ADD COLUMN open_tickets INT NOT NULL DEFAULT 0,
 ADD COLUMN closed_tickets INT NOT NULL DEFAULT 0,
-ADD COLUMN games TEXT NOT NULL,
-ADD COLUMN bubbleup_game_statistics TEXT NOT NULL;
+ADD COLUMN notes TEXT NOT NULL,
+ADD COLUMN subscriptions TEXT NOT NULL;
 ```
 
-15. MODIFY TABLE
+16. MODIFY TABLE
 ```bash
 ALTER TABLE users
 MODIFY order_history TEXT NOT NULL;
 ```
 ```bash
-+--------------------------+-------------+------+-----+---------+----------------+
-| Field                    | Type        | Null | Key | Default | Extra          |
-+--------------------------+-------------+------+-----+---------+----------------+
-| userID                   | int         | NO   | PRI | NULL    | auto_increment |
-| username                 | varchar(20) | NO   |     |         |                |
-| email                    | varchar(50) | NO   |     |         |                |
-| password                 | varchar(20) | NO   |     |         |                |
-| onMailingList            | tinyint(1)  | NO   |     | 0       |                |
-| pending_orders           | int         | NO   |     | 0       |                |
-| order_history            | text        | NO   |     | NULL    |                |
-| open_tickets             | int         | NO   |     | 0       |                |
-| closed_tickets           | int         | NO   |     | 0       |                |
-| games                    | text        | NO   |     | NULL    |                |
-| bubbleup_game_statistics | text        | NO   |     | NULL    |                |
-+--------------------------+-------------+------+-----+---------+----------------+
+mysql> describe users;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| userID         | int         | NO   | PRI | NULL    | auto_increment |
+| username       | varchar(20) | NO   |     | NULL    |                |
+| email          | varchar(50) | NO   | UNI | NULL    |                |
+| password       | varchar(20) | NO   |     | NULL    |                |
+| onMailingList  | tinyint(1)  | NO   |     | 0       |                |
+| pending_orders | int         | NO   |     | 0       |                |
+| order_history  | int         | NO   |     | NULL    |                |
+| open_tickets   | int         | NO   |     | 0       |                |
+| closed_tickets | int         | NO   |     | 0       |                |
+| notes          | text        | NO   |     | NULL    |                |
+| subscriptions  | text        | NO   |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+11 rows in set (0.00 sec)
 ```
 
-15. CREATE NEW USER
+17. CREATE NEW USER
 ```bash
 INSERT INTO users (username, email, password, subscriptions, notes) 
 VALUES ('sum337', 'sumeet.singhji@outlook.com', SHA2('Password!', 256), '', '');
 ```
 
-16. CHANGE USER RECORD PASSWORD
+18. To has an SHA256 password follow above Hash password section
+or follow ```../cybersecurity/cryptography.md``` and copy output
+
+19. CHANGE USER RECORD PASSWORD
 ```bash
 UPDATE users SET password = 'Password1!' WHERE username = 'sum337';
+# OR if you have an hashed password output enter it below
+UPDATE users SET password = '$2a$10$H/O/I3b6YfoA5S4oI7pT0uUZtYUpIwkv0aghHstQClNd088bxiTvC' WHERE username = 'sum337';
+
+# CONFIRM by seeing the hashed password in the password field. When logging into the DB use the unhashed password
+select * from users where username = "sum337";
++--------+----------+----------------------------+----------------------+---------------+----------------+---------------+--------------+----------------+-------+---------------+
+| userID | username | email                      | password             | onMailingList | pending_orders | order_history | open_tickets | closed_tickets | notes | subscriptions |
++--------+----------+----------------------------+----------------------+---------------+----------------+---------------+--------------+----------------+-------+---------------+
+|      1 | sum337   | sumeet.singhji@outlook.com | $2a$10$H/O/I3b6YfoA5 |             0 |              0 |             0 |            0 |              0 |       |               |
++--------+----------+----------------------------+----------------------+---------------+----------------+---------------+--------------+----------------+-------+---------------+
+1 row in set (0.00 sec)
 ```
 
-17. LOG OFF
+20. LOG OFF
 ```bash
 exit
 ```

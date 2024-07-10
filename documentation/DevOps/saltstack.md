@@ -22,7 +22,7 @@ SaltStack, Terraform and Kubernetes
 
 ___________________________________________________________________________
 
-                            EXAMPLE SETUP
+                            EXAMPLE ENVIRONMENT SETUP
 ___________________________________________________________________________
 
 We will be setting up a home automation and monitoring website with
@@ -40,11 +40,17 @@ Garage Plex Server - setup with ```../Operating Systems/retropie_setup.md```
 
 192.168.0.209
 Raspberry Pi 3B
-Bedroom monitoring webserver - setup with ```../Programming/react_webserver.md``` 
+Bedroom monitoring webserver - setup with ```../Operating Systems/react_webserver_setup.md``` 
 
 192.168.0.208
 Raspberry Pi 3B
 Bedroom Saltstack control node - setup with below guide
+
+___________________________________________________________________________
+
+                            CONTROL NODE SETUP
+___________________________________________________________________________
+
 
 
 INSTALL SALTSTACK

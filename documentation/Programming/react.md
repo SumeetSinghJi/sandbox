@@ -1815,7 +1815,6 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
     console.log('Hashed password:', hash);
   }
 });
-
 ```
 
 5. Create 1st backend /src/components/backend/LoginForm.js and add the below
