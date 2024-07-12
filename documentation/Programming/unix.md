@@ -345,6 +345,11 @@ COPY FILES
 cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE 1 FILE
 cp -rv /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE ALL FOLDERS
 cp -irv /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND ASK PERMISSION BEFORE OVERWRITING ALL FOLDERS
+cp -r * ../ # COPY FOLDER CONTENTS TO PARENT
+# OR use absolute path 
+cp -r * /home/username/destination/  # COPY FOLDER CONTENTS TO PARENT
+find . -mindepth 1 -maxdepth 1 -type d -exec cp -v -r {}/\* ../ \;
+ # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT
 rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
 ```
 
@@ -354,6 +359,11 @@ MOVE FILES
 mv "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # MOVE 1 FILE
 mv -rv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FOLDERS
 mv -irv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
+mv -r * ../ # COPY FOLDER CONTENTS TO PARENT
+# OR use absolute path 
+mv -r * /home/username/destination/  # COPY FOLDER CONTENTS TO PARENT
+find . -mindepth 1 -maxdepth 1 -type d -exec sh -c 'mv -v -t ../ "$1"/* && rmdir "$1"' sh {} \; && rmdir ./*
+ # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT THEN DELETE EMPTY SUBDIRECTORIES
 rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
 
