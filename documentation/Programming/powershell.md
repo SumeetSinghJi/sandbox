@@ -57,3 +57,21 @@ ___________________________________________________________________________
 
                         POWERSHELL COMMANDS
 ___________________________________________________________________________
+
+
+1. COPY ALL CONTENTS FROM SUBDIRECTORIES TO PARENT
+```powershell
+Get-ChildItem -Directory | ForEach-Object {
+    Move-Item -Path $_.FullName\* -Destination "C:\path\to\destination"
+    # Remove-Item -Path $_.FullName -Force -Recurse # OPTIONAL TO REMOVE EMPTY SUBDIRECTORIES
+}
+```
+
+1. DELETE EMPTY SUBDIRECTORIES
+```powershell
+Get-ChildItem -Directory | ForEach-Object {
+    if (!(Get-ChildItem -Path $_.FullName)) {
+        Remove-Item -Path $_.FullName -Force -Recurse
+    }
+}
+```
