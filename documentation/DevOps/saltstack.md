@@ -20,48 +20,58 @@ In Summary if you were to pick 3 ITSM tools only to be agnostic choose;
 SaltStack, Terraform and Kubernetes
 
 
-___________________________________________________________________________
 
-                            EXAMPLE ENVIRONMENT SETUP
-___________________________________________________________________________
 
-We will be setting up a home automation and monitoring website with
-Saltstack raspberry pi environment
 
-IP | Device | Location | Setup guide
-
-192.168.0.211 
-Raspberry Pi 3B - 
-Garage Arcade Machine (minion) - setup with ```../Operating Systems/retropie_setup.md```
-
-192.168.0.210
-Raspberry Pi 3B - 
-Garage Plex Server - setup with ```../Operating Systems/retropie_setup.md```
-
-192.168.0.209
-Raspberry Pi 3B
-Bedroom monitoring webserver - setup with ```../Operating Systems/react_webserver_setup.md``` 
-
-192.168.0.208
-Raspberry Pi 3B
-Bedroom Saltstack control node - setup with below guide
 
 ___________________________________________________________________________
 
-                            CONTROL NODE SETUP
+                            DOCKER SETUP
 ___________________________________________________________________________
 
 
-
-INSTALL SALTSTACK
-On 192.168.0.208 run the below
+1. Install SaltStack Minion (Agent software) on desired node
 ```bash
-
+# Example install on Raspberry Pi 3B+ running Retropi located in garage - 192.168.0.211
+curl -L https://bootstrap.saltproject.io -o install_salt.sh
+sudo sh install_salt.sh -P -M
+sudo nano /etc/salt/minion
+master: _____SALTMASTER_IP_GOES_HERE_____
+sudo systemctl restart salt-minion
 ```
 
+2. CREATE FILE docker-compose.yml
+```yaml
+version: '3'
 
+services:
+  saltmaster:
+    image: saltstack/salt-master:latest
+    container_name: saltmaster
+    ports:
+      - "4505:4505"
+      - "4506:4506"
+    volumes:
+      - /path/to/salt/config:/etc/salt
+      - /path/to/salt/pki:/etc/salt/pki
+    restart: unless-stopped
+```
 
+3. START DOCKER
+```bash
+docker-compose up -d
+```
 
+4. ACCEPT SALT MINION KEY
+```bash
+sudo salt-key -L  # List keys
+sudo salt-key -A  # Accept all pending keys
+```
 
+5. TEST CONNECTIVITY FROM MASTER TO MINION
+```bash
+sudo salt '<minion_id_or_ip>' test.ping  # Check if minion is responding
+sudo salt '<minion_id_or_ip>' cmd.run 'ls /home/pi'  # Example command
+```
 
 

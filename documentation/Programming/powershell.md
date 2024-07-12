@@ -4,12 +4,31 @@ ___________________________________________________________________________
                                 WINGET
 ___________________________________________________________________________
 
+SEARCH INSTALLED PACKAGES
+```bash
+winget list
+```
 
-WINGET INSTALL
+SEARCH PACKAGE
+```bash
+winget search g++
+```
+
+INSTALL
+```bash
+winget install LLVM
+```
+
+UNINSTALL
+```bash
+winget remove LLVM
+```
 
 
 UPLOADING A WINGET
+```bash
 
+```
 
 
 
@@ -19,7 +38,7 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 MAKE PROFILE
-```powershell
+```bash
 PS C:\Users\Sumeet\Documents\sandbox> $PROFILE
 C:\Users\Sumeet\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
 mkdir C:\Users\Sumeet\Documents\WindowsPowerShell # make profile directory
@@ -32,3 +51,9 @@ Write-Host "Welcome, $env:USERNAME@$env:COMPUTERNAME Today is $(Get-Date -Format
 Welcome, Sumeet@SUMEETS-PC Today is Sunday, July 07 2024.
 PS C:\Users\Sumeet\Documents\sandbox> 
 ```
+
+
+___________________________________________________________________________
+
+                        POWERSHELL COMMANDS
+___________________________________________________________________________

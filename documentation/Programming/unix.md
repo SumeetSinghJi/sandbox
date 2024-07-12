@@ -340,9 +340,11 @@ sumeetsingh@Sumeets-Air-2 sandbox % du -hc -d 1
 COPY FILES
 ```bash
 # use -i for confirmation before overwriting
+# use -r to recurse and target contents inside folders
+# use -v for verbose - best option
 cp "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE 1 FILE
-cp -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE ALL FOLDERS
-cp -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND ASK PERMISSION BEFORE OVERWRITING ALL FOLDERS
+cp -rv /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND REPLACE ALL FOLDERS
+cp -irv /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND ASK PERMISSION BEFORE OVERWRITING ALL FOLDERS
 rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
 ```
 
@@ -350,8 +352,8 @@ MOVE FILES
 ```bash
 # use -i for confirmation before overwriting
 mv "/media/usb1/Silent Hill" /home/pi/RetroPie/roms/psx/ # MOVE 1 FILE
-mv -r /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FOLDERS
-mv -ir /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
+mv -rv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FOLDERS
+mv -irv /media/usb1/* /home/pi/RetroPie/roms/psx/ # MOVE ALL FILES + ASK BEFORE OVERWRITING
 rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
 

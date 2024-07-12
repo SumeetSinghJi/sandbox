@@ -1,3 +1,28 @@
+
+______________________________________________________________________________________________
+
+                                  LIMITATIONS
+______________________________________________________________________________________________
+
+
+File path names should be short! If something looks too long then it's time to shorten.
+
+
+
+______________________________________________________________________________________________
+
+                            SPECIAL CHARACTERS - HTML ESCAPING - ENCODING
+______________________________________________________________________________________________
+
+
+TO render special characters in react use the escape character e.g. < = &lt;
+
+e.g. 
+Will throw error - <p> This is a less then and greater then symbol <> </p>
+Will successfully pass - <p> This is a less then and greater then symbol &lt;&gt; </p>
+
+
+
 ______________________________________________________________________________________________
 
                             TERMINOLOGIES - REACT
@@ -5,6 +30,7 @@ ________________________________________________________________________________
 
 React "React simplifies state management in JavaScript by introducing hooks, which allow 
 functional components to manage state and perform side effects effectively."
+
 
 
 ______________________________________________________________________________________________
@@ -462,7 +488,7 @@ mkdir assets # for assets e.g. graphics, sounds, images, videos to display on we
 mkdir assets/documents
 mkdir assets/documents/policies
 mkdir assets/graphics
-mkdir assets/graphics/games
+mkdir assets/graphics/Books
 mkdir assets/graphics/logos
 mkdir assets/sounds
 mkdir assets/videos
@@ -491,6 +517,7 @@ Uses a HTML structure as below
 <footer>
 </div>
 */
+
 /* Reset and basic styles */
 body, html, #root {
   font-family: Arial, sans-serif; /* Fallback font */
@@ -498,6 +525,10 @@ body, html, #root {
   padding: 0;
   height: 100%;
   box-sizing: border-box; /* Ensures padding and border are included in total width/height */
+}
+
+a {
+  text-decoration: none; /* remove underline sitewide from all url links*/
 }
 
 /* Wrapper for entire layout */
@@ -570,6 +601,12 @@ body, html, #root {
   padding: 1rem; /* Provides padding inside column2 */
 }
 
+.product-img {
+  max-width: 100%; /* Ensure images do not exceed their container width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 500px; /* Limit maximum height to 300 pixels */
+}
+
 /* Footer styles */
 .footer {
   display: flex;
@@ -602,6 +639,14 @@ body, html, #root {
 .footer .footercolumn ul li {
   margin: 0.5rem 0; /* Provides margin between list items */
 }
+
+.buttonspace {
+  /* For adding space between buttons in a single row */
+  display: flex;
+  justify-content: flex-start; /* Adjust as needed */
+  margin-bottom: 10px; /* Adjust margin if needed */
+}
+
 ```
 
 13. Edit your App.js to the below
@@ -654,7 +699,142 @@ function AppWrapper() {
 export default AppWrapper;
 ```
 
+12. Create ./.env FILE & ASSOCIATED REPOSITORY SECRET KEY FOR CI/CD
+```bash
+# ./.env
 
+# EXAMPLE BELOW
+REACT_APP_GOOGLE_MAPS_API_KEY='askjdhakjsdhakshdklajsh89yq3984y'
+```
+
+13. ADD ENTRY TO SKIP ENV FILE IN .GITIGNORE
+```bash
+.env
+```
+
+14. OPTIONAL - CREATE PRODUCT INVENTORY src/data/ProductData.js
+```javascript
+// src/data/ProductData.js
+
+import id1a from '../assets/graphics/products/books/1a.png';
+import id1b from '../assets/graphics/products/books/1b.png';
+import id2a from '../assets/graphics/products/books/2a.png';
+import id2b from '../assets/graphics/products/books/2b.png';
+import id3a from '../assets/graphics/products/books/3a.png';
+import id3b from '../assets/graphics/products/books/3b.png';
+import id4a from '../assets/graphics/products/books/4a.jpg';
+import id4b from '../assets/graphics/products/books/4b.jpg';
+import id5a from '../assets/graphics/products/books/5a.jpg';
+import id5b from '../assets/graphics/products/books/5b.jpg';
+import id6a from '../assets/graphics/products/books/6a.jpg';
+import id6b from '../assets/graphics/products/books/6b.jpg';
+
+const ProductData = [
+  {
+    id: 1,
+    name: "Cybernetics, Cyberware and Cyborgs",
+    description: "A complete history of Cybernetics, Cyberware and Cyborgs",
+    type: "Hardback",
+    isbn: "TBD",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "Hardback",
+    price: 1,
+    trim: "5 x 8 inch edition",
+    pageCount: "TBD",
+    publicationDate: "TBD",
+    audience: "General",
+    genre: "Non Fiction",
+    images: [id1a, id1b]
+  },
+  {
+    id: 2,
+    name: "Cybernetics, Cyberware and Cyborgs",
+    description: "A complete history of Cybernetics, Cyberware and Cyborgs",
+    type: "eBook",
+    isbn: "978-0-6456579-4-4",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "EPUB",
+    price: 2,
+    pageCount: "TBD",
+    publicationDate: "TBD",
+    audience: "General",
+    genre: "Non Fiction",
+    images: [id2a, id2b]
+  },
+  {
+    id: 3,
+    name: "Cybernetics, Cyberware and Cyborgs",
+    description: "A complete history of Cybernetics, Cyberware and Cyborgs",
+    type: "Paperback",
+    isbn: "978-0-6456579-2-0",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "Paperback",
+    price: 3,
+    trim: "5 x 8 inch edition",
+    pageCount: "TBD",
+    publicationDate: "TBD",
+    audience: "General",
+    genre: "Non Fiction",
+    images: [id3a, id3b]
+  },
+  {
+    id: 4,
+    name: "Cyborg Alphabet",
+    description: "An alphabet on science for children",
+    type: "Hardback",
+    isbn: "978-0-6456579-0-6",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "Hardback",
+    price: 32.99,
+    trim: "8.5 x 8.5 inch edition",
+    pageCount: "36",
+    publicationDate: "January 1st, 2023",
+    audience: "Children",
+    genre: "Non Fiction",
+    images: [id4a, id4b]
+  },
+  {
+    id: 5,
+    name: "Cyborg Alphabet",
+    description: "An alphabet on science for children",
+    type: "eBook",
+    isbn: "978-0-6456579-1-3",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "EPUB",
+    price: 2.99,
+    pageCount: "36",
+    publicationDate: "January 1st, 2023",
+    audience: "Children",
+    genre: "Non Fiction",
+    images: [id5a, id5b]
+  },
+  {
+    id: 6,
+    name: "Cyborg Alphabet",
+    description: "An alphabet on science for children",
+    type: "Paperback",
+    isbn: "978-0-6456579-2-0",
+    publisher: "Sabrenetics",
+    language: "English",
+    format: "Paperback",
+    price: 6,
+    trim: "8.5 x 8.5 inch edition",
+    pageCount: "TBD",
+    publicationDate: "TBD",
+    audience: "Children",
+    genre: "Non Fiction",
+    images: [id6a, id6b]
+  }
+];
+
+export default ProductData;
+
+```
 
 ______________________________________________________________________________________________
 
@@ -717,24 +897,88 @@ export default Account;
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProductData from '../data/ProductData';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [country, setCountry] = useState('');
 
   useEffect(() => {
-    // Retrieve cart items from localStorage on component mount
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItems(storedCart);
   }, []);
 
-  const removeFromCart = (itemId) => {
-    // Filter out the item with the given itemId from cartItems
-    const updatedCart = cartItems.filter(item => item.id !== itemId);
+  const removeFromCart = (itemId, quantityToRemove) => {
+    const updatedCart = cartItems.map(item => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          quantity: item.quantity - quantityToRemove
+        };
+      }
+      return item;
+    }).filter(item => item.quantity > 0);
+
     setCartItems(updatedCart);
-    // Update localStorage with the new cartItems
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleSurnameChange = (event) => {
+    setSurname(event.target.value);
+  };
+
+  const handleStreetChange = (event) => {
+    setStreet(event.target.value);
+  };
+
+  const handleCityChange = (event) => {
+    setCity(event.target.value);
+  };
+
+  const handlePostcodeChange = (event) => {
+    setPostcode(event.target.value);
+    calculateShippingCost(event.target.value, country);
+  };
+
+  const handleCountryChange = (event) => {
+    setCountry(event.target.value);
+    calculateShippingCost(postcode, event.target.value);
+  };
+
+  const calculateShippingCost = (postcode, country) => {
+    let cost = 0;
+    // Sample logic to determine shipping cost based on postcode and country
+    if (postcode && country) {
+      if (country.toLowerCase() === 'usa') {
+        cost = 10; // $10 flat rate for USA
+      } else {
+        cost = 20; // $20 flat rate for other countries
+      }
+    }
+    setShippingCost(cost);
+  };
+
+  const getItemDetails = (itemId) => {
+    const item = ProductData.find(item => item.id === itemId);
+    return item;
+  };
+
+  const getTotalValue = () => {
+    const itemsTotal = cartItems.reduce((total, item) => {
+      const product = getItemDetails(item.id);
+      return total + (product ? product.price * item.quantity : 0);
+    }, 0);
+    return itemsTotal + shippingCost;
   };
 
   return (
@@ -748,17 +992,57 @@ const Cart = () => {
             <h1>Cart</h1>
           </div>
           <br />
-          {/* Display each item in the cart */}
-          {cartItems.map(item => (
-            <div key={item.id}>
-              <h3>{item.name}</h3>
-              <p>Price: ${item.price}</p>
-              <button onClick={() => removeFromCart(item.id)}>Remove</button>
-              <hr />
-            </div>
-          ))}
-          {/* Show a message if cart is empty */}
+          {cartItems.map(cartItem => {
+            const product = getItemDetails(cartItem.id);
+            if (!product) {
+              return null; // Skip rendering if product is not found
+            }
+            return (
+              <div key={cartItem.id}>
+                <h3>{product.name}</h3>
+                <p>ID: {cartItem.id}</p>
+                <p>Price: ${product.price.toFixed(2)}</p>
+                <p>Quantity: {cartItem.quantity}</p>
+                <p>Format: {cartItem.format}</p>
+                <button onClick={() => removeFromCart(cartItem.id, cartItem.quantity)}>Remove All</button>
+                <hr />
+              </div>
+            );
+          })}
           {cartItems.length === 0 && <p>Your cart is empty</p>}
+          <br />
+          {/* Customer information */}
+          <label>First Name:</label>
+          <input type="text" value={firstName} onChange={handleFirstNameChange} />
+          <br />
+          <label>Surname:</label>
+          <input type="text" value={surname} onChange={handleSurnameChange} />
+          <br />
+          {/* Shipping address */}
+          <label>Street:</label>
+          <input type="text" value={street} onChange={handleStreetChange} />
+          <br />
+          <label>City:</label>
+          <input type="text" value={city} onChange={handleCityChange} />
+          <br />
+          {/* Delivery details */}
+          <label>Postcode:</label>
+          <input type="text" value={postcode} onChange={handlePostcodeChange} />
+          <br />
+          <label>Country:</label>
+          <input type="text" value={country} onChange={handleCountryChange} />
+          <br />
+          {/* Display shipping cost */}
+          {postcode && country && (
+            <p>Shipping Cost: ${shippingCost.toFixed(2)}</p>
+          )}
+          <br />
+          {/* Display total value */}
+          {cartItems.length > 0 && (
+            <div>
+              <h3>Total Value: ${getTotalValue().toFixed(2)}</h3>
+            </div>
+          )}
           <br />
           <Link to="/checkout">
             <button>Checkout</button>
@@ -838,81 +1122,90 @@ export default ContactUs;
 
 ```
 
-5. Create page /src/pages/Games.js and add the below
+5. Create page /src/pages/Books.js and add the below
 ```javascript
-// src/pages/Games.js
+// src/pages/Books.js
 
 import React, { useState } from 'react';
 import AddCartButton from '../components/AddCartButton';
-import image1 from '../assets/graphics/BubbleUp1.png';
-import image2 from '../assets/graphics/BubbleUp2.png';
+import ProductData from '../data/ProductData';
 
-const Games = () => {
+const Books = () => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (item) => {
-    setCart([...cart, item]);
-    localStorage.setItem('cart', JSON.stringify([...cart, item]));
+    setCart(prevCart => {
+      const updatedCart = [...prevCart, item];
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      return updatedCart; // Return the updated state
+    });
   };
 
   return (
     <div>
       <div className='main'>
         <div className="column1"></div>
-        <div className="column2">
+        <div className="column2" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
           <br />
           <br />
-          <div style={{ textAlign: 'center' }}>
-            <h1>Games</h1>
+          <div style={{ textAlign: 'center', gridColumn: '1' }}>
+            <h1>Books</h1>
           </div>
           <br />
-          <h3>BubbleUp</h3>
-          <p>
-            BubbleUP is a combined C++ 2D Game Engine with a built in feature-rich demonstration 2D game built ontop of the SDL Framework. It includes classes for constructing interactive Buttons and fields to create stunning GUI, Forms and HUD. Includes countless game entities and level editor to create unique stunning 2D games. Has built in scenes for achievements, leaderboards, multiplayer, and more. You can download and easily modify this open-source code to create your own game by following the instructions here.
-          </p>
-          <div style={{ textAlign: 'center' }}>
-            <img src={image1} alt="BubbleUp" style={{ maxWidth: '100%', height: 'auto' }} />
-            <br />
-            <br />
-            <img src={image2} alt="BubbleUp" style={{ maxWidth: '100%', height: 'auto' }} />
-          </div>
-          <br />
-          <br />
-          <h4>Purchase Links</h4>
-          <p>
-            Free version available on itch <a href="https://example.com" target="_blank" rel="noopener noreferrer">here</a>
-          </p>
-          <p>
-            Paid version available here
-            <AddCartButton itemId="bubbleup1" itemName="BubbleUp" itemPrice={10} onAddToCart={addToCart} />
-          </p>
-          <br />
-          <br />
-          <h4>System Requirements</h4>
-          <ul>
-            <li>OS:
-              <ul>
-                <li>Windows 10, 11</li>
-                <li>MacOS 13 - 14</li>
-                <li>Ubuntu 22.04 - 24.04</li>
-              </ul>
-            </li>
-            <li>Processor: at least a Core i3 or AMD CPU equivalent</li>
-            <li>RAM: 4 GB RAM</li>
-            <li>Graphics: at least a HD compatible CPU/GPU</li>
-            <li>Storage: 5 GB Free</li>
-          </ul>
-          <br />
-          <br />
-          <br />
+          {ProductData.map(product => (
+            <div key={product.id} style={{ marginBottom: '40px' }}>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                {product.images.map((image, index) => (
+                  <React.Fragment key={index}>
+                    <img src={image} alt={`${product.name} ${index + 1}`} className="product-img" />
+                    <br />
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+              <h4>Purchase Link</h4>
+              <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+                <strong>{product.type}</strong>: {product.price} AUD
+                <br />
+                ISBN: {product.isbn}
+                <br />
+                Publisher: {product.publisher}
+                <br />
+                Language: {product.language}
+                <br />
+                Trim Size: {product.trim}
+                <br />
+                Page Count: {product.pageCount}
+                <br />
+                Publication Date: {product.publicationDate}
+                <br />
+                Audience: {product.audience}
+                <br />
+                Genre: {product.genre}
+                <br />
+                <AddCartButton
+                  item={product} // Pass the product item itself
+                  format={product} // Pass the entire product as format
+                  onAddToCart={addToCart}
+                />
+              </div>
+              <br />
+              <br />
+            </div>
+          ))}
         </div>
-        <div className="column3"></div>
+        <div className="column3">
+          {/* Example: Display cart count */}
+          <p>Cart Count: {cart.length}</p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Games;
+export default Books;
 
 ```
 
@@ -939,7 +1232,7 @@ const Homepage = () => {
                         Welcome to the home of niche gaming developers!
                     </p>
                     <p>
-                        Meet Agnisamooh, your gateway to discovering unique and innovative games that may not be in the spotlight yet.
+                        Meet Agnisamooh, your gateway to discovering unique and innovative Books that may not be in the spotlight yet.
                     </p>
                     <p>
                         Agnisamooh is dedicated to bridging the gap between niche game developers and a broader audience. Whether you're into indie adventures, artistic puzzles, or experimental simulations, Agnisamooh brings you curated selections that promise fresh experiences.
@@ -950,7 +1243,7 @@ const Homepage = () => {
                     <div style={{ textAlign: 'center' }}>
                         <SampleGame />
                         <br />
-                        <a href="https://www.agnisamooh.com/games" className="btn-primary">Discover More</a>
+                        <a href="https://www.agnisamooh.com/Books" className="btn-primary">Discover More</a>
                     </div>
                 </div>
                 <div className="column3">
@@ -1164,21 +1457,52 @@ ________________________________________________________________________________
 1. Create component /src/components/AddCartButton.js and add the below
 ```javascript
 // src/components/AddCartButton.js
-import React from 'react';
 
-const AddCartButton = ({ itemId, itemName, itemPrice, onAddToCart }) => {
+import React, { useState } from 'react';
+
+const AddCartButton = ({ item }) => {
+  const [addedToCart, setAddedToCart] = useState(false);
+
   const addToCartHandler = () => {
-    const item = {
-      id: itemId,
-      name: itemName,
-      price: itemPrice,
-      quantity: 1  // Assuming starting with quantity 1
+    const itemToAdd = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+      format: item.type // Assuming 'type' serves as the format identifier
     };
-    onAddToCart(item);
+
+    // Retrieve existing cart items from localStorage
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Check if the item is already in the cart
+    const existingItemIndex = storedCart.findIndex(cartItem => cartItem.id === itemToAdd.id && cartItem.format === itemToAdd.format);
+
+    if (existingItemIndex !== -1) {
+      // Item already exists in cart, update quantity
+      storedCart[existingItemIndex].quantity += 1;
+    } else {
+      // Item does not exist in cart, add new item
+      storedCart.push(itemToAdd);
+    }
+
+    // Update localStorage with the updated cart
+    localStorage.setItem('cart', JSON.stringify(storedCart));
+
+    // Set addedToCart state to true to display confirmation message
+    setAddedToCart(true);
+
+    // Reset addedToCart state after 2 seconds
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 2000);
   };
 
   return (
-    <button onClick={addToCartHandler}>Add to Cart</button>
+    <div>
+      <button onClick={addToCartHandler}>Add to Cart</button>
+      {addedToCart && <p style={{ color: 'green', marginTop: '5px' }}>Added to Cart!</p>}
+    </div>
   );
 };
 
@@ -1200,7 +1524,7 @@ const Footer = () => {
         <h3>Quick links</h3>
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/games">Games</Link></li>
+          <li><Link to="/Books">Books</Link></li>
           <li><Link to="/news">News</Link></li>
           <li><Link to="/contactus">Contact us</Link></li>
           <li><Link to="/account">Account</Link></li>
@@ -1211,7 +1535,7 @@ const Footer = () => {
       <div className="footercolumn">
         <h3>Mission</h3>
         <p>
-          "To bring the best games from the niche developers"
+          "To bring the best Books from the niche developers"
         </p>
       </div>
       <div className="footercolumn">
@@ -1241,7 +1565,7 @@ const Header = ({ authToken, handleLogout }) => {
       </Link>
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/games">Games</Link></li>
+        <li><Link to="/Books">Books</Link></li>
         <li><Link to="/news">News</Link></li>
         <li><Link to="/contactus">Contact us</Link></li>
         <li><Link to="/cart">Cart</Link></li>
@@ -1290,7 +1614,7 @@ const SampleGame = () => {
     const [gameOver, setGameOver] = useState(false);
     const [objectPosition, setObjectPosition] = useState(generateRandomPosition());
     const [bombPosition, setBombPosition] = useState(generateRandomPosition());
-    const [gameStarted, setGameStarted] = useState(false);
+    const [Bookstarted, setBookstarted] = useState(false);
 
     const startGame = () => {
         setGameOver(false);
@@ -1298,11 +1622,11 @@ const SampleGame = () => {
         setPosition(initialPosition);
         setObjectPosition(generateRandomPosition());
         setBombPosition(generateRandomPosition());
-        setGameStarted(true);
+        setBookstarted(true);
     };
 
     const endGame = () => {
-        setGameStarted(false);
+        setBookstarted(false);
         setGameOver(true);
     };
 
@@ -1320,7 +1644,7 @@ const SampleGame = () => {
     useEffect(() => {
         const handleKeyDown = (e) => {
             e.preventDefault();
-            if (!gameStarted) return;
+            if (!Bookstarted) return;
 
             switch (e.key) {
                 case 'ArrowUp':
@@ -1345,10 +1669,10 @@ const SampleGame = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [direction, gameStarted]);
+    }, [direction, Bookstarted]);
 
     useEffect(() => {
-        if (!gameStarted) return;
+        if (!Bookstarted) return;
 
         const moveSquare = () => {
             switch (direction) {
@@ -1388,17 +1712,17 @@ const SampleGame = () => {
         }, 200);
 
         return () => clearInterval(interval);
-    }, [direction, gameStarted, gameWidth, gameHeight, squareSize, checkCollisions]);
+    }, [direction, Bookstarted, gameWidth, gameHeight, squareSize, checkCollisions]);
 
     return (
         <div>
-            {!gameStarted && !gameOver && (
+            {!Bookstarted && !gameOver && (
                 <div style={{ textAlign: 'center' }}>
                     <button onClick={startGame} className="btn-primary">Start Game</button>
                 </div>
             )}
 
-            {gameStarted && (
+            {Bookstarted && (
                 <div style={{ width: gameWidth, height: gameHeight, border: '1px solid black', position: 'relative', margin: '0 auto' }}>
                     <div
                         style={{
