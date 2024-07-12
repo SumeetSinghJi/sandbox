@@ -111,7 +111,7 @@ IMPORTANT: only AWS Certificate's made in us-east-1 can be used
 8. In Route53 point your CNAME to your cloudfront distribution with default values
 e.g.
 ```bash
-Create the first record
+Create the first record 
 Record name: www
 Record type: CNAME
 Value: d3hvilctvbbd7e.cloudfront.net
@@ -121,7 +121,7 @@ Routing policy: Simple
 
 Now create another record
 1. click create record
-2. Click record wizard - simple record
+2. Click record wizard - Simple routing
 3. Choose select a endpoint - cloudfront distribution
 4. In distribution select the previous cloudfront distribution
 5. Save record
