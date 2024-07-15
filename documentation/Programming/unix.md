@@ -26,11 +26,11 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 
-OPTIONAL - Zsh shell only - enable inline comments with setopt
+0. INSTALLING IMAGE
 ```bash
-testusr@ubuntu Documents % setopt interactive_comments
-testusr@ubuntu Documents % echo test # test
-test
+# Whatever distribution image you find e.g. Debian, Ubuntu, Arch, when you download it select unattended installation/boot flash mode
+# you can edit the network file within and uncomment the eth1/wlan details and fill in your own
+# That way after you connect/power it the unattended installation process will complete and you can SSH into it straight away
 ```
 
 1. ADMINS
@@ -54,17 +54,17 @@ or
 pacman -Syu
 ```
 
-OPTIONAL. DRIVERS
+3. OPTIONAL. DRIVERS
 ```bash
 # install your drivers e.g. from browser or apt
 ```
 
-3. SSH
+4. SSH
 ```bash
 sudo apt install openssh-server -y # for incomming SSH
 ```
 
-4. HARDEN
+5. HARDEN
 ```bash
 sudo apt install ufw
 sudo ufw enable
@@ -72,7 +72,17 @@ sudo ufw allow ssh
 sudo ufw status
 ```
 
-5. CLEANUP
+6. OPTIONAL - GUI
+```bash
+sudo apt install ubuntu-desktop # ubuntu, or for low OS spec hardware install lubuntu-desktop
+```
+
+7. OPTIONAL - ENABLE INLINE COMMENTS
+```bash
+testusr@ubuntu Documents % setopt interactive_comments # zsh shell only
+```
+
+8. CLEANUP
 ```bash
 sudo snap remove firefox
 ```
@@ -151,6 +161,11 @@ ___________________________________________________________________________
 
                     COMMON COMMANDS
 ___________________________________________________________________________
+
+FIND DISTRIBUTION | RELEASE | VERSION
+```bash
+cat /etc/os-release
+```
 
 QUITTING CLI
 ```bash

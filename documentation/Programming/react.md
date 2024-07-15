@@ -445,7 +445,8 @@ cd sumeet-singh.com
 
 5. INSTALL LIBS IN ./NODE_MODULES
 ```bash
-npm install react-router-dom
+# note papaparse is for csv parsing instead of using a ProductData.js use a ProductData.csv instead
+npm install react-router-dom papaparse
 ```
 
 6. DELETE DEFAULT FILES + REMOVE ENTRIES
