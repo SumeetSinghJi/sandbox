@@ -7,33 +7,31 @@ The commands below target the Debian family e.g. Debian, Ubuntu, RaspberryPi
 however they can be modified with a quick confirmation with chatGPT to suit
 other OS.
 
-
-___________________________________________________________________________
-
-                            REMOTE CONNECT
-___________________________________________________________________________
-
-SSH
-e.g. by remoting into raspberry pi with default u: pi p: rasbperry
-```bash
-ssh pi@192.168.0.211
-pi@retropi:~ enter password $ raspberry
-```
-
 ___________________________________________________________________________
 
                             FIRST TIME SETUP
 ___________________________________________________________________________
 
 
-0. INSTALLING IMAGE
+1. INSTALLING OS - USB
 ```bash
-# Whatever distribution image you find e.g. Debian, Ubuntu, Arch, when you download it select unattended installation/boot flash mode
-# you can edit the network file within and uncomment the eth1/wlan details and fill in your own
-# That way after you connect/power it the unattended installation process will complete and you can SSH into it straight away
+1. Connect a USB device to host
+2. Download Ubuntu server
+3. Download UNetbootin - start - select above image - select previous usb - ok
+4. Connect USB to Hardware to install linux on - boot to BIOS e.g. CTRL-F12 - select boot options boot from EFI USB Device - save and exit
+5a. Ubuntu Desktop - When device turns back on follow on screen prompts to finish of installation - check drivers all exist e.g. Wifi works, GPU connected - Select Ubuntu installer from desktop and finish of remainder of installation - select install third party drivers - download updates - 
+continue - erase disk and install ubuntu - continue - setup username/password/computername - continue and restart now
+5b. Ubuntu Server - when devices boots into CLI - check drivers e.g. Wifi/GPU are setup
 ```
 
-1. ADMINS
+2. SSH
+e.g. by remoting into raspberry pi with default u: pi p: rasbperry
+```bash
+ssh pi@192.168.0.211
+pi@retropi:~ enter password $ raspberry
+```
+
+3. ADMINS
 ```bash
 su
 usermod -aG sudo vboxuser # or wheel group
@@ -42,29 +40,27 @@ exit
 sudo reboot # necessary to reset admin cache
 ```
 
-2. UPDATE
+4. UPDATE
 ```bash
 sudo apt update
 sudo apt upgrade -y
 sudo apt dist-upgrade -y
 sudo reboot
-```
-or
-```bash
+# or
 pacman -Syu
 ```
 
-3. OPTIONAL. DRIVERS
+5. DRIVERS
 ```bash
-# install your drivers e.g. from browser or apt
+# install your drivers e.g. If you have an external gpu attached browse to drivers website and download, then install
 ```
 
-4. SSH
+6. SSH
 ```bash
 sudo apt install openssh-server -y # for incomming SSH
 ```
 
-5. HARDEN
+7. HARDEN
 ```bash
 sudo apt install ufw
 sudo ufw enable
@@ -72,17 +68,35 @@ sudo ufw allow ssh
 sudo ufw status
 ```
 
-6. OPTIONAL - GUI
+8. OPTIONAL - GUI
 ```bash
 sudo apt install ubuntu-desktop # ubuntu, or for low OS spec hardware install lubuntu-desktop
 ```
 
-7. OPTIONAL - ENABLE INLINE COMMENTS
+9. OPTIONAL - ENABLE INLINE COMMENTS
 ```bash
 testusr@ubuntu Documents % setopt interactive_comments # zsh shell only
 ```
 
-8. CLEANUP
+10. OPTIONAL - USEFULL PACKAGES
+```bash
+sudo apt install lolcat, git, flatpak
+```
+
+11. OPTIONAL - SETUP C/C++ COMPILER
+```bash
+# 1. INSTALL USEFULL PACKAGES 
+sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev 
+libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev 
+zlib1g-dev googletest libgtest-dev yasm
+# 2. Test C code
+echo "#include <stdio.h>" > test.c
+echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
+gcc -o test test.c
+./test
+```
+
+12. CLEANUP
 ```bash
 sudo snap remove firefox
 ```
@@ -128,32 +142,6 @@ alias cat='runlolcat cat'
 alias grep='runlolcat grep'
 alias tail='runlolcat tail'
 alias head='runlolcat head'
-```
-
-
-___________________________________________________________________________
-
-                        SETUP C AND C++
-___________________________________________________________________________
-
-1. Generic dev
-```bash
-sudo apt install lolcat, git, flatpak
-```
-
-2. For C++ dev
-```bash
-sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev 
-libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev 
-zlib1g-dev googletest libgtest-dev yasm
-```
-
-3. Test C code
-```bash
-echo "#include <stdio.h>" > test.c
-echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
-gcc -o test test.c
-./test
 ```
 
 
@@ -437,61 +425,7 @@ crontab -l # 4. verify cronjob
 crontab -e # 5. reschedule job
 ```
 
-
-___________________________________________________________________________
-
-                            COMMON SCRIPTS
-___________________________________________________________________________
-
-
-CRON JOB 1 - On low disk usage - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 2 - On high CPU/MEMORY usage - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 3 - On unexpected port change - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 4 - If critical service down restart then - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 5 - Password audit - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 6 - Force users to change old passwords on logon
-```bash
-#!/bin/bash
-# Get list of users with expired passwords using chage
-expired_users=$(awk -F: '$2 == "!!"' /etc/shadow | cut -d: -f1)
-
-# Loop through each expired user and force password change
-for user in $expired_users; do
-    echo "Forcing user '$user' to change password on next login..."
-    sudo chage -d 0 "$user"
-done
-
-echo "Password change forced for expired users."
-```
-
-
-___________________________________________________________________________
-
-                    NETWORKING COMMANDS
-___________________________________________________________________________
-
-OPEN PORTS
-find all open ports
+FIND ALL OPEN PORTS
 ```bash
 netstat -tuln
 
@@ -588,3 +522,49 @@ espressif.modem (192.168.0.155) at 94:3c:c6:da:4:cc on en0 ifscope [ethernet]
 retropie.modem (192.168.0.211) at b8:27:eb:ba:19:85 on en0 ifscope [ethernet]
 ```
 
+
+___________________________________________________________________________
+
+                            COMMON SCRIPTS
+___________________________________________________________________________
+
+
+CRON JOB 1 - On low disk usage - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 2 - On high CPU/MEMORY usage - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 3 - On unexpected port change - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 4 - If critical service down restart then - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 5 - Password audit - curl post to log server and alert
+```bash
+
+```
+
+CRON JOB 6 - Force users to change old passwords on logon
+```bash
+#!/bin/bash
+# Get list of users with expired passwords using chage
+expired_users=$(awk -F: '$2 == "!!"' /etc/shadow | cut -d: -f1)
+
+# Loop through each expired user and force password change
+for user in $expired_users; do
+    echo "Forcing user '$user' to change password on next login..."
+    sudo chage -d 0 "$user"
+done
+
+echo "Password change forced for expired users."
+```
