@@ -342,6 +342,17 @@ sumeetsingh@Sumeets-Air-2 sandbox % du -hc -d 1
 
 COPY FILES
 ```bash
+
+# rsync VS cpp
+
+# rsync only overwrites the existing destination file if they are different (sizes, types, etc.,) however with --ignore-existing it wont
+# rsync can be resumed
+# rsync is more network fault tolerant
+
+# cp is faster
+
+# CP
+
 # use -i for confirmation before overwriting
 # use -r to recurse and target contents inside folders
 # use -v for verbose - best option
@@ -351,9 +362,15 @@ cp -irv /media/usb1/* /home/pi/RetroPie/roms/psx/ # COPY AND ASK PERMISSION BEFO
 cp -r * ../ # COPY FOLDER CONTENTS TO PARENT
 # OR use absolute path 
 cp -r * /home/username/destination/  # COPY FOLDER CONTENTS TO PARENT
-find . -mindepth 1 -maxdepth 1 -type d -exec cp -v -r {}/\* ../ \;
- # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT
-rsync -av --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files that dont exist
+find . -mindepth 1 -maxdepth 1 -type d -exec cp -v -r {}/\* ../ \; # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT
+
+# RSYNC
+
+# use -a "archive mode" to preserve permissions, timestamps, symbolic links and other attributes of contents
+# use --progress for a progress indicator
+# use --ignore existing to now overwrite files that exist in destination
+rsync -av --progress /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files and overwrite if different sizes
+rsync -av --progress --ignore-existing /media/usb1/* /home/pi/RetroPie/roms/psx/ # copy files and dont overwrite
 ```
 
 MOVE FILES
@@ -367,7 +384,7 @@ mv -r * ../ # COPY FOLDER CONTENTS TO PARENT
 mv -r * /home/username/destination/  # COPY FOLDER CONTENTS TO PARENT
 find . -mindepth 1 -maxdepth 1 -type d -exec sh -c 'mv -v -t ../ "$1"/* && rmdir "$1"' sh {} \; && rmdir ./*
  # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT THEN DELETE EMPTY SUBDIRECTORIES
-rsync -av --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
+rsync -av --progress --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
 ```
 
 RENAME
