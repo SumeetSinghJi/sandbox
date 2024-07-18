@@ -1,6 +1,17 @@
-# ./gpt2_question_answering.py
 import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from vosk import Model, KaldiRecognizer
+import sounddevice as sd
+import json
+
+# Define your wake word(s)
+WAKE_WORDS = ["hey Sabre", "hello"]
+
+def detect_wake_word(text):
+    for wake_word in WAKE_WORDS:
+        if wake_word.lower() in text.lower():
+            return True
+    return False
 
 def load_model_and_tokenizer(model_name):
     model = GPT2LMHeadModel.from_pretrained(model_name)
@@ -13,6 +24,21 @@ def generate_response(model, tokenizer, prompt):
     outputs = model.generate(inputs, max_length=150, num_return_sequences=1, pad_token_id=pad_token_id)
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
+
+def recognize_speech(recognizer, model, tokenizer, duration=5, fs=16000):
+    print("Listening...")
+
+    def callback(indata, frames, time, status):
+        if recognizer.AcceptWaveform(indata):
+            result = recognizer.Result()
+            text = json.loads(result).get("text", "")
+            if text:
+                print(f"You (speech): {text}")
+                response = generate_response(model, tokenizer, text)
+                print(f"AI: {response}")
+
+    with sd.InputStream(samplerate=fs, channels=1, callback=callback):
+        sd.sleep(int(duration * 1000))
 
 if __name__ == "__main__":
     # Load pre-trained model and tokenizer
@@ -33,15 +59,37 @@ if __name__ == "__main__":
 
     print("Hi I'm Ghar AI. You can ask me any question by typing or talking.")
 
-    # Example usage
-    prompt = "What's the temperature in Sydney Australia?"
-    response = generate_response(model, tokenizer, prompt)
-    print("AI:", response)
+    # Initialize Vosk model
+    vosk_model = Model("model")
+    recognizer = KaldiRecognizer(vosk_model, 16000)
 
-    # Interactive mode
     while True:
-        prompt = input("You: ")
-        if prompt.lower() in ["exit", "quit"]:
+        mode = input("Type 'text' to type a question or 'speech' to talk to the AI: ").strip().lower()
+        if mode == "exit" or mode == "quit":
             break
-        response = generate_response(model, tokenizer, prompt)
-        print("AI:", response)
+        elif mode == "text":
+            prompt = input("You: ")
+            response = generate_response(model, tokenizer, prompt)
+            print(f"AI: {response}")
+        elif mode == "speech":
+            print("Waiting for wake word...")
+            while True:
+                with sd.InputStream(samplerate=16000, channels=1) as stream:
+                    sd.sleep(1000)
+                    print("Listening...")
+                    audio_input = stream.read(16000 * 5)  # Record 5 seconds of audio
+                    recognizer.SetWords(True)
+                    if recognizer.AcceptWaveform(audio_input):
+                        result = json.loads(recognizer.Result())
+                        text = result["text"]
+                        if detect_wake_word(text):
+                            print(f"Wake word detected: {text}")
+                            recognize_speech(recognizer, model, tokenizer)
+                            break
+                        else:
+                            print(f"Detected: {text}")
+                    else:
+                        print("Failed to recognize speech.")
+
+        else:
+            print("Invalid mode. Please type 'text' or 'speech'.")

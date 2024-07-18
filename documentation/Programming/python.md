@@ -51,7 +51,7 @@ mv vosk-model-small-en-us-0.15 model
 
 3. CREATE SCRIPT 'gpt2_api.py' REPLACING OPENAI_KEY
 ```python
-# main.py
+# gpt_api.py
 import os
 import queue
 import sounddevice as sd
@@ -182,7 +182,8 @@ Below steps outline using pytorch with huggingfaces transformers library to crea
 with any LLM model from here: https://huggingface.co/models
 
 Then once run it will download and save/cache the LLM model e.g. GPT2.0 on your computer.
-So even if you quit the terminal AI interactive prompt session. It will still be available
+So even if you quit the terminal AI interactive prompt session you can interact
+with either CLI or use voice which will be converted to text with the vosk library.
 for next time
 
 
@@ -243,7 +244,7 @@ pip3 install transformers torch
 
 2. CREATE SCRIPT TO DOWNLOAD REQUIRED MODEL
 ```python
-# ./gpt2_question_answering.py
+# gpt_llm.py
 import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 

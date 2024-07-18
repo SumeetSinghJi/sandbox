@@ -49,7 +49,7 @@ Write-Host "Welcome, $env:USERNAME@$env:COMPUTERNAME Today is $(Get-Date -Format
 
 # RESULT
 Welcome, Sumeet@SUMEETS-PC Today is Sunday, July 07 2024.
-PS C:\Users\Sumeet\Documents\sandbox> 
+PS C:\Users\Sumeet\Documents\sandbox>
 ```
 
 
@@ -59,19 +59,25 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 
-1. COPY ALL CONTENTS FROM SUBDIRECTORIES TO PARENT
+1. COPY SUBDIRECTORIES CONTENTS TO PARENT THEN DELETE
 ```powershell
-Get-ChildItem -Directory | ForEach-Object {
-    Move-Item -Path $_.FullName\* -Destination "C:\path\to\destination"
-    # Remove-Item -Path $_.FullName -Force -Recurse # OPTIONAL TO REMOVE EMPTY SUBDIRECTORIES
-}
-```
+cd "C:\Users\Sumeet\Downloads"
 
-1. DELETE EMPTY SUBDIRECTORIES
-```powershell
+$source = "C:\Users\Sumeet\Downloads"
+$destination = "C:\Users\Sumeet\Downloads"
+
 Get-ChildItem -Directory | ForEach-Object {
-    if (!(Get-ChildItem -Path $_.FullName)) {
-        Remove-Item -Path $_.FullName -Force -Recurse
-    }
+    $subDirPath = $_.FullName
+    Write-Host "Copying contents from: $subDirPath to  $destination"
+
+    # Use robocopy to move files
+    robocopy "$subDirPath" "$destination" /MOV /E /Z /NP /NFL /NDL /NJH /NJS /XD "$subDirPath" /R:1 /W:1
+}
+
+# Clean up empty subdirectories
+Get-ChildItem -Directory -Recurse | Where-Object { $_.GetFileSystemInfos().Count -eq 0 } | ForEach-Object {
+    $directoryPath = $_.FullName
+    Write-Host "Deleting directory: $directoryPath"
+    $_ | Remove-Item -Force
 }
 ```
