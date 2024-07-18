@@ -1,11 +1,12 @@
-import torch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
-from vosk import Model, KaldiRecognizer
-import sounddevice as sd
+# ./gpt_llm.py
+
+import torch # pytorch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer # hugging faces libs for predefined models downloaded here C:\Users\Sumeet\.cache\huggingface\hub
+from vosk import Model, KaldiRecognizer # speech to text lib
+import sounddevice as sd # lib to access host sound/mic hardware
 import json
 
-# Define your wake word(s)
-WAKE_WORDS = ["hey Sabre", "hello"]
+WAKE_WORDS = ["hey", "hello", "Hi"]
 
 def detect_wake_word(text):
     for wake_word in WAKE_WORDS:
