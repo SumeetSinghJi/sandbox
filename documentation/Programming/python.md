@@ -4,15 +4,17 @@ ________________________________________________________________________________
                                         PROFILE SCRIPT
 ______________________________________________________________________________________________
 
-1. EDIT PROFILE SCRIPT TO RUN CODE ON START
+1. CLEAR SCREEN
 ```bash
-LAMBDA CLEAR GOES _______________________HSERKSEHJRLKSJELRKJSEKRLJ_______________________
+import os; cls = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
+
+# EXAMPLE
 > python3
 "Hello sumeet@sumeets-pc the date is 18/07/2024"
-
-> cls
-
+>>> cls()
+0
+>>>
 ```
 
 ______________________________________________________________________________________________
@@ -37,6 +39,31 @@ torch
 ```
 
 
+______________________________________________________________________________________________
+
+                                    SCRIPTS - IMPORTS
+______________________________________________________________________________________________
+
+IMPORTS allow persistent use of functions globally within a python session
+
+NOTE: when you create an import script then load it in a python session and run it, it will
+create a ```./_pycache_``` directory. You can delete it with no impact, safely, anytime.
+
+1. CREATE IMPORT SCRIPT
+```python
+# ./clear.py
+import os
+cls = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+```
+
+2. IMPORT IN PYTHON SESSION TO USE
+```python
+from clear import cls
+
+# EXAMPLE
+>>> cls()
+0
+```
 
 ______________________________________________________________________________________________
 

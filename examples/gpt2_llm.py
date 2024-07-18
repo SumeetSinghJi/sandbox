@@ -1,7 +1,7 @@
 # ./gpt_llm.py
 
 import torch # pytorch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer # hugging faces libs for predefined models downloaded here C:\Users\Sumeet\.cache\huggingface\hub
+from transformers import GPT2LMHeadModel, GPT2Tokenizer # huggingface downloads LLM here C:\Users\Sumeet\.cache\huggingface\
 from vosk import Model, KaldiRecognizer # speech to text lib
 import sounddevice as sd # lib to access host sound/mic hardware
 import json
