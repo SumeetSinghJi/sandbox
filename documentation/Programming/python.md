@@ -8,7 +8,6 @@ ________________________________________________________________________________
 ```bash
 import os; cls = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
-
 # EXAMPLE
 > python3
 "Hello sumeet@sumeets-pc the date is 18/07/2024"
@@ -44,7 +43,7 @@ ________________________________________________________________________________
                                     SCRIPTS - IMPORTS
 ______________________________________________________________________________________________
 
-IMPORTS allow persistent use of functions globally within a python session
+IMPORTS allow persistent use of functions globally within a python session, similar to C++ headers
 
 NOTE: when you create an import script then load it in a python session and run it, it will
 create a ```./_pycache_``` directory. You can delete it with no impact, safely, anytime.
@@ -67,27 +66,46 @@ from clear import cls
 
 ______________________________________________________________________________________________
 
-                                    AI - LLM USING CLOUD API
+                        AI LIKE ROBOTIC ASSISTANT - PYTORCH LLM USING CLOUD API
 ______________________________________________________________________________________________
+
+LIMITATIONS
+
+* No computer vision as OpenAI key cannot process real time image processing, need dedicated LLM/hardware
 
 If funds are not available to run dedicated LLM on own hardware we can use a speech
 to text library + a LLM API such as with a openai account chatgpt 4.0 paid subscription model
+with a speech to text python lib such as vosk.
 
-We will use vosk - speech to text python lib
-
-1. INSTALL LIBS
+1. In OpenAI create an account and subscribe to latest GPT model.
+You will then get access to API which is roughly $10 for ~2800 questions/answers tokens
+Make an API key and store it as an environmental variable
 ```bash
-pip3 install vosk sounddevice
+export OPENAI_API_KEY='your_openai_api_key' # unix
+$env:OPENAI_API_KEY='your_openai_api_key' # windows
 ```
 
-2. DOWNLOAD VOSK MODEL i.e. SMALL ENGLISH
+2. (OPTIONAL) On OpenAI portal set token limit
+
+3. INSTALL LIBS ON HOST DEVICE e.g. PI
 ```bash
+pip3 install torch transformers vosk sounddevice
+```
+
+4. DOWNLOAD VOSK MODEL
+```bash
+# windows
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
+Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -DestinationPath "vosk-model-small-en-us-0.15"
+Rename-Item -Path "vosk-model-small-en-us-0.15" -NewName "model"
+
+# unix*
 wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 unzip vosk-model-small-en-us-0.15.zip
 mv vosk-model-small-en-us-0.15 model
 ```
 
-3. CREATE SCRIPT 'gpt2_api.py' REPLACING OPENAI_KEY
+5. CREATE SCRIPT 'gpt4_api.py' REPLACING OPENAI_KEY
 ```python
 # gpt_api.py
 import os
@@ -100,8 +118,8 @@ import openai
 import pyttsx3
 import time
 
-# Initialize OpenAI API
-openai.api_key = 'your_openai_api_key'
+# Initialize OpenAI API using environment variable
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Initialize text-to-speech
 engine = pyttsx3.init()
@@ -205,14 +223,18 @@ if __name__ == "__main__":
     main()
 ```
 
-4. RUN THEN TEST
+6. CONNECT HARDWARE PERIPHERALS MIC AND SPEAKER
+
+7. RUN THEN TEST
 ```bash
 main.py
+
+>>> What is the temprature today?
 ```
 
 ______________________________________________________________________________________________
 
-                                    AI - LLM ON DEDICATED HARDWARE
+                                    AI - PYTORCH LLM ON DEDICATED HARDWARE
 ______________________________________________________________________________________________
 
 
@@ -276,18 +298,45 @@ Thu Jul 18 02:37:57 2024
 1. INSTALL LIBS
 ```bash
 # transformers it HuggingFaces library that when used will download the LLM model specified
-# ready to go. torch is Pytorch library an AI library.
-pip3 install transformers torch sounddevice vosk
+# torch = pytorch for interfacing and creating LLM's
+# asyncio - for asynchrnous you can type chat and the LLM listents for incomming speech/wake words
+# sounddevice - for connecting to microphone and speaker hardware on host
+# vosk - a speech to text language model
+pip3 install transformers torch sounddevice vosk asyncio
 ```
 
-2. CREATE SCRIPT TO DOWNLOAD REQUIRED MODEL
-```python
-# ./gpt_llm.py
+2. DOWNLOAD VOSK MODEL
+```bash
+# windows - lightweight American language 55MB+ model size
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
+Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
+Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
 
-import torch # pytorch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer # hugging faces libs for predefined models downloaded here C:\Users\Sumeet\.cache\huggingface\hub
-from vosk import Model, KaldiRecognizer # speech to text lib
-import sounddevice as sd # lib to access host sound/mic hardware
+# windows - alternate for Australian accents using comprehensive 1.8gb+ model size - Best to manually download using browser
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip" -OutFile "vosk-model-en-us-0.22.zip"
+Expand-Archive -Path "vosk-model-en-us-0.22.zip" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk-model-en-us-0.22.zip"
+Move-Item -Path "vosk_speech_model\vosk-model-en-us-0.22\*" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-en-us-0.22"
+
+# unix*
+wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 vosk_speech_model
+rm vosk-model-small-en-us-0.15.zip
+mv vosk_speech_model/vosk-model-small-en-us-0.15/* vosk_speech_model
+rmdir vosk_speech_model/vosk-model-small-en-us-0.15
+```
+
+3. CREATE SCRIPT TO DOWNLOAD REQUIRED EDGE LLM MODEL AND START
+```python
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from vosk import Model, KaldiRecognizer
+import sounddevice as sd
+import numpy as np
 import json
 
 WAKE_WORDS = ["hey", "hello", "Hi"]
@@ -305,8 +354,15 @@ def load_model_and_tokenizer(model_name):
 
 def generate_response(model, tokenizer, prompt):
     inputs = tokenizer.encode(prompt, return_tensors="pt")
-    pad_token_id = tokenizer.eos_token_id  # Define pad token id
-    outputs = model.generate(inputs, max_length=150, num_return_sequences=1, pad_token_id=pad_token_id)
+    attention_mask = torch.ones(inputs.shape, dtype=torch.long)  # Create an attention mask
+    pad_token_id = tokenizer.eos_token_id
+    outputs = model.generate(
+        inputs, 
+        attention_mask=attention_mask,
+        max_length=150, 
+        num_return_sequences=1, 
+        pad_token_id=pad_token_id
+    )
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
 
@@ -314,7 +370,7 @@ def recognize_speech(recognizer, model, tokenizer, duration=5, fs=16000):
     print("Listening...")
 
     def callback(indata, frames, time, status):
-        if recognizer.AcceptWaveform(indata):
+        if recognizer.AcceptWaveform(indata.tobytes()):
             result = recognizer.Result()
             text = json.loads(result).get("text", "")
             if text:
@@ -362,9 +418,9 @@ if __name__ == "__main__":
                 with sd.InputStream(samplerate=16000, channels=1) as stream:
                     sd.sleep(1000)
                     print("Listening...")
-                    audio_input = stream.read(16000 * 5)  # Record 5 seconds of audio
+                    audio_input = stream.read(16000 * 5)[0]  # Record 5 seconds of audio
                     recognizer.SetWords(True)
-                    if recognizer.AcceptWaveform(audio_input):
+                    if recognizer.AcceptWaveform(audio_input.tobytes()):
                         result = json.loads(recognizer.Result())
                         text = result["text"]
                         if detect_wake_word(text):
@@ -375,8 +431,6 @@ if __name__ == "__main__":
                             print(f"Detected: {text}")
                     else:
                         print("Failed to recognize speech.")
-
         else:
             print("Invalid mode. Please type 'text' or 'speech'.")
-
 ```

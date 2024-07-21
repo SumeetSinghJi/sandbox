@@ -8,4 +8,5 @@ node_modules
 main
 main.exe
 
-# misc
+# directories
+examples/model

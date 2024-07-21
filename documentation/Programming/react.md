@@ -341,6 +341,27 @@ Frontend - React (optionally written in Typescript, and styled in Tailwind)
 Backend - Express running node.js
 Database - MongoDB
 
+______________________________________________________________________________________________
+
+                                COMMON COMMANDS
+______________________________________________________________________________________________
+
+COMMENTS
+```javascript
+
+// OUTISDE JSX
+
+/*
+  OUTSIDE JSX
+*/
+
+{/* INSIDE JSX */}
+
+{/*
+  INSIDE JSX
+*/}
+
+```
 
 ______________________________________________________________________________________________
 

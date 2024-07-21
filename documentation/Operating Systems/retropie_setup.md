@@ -47,20 +47,17 @@ ___________________________________________________________________________
                           RETROPIE SETUP
 ___________________________________________________________________________
 
-1. INSTALLING IMAGE - RASPBERRY PI
+INSTALLING FROM RASPI
 ```bash
-# Raspberry pi
-1a. Use PI imager - Select Raspberry Pi OS - Select storage medium e.g, Micro SD Card - Enable SSH during setup - Enable Wifi and add login details - Install - Plug Micro SD card into Pi then done. 
-# All other unix* OS
-1b. Use PI imager - Select Ubuntu Server - Select storage medium e.g, Micro SD Card - install - open Micro SD card in file explorer - 
-edit "network-config" file - uncomment wlan details below and replace 
-wifis:
- wlan0:
-  dhcp4:true
-  optional: true
-  access-points:
-   "INSERT_NETWORK_SSID_NAME_HERE":
-     password: "INSERT_WIFI_PWORD_HERE"
+cd
+git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git
+cd RetroPie-Setup
+sudo ./retropie_setup.sh
+```
+
+INSTALLING FROM IMAGE
+```bash
+1. Use PI imager - Select Raspberry Pi OS - Select storage medium e.g, Micro SD Card - Enable SSH during setup - Enable Wifi and add login details - Install - Plug Micro SD card into Pi then done. 
 2. Find the IP address of the Raspberry PI e.g. either from router or arp -a command if on same network 
 ```
 

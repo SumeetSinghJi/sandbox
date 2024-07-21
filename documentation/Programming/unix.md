@@ -13,22 +13,13 @@ ___________________________________________________________________________
 ___________________________________________________________________________
 
 
-1. INSTALLING OS - USB
+1. INSTALLING LINUX
 ```bash
-1. Connect a USB device to host
+1. Connect a USB storage to host
 2. Download Ubuntu server
 3. Download UNetbootin - start - select above image - select previous usb - ok
 4. Connect USB to Hardware to install linux on - boot to BIOS e.g. CTRL-F12 - select boot options boot from EFI USB Device - save and exit
-5a. Ubuntu Desktop - When device turns back on follow on screen prompts to finish of installation - check drivers all exist e.g. Wifi works, GPU connected - Select Ubuntu installer from desktop and finish of remainder of installation - select install third party drivers - download updates - 
-continue - erase disk and install ubuntu - continue - setup username/password/computername - continue and restart now
-5b. Ubuntu Server - when devices boots into CLI - check drivers e.g. Wifi/GPU are setup
-```
-
-2. SSH
-e.g. by remoting into raspberry pi with default u: pi p: rasbperry
-```bash
-ssh pi@192.168.0.211
-pi@retropi:~ enter password $ raspberry
+5. Setup Wifi once in
 ```
 
 3. ADMINS
@@ -52,7 +43,7 @@ pacman -Syu
 
 5. DRIVERS
 ```bash
-# install your drivers e.g. If you have an external gpu attached browse to drivers website and download, then install
+dmesg # check kernel for hardware/driver errors then fix/install
 ```
 
 6. SSH
@@ -88,7 +79,7 @@ sudo apt install lolcat, git, flatpak
 # 1. INSTALL USEFULL PACKAGES 
 sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev 
 libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev 
-zlib1g-dev googletest libgtest-dev yasm
+zlib1g-dev googletest libgtest-dev yasm cmake git
 # 2. Test C code
 echo "#include <stdio.h>" > test.c
 echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
@@ -150,6 +141,13 @@ ___________________________________________________________________________
                     COMMON COMMANDS
 ___________________________________________________________________________
 
+SSH
+e.g. by remoting into raspberry pi with default u: pi p: rasbperry
+```bash
+ssh pi@192.168.0.211
+pi@retropi:~ enter password $ raspberry
+```
+
 FIND DISTRIBUTION | RELEASE | VERSION
 ```bash
 cat /etc/os-release
@@ -157,6 +155,10 @@ cat /etc/os-release
 
 QUITTING CLI
 ```bash
+# option 1
+press "ESC" then "w" then "q"
+
+# option 2
 q
 ```
 
@@ -227,6 +229,26 @@ systemctl list-unit-files
 ls /usr/bin 
 emulationstation
 pi@retropi:~ $ emulationstation # to then start it
+```
+
+PROCESS
+```bash
+top
+htop # better version
+```
+
+SERVICES
+```bash
+sudo systemctl status ssh # check ssh service status
+sudo systemctl start ssh # restart service if off
+sudo systemctl enable ssh # enable service at boot
+```
+
+HARDWARE | DRIVER | KERNELL MESSAGES
+```bash
+dmesg
+dmesg -w # for listen for new prompts
+dmesg | grep usb # to filter for specific things
 ```
 
 FIND BIN ENVIRONMENTAL VARIABLE
@@ -385,6 +407,8 @@ mv -r * /home/username/destination/  # COPY FOLDER CONTENTS TO PARENT
 find . -mindepth 1 -maxdepth 1 -type d -exec sh -c 'mv -v -t ../ "$1"/* && rmdir "$1"' sh {} \; && rmdir ./*
  # FROM PARENT DIRECTORY COPY ALL FOLDERS CONTENTS TO PARENT THEN DELETE EMPTY SUBDIRECTORIES
 rsync -av --progress --ignore-existing /media/usb1/ /home/pi/RetroPie/roms/psx/ && rm -rf /media/usb1/* # move and delete source directories/files skipping existing
+scp diablo.bin diablo.cue pi@retropie:/home/pi/RetroPie/roms/psx # secure-copy from host to dest using port 22
+sftp pi@retropie ; cd /home/pi/RetroPie/roms/psx ; put file1.txt ; exit # similar to scp but more steps
 ```
 
 RENAME
@@ -545,43 +569,22 @@ ___________________________________________________________________________
                             COMMON SCRIPTS
 ___________________________________________________________________________
 
-
-CRON JOB 1 - On low disk usage - curl post to log server and alert
+CRON JOB 1 - On low disk usage or high CPU/MEMORY usage alert
 ```bash
 
 ```
 
-CRON JOB 2 - On high CPU/MEMORY usage - curl post to log server and alert
+CRON JOB 2 - Restart critical services
 ```bash
 
 ```
 
-CRON JOB 3 - On unexpected port change - curl post to log server and alert
+CRON JOB 3 - Force change old passwords
 ```bash
 
 ```
 
-CRON JOB 4 - If critical service down restart then - curl post to log server and alert
+CRON JOB 4 - Scheduled shutdown
 ```bash
 
-```
-
-CRON JOB 5 - Password audit - curl post to log server and alert
-```bash
-
-```
-
-CRON JOB 6 - Force users to change old passwords on logon
-```bash
-#!/bin/bash
-# Get list of users with expired passwords using chage
-expired_users=$(awk -F: '$2 == "!!"' /etc/shadow | cut -d: -f1)
-
-# Loop through each expired user and force password change
-for user in $expired_users; do
-    echo "Forcing user '$user' to change password on next login..."
-    sudo chage -d 0 "$user"
-done
-
-echo "Password change forced for expired users."
 ```
