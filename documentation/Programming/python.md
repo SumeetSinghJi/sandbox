@@ -69,13 +69,10 @@ ________________________________________________________________________________
                         AI LIKE ROBOTIC ASSISTANT - PYTORCH LLM USING CLOUD API
 ______________________________________________________________________________________________
 
-LIMITATIONS
+Edge hardware LLM API with Speect to text. Limitation is no computer vision possible.
 
-* No computer vision as OpenAI key cannot process real time image processing, need dedicated LLM/hardware
-
-If funds are not available to run dedicated LLM on own hardware we can use a speech
-to text library + a LLM API such as with a openai account chatgpt 4.0 paid subscription model
-with a speech to text python lib such as vosk.
+PREREQUISIDES
+* OpenAI paid subscription
 
 1. In OpenAI create an account and subscribe to latest GPT model.
 You will then get access to API which is roughly $10 for ~2800 questions/answers tokens
@@ -237,26 +234,14 @@ ________________________________________________________________________________
                                     AI - PYTORCH LLM ON DEDICATED HARDWARE
 ______________________________________________________________________________________________
 
-
-Below steps outline using pytorch with huggingfaces transformers library to create a context
-with any LLM model from here: https://huggingface.co/models
-
-Then once run it will download and save/cache the LLM model e.g. GPT2.0 on your computer.
-So even if you quit the terminal AI interactive prompt session you can interact
-with either CLI or use voice which will be converted to text with the vosk library.
-for next time
-
+Edge hardware hosted LLM with Speect to text.
 
 PREREQUISITES
 
-Pytorch (and it's library known as torch) only works with Nvidia's GPU - CUDA langauge, by default. 
-If it doesn't detect a available CUDA version on the host from the GPU to work with it will 
-default to using the CPU to run tasks.
+* Below requires trained language model for your accent
+* Pytorch/torch works with GPU only with Nvidia Cuda natively, else it will default to running on CPU.
+If you have another GPU and language e.g. AMD, then requires manual import like C++/OpenGL context
 
-If you have a none Nvidia GPU such as an AMD GPU which uses it's own language e.g. OpenCL, then
-you would need to load/import it's library and then configure torch to use it, the same way
-when designing a c++ game you would import OpenGL libraries to create contexts with the GPU
-so that you can send images/textures for rendering.
 
 Ensure that the version of CUDA you have is supported by torch. You can find this by running
 ```bash
@@ -307,19 +292,12 @@ pip3 install transformers torch sounddevice vosk asyncio
 
 2. DOWNLOAD VOSK MODEL
 ```bash
-# windows - lightweight American language 55MB+ model size
+# windows - only for American accents
 Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
 Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
 Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
 Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
 Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
-
-# windows - alternate for Australian accents using comprehensive 1.8gb+ model size - Best to manually download using browser
-Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip" -OutFile "vosk-model-en-us-0.22.zip"
-Expand-Archive -Path "vosk-model-en-us-0.22.zip" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk-model-en-us-0.22.zip"
-Move-Item -Path "vosk_speech_model\vosk-model-en-us-0.22\*" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-en-us-0.22"
 
 # unix*
 wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
@@ -433,4 +411,46 @@ if __name__ == "__main__":
                         print("Failed to recognize speech.")
         else:
             print("Invalid mode. Please type 'text' or 'speech'.")
+```
+
+
+______________________________________________________________________________________________
+
+                        AI - PYTORCH TRAINING MACHINE LEARNING MODEL
+______________________________________________________________________________________________
+
+
+We will be taking a existing Speect to text language model from vosk and training it will Australian
+accents so we can use it for Australian speect to text, such as with a AI personal assistant.
+
+STEPS HERE - https://alphacephei.com/vosk/models#training-your-own-model
+
+1. INSTALL LIBS
+```bash
+# sounddevice - for connecting to microphone and speaker hardware on host
+# vosk - a speech to text language model
+pip3 install sounddevice vosk
+```
+
+2. DOWNLOAD VOSK MODEL
+```bash
+# windows - only for American accents
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
+Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
+Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
+
+# unix*
+wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 vosk_speech_model
+rm vosk-model-small-en-us-0.15.zip
+mv vosk_speech_model/vosk-model-small-en-us-0.15/* vosk_speech_model
+rmdir vosk_speech_model/vosk-model-small-en-us-0.15
+```
+
+3. GET TRAINING DATA FOR AUSTRALIAN ACCENT
+```bash
+
 ```

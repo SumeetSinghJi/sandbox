@@ -13,7 +13,7 @@ def callback(indata, frames, time, status):
 
 def main():
     # Initialize Vosk model
-    model_path = "vosk_speech_model"  # Update this path to your Vosk model directory
+    model_path = "vosk_speech_model"  # Update this path to your Vosk model directory, may take long time (>5m) if using larger models
     try:
         vosk_model = Model(model_path)  # Create Model object from path
         global recognizer
@@ -26,7 +26,7 @@ def main():
     # Start the audio input stream
     with sd.InputStream(samplerate=16000, channels=1, callback=callback):
         print("Listening...")
-        sd.sleep(10000)  # Listen for 10 seconds
+        sd.sleep(30000)  # Listen for 30 seconds
 
 if __name__ == "__main__":
     main()
