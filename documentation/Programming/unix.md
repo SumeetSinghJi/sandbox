@@ -563,6 +563,15 @@ espressif.modem (192.168.0.155) at 94:3c:c6:da:4:cc on en0 ifscope [ethernet]
 retropie.modem (192.168.0.211) at b8:27:eb:ba:19:85 on en0 ifscope [ethernet]
 ```
 
+DOWNLOADING
+```bash
+curl -O https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+```
+
+UNZIPPING
+```bash
+unzip vosk-model-small-en-us-0.15.zip
+```
 
 ___________________________________________________________________________
 

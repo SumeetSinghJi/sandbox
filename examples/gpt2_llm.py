@@ -1,11 +1,11 @@
 import asyncio
 import torch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from transformers import GPT2LMHeadModel, GPT2Tokenizer # LLaMATokenizer, LLaMAForCausalLM
 from vosk import Model, KaldiRecognizer
 import sounddevice as sd
 import json
 
-WAKE_WORDS = ["hey computer", "hello computer", "hi computer", "hi", "hello", "hey"]
+WAKE_WORDS = ["hi", "hello", "hey", "ai", "hey ai", "hello ai", "hi ai", ]
 
 def detect_wake_word(text):
     for wake_word in WAKE_WORDS:
@@ -16,6 +16,8 @@ def detect_wake_word(text):
 def load_model_and_tokenizer(model_name):
     model = GPT2LMHeadModel.from_pretrained(model_name)
     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+    # model = LLaMAForCausalLM.from_pretrained(model_name)
+    # tokenizer = LLaMATokenizer.from_pretrained(model_name)
     return model, tokenizer
 
 def generate_response(model, tokenizer, prompt):
@@ -38,7 +40,7 @@ async def recognize_speech(recognizer, model, tokenizer):
             result = recognizer.Result()
             text = json.loads(result).get("text", "")
             if text:
-                print(f"You (speech): {text}")
+                print(f"You spoke: {text}")
                 response = generate_response(model, tokenizer, text)
                 print(f"AI: {response}")
 
@@ -48,7 +50,7 @@ async def recognize_speech(recognizer, model, tokenizer):
 
 async def handle_text_input(model, tokenizer):
     while True:
-        prompt = input("You: ")
+        prompt = input("You wrote: ")
         if prompt.lower() in ["exit", "quit"]:
             return
         response = generate_response(model, tokenizer, prompt)
@@ -57,11 +59,11 @@ async def handle_text_input(model, tokenizer):
 async def main():
     # Load pre-trained model and tokenizer
     model_name = "gpt2"
+    # model_name = "llama-model-name"
     model, tokenizer = load_model_and_tokenizer(model_name)
 
     # Check device and print information
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
 
     if device.type == "cuda":
         print(f"CUDA Device Name: {torch.cuda.get_device_name(0)}")
@@ -69,7 +71,7 @@ async def main():
         print(f"CUDA Memory Allocated: {torch.cuda.memory_allocated(0)} bytes")
         print(f"CUDA Memory Cached: {torch.cuda.memory_reserved(0)} bytes")
     else:
-        print("No CUDA device found, using CPU.")
+        print("No CUDA device found, device: {device}")
 
     print("Hi I'm Ghar AI. You can ask me any question by typing or talking.")
 
@@ -80,7 +82,7 @@ async def main():
         recognizer = KaldiRecognizer(vosk_model, 16000)
         print("Model loaded successfully.")
     except Exception as e:
-        print(f"Failed to create a model: {e}")
+        print(f"Failed to create a speech model: {e}")
         return
 
     # Start listening for speech and handling text input concurrently

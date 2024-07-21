@@ -37,7 +37,6 @@ pip3 install torch #short for pytorch
 torch
 ```
 
-
 ______________________________________________________________________________________________
 
                                     SCRIPTS - IMPORTS
@@ -64,45 +63,88 @@ from clear import cls
 0
 ```
 
+
 ______________________________________________________________________________________________
 
-                        AI LIKE ROBOTIC ASSISTANT - PYTORCH LLM USING CLOUD API
+                                        PYTORCH
 ______________________________________________________________________________________________
 
-Edge hardware LLM API with Speect to text. Limitation is no computer vision possible.
 
-PREREQUISIDES
-* OpenAI paid subscription
+Ensure that the version of CUDA you have is supported by torch. You can find this by running
+```bash
+PS C:\Users\Sumeet> nvidia-smi
+Thu Jul 18 02:37:57 2024
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 536.99                 Driver Version: 536.99       CUDA Version: 12.2     | <----- CUDA VERSION HERE
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                     TCC/WDDM  | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA GeForce RTX 3060      WDDM  | 00000000:04:00.0  On |                  N/A |
+|  0%   38C    P8              16W / 170W |    700MiB / 12288MiB |      3%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
 
-1. In OpenAI create an account and subscribe to latest GPT model.
-You will then get access to API which is roughly $10 for ~2800 questions/answers tokens
-Make an API key and store it as an environmental variable
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A      1832    C+G   C:\Windows\explorer.exe                   N/A      |
+|    0   N/A  N/A      1880    C+G   ...tionsPlus\logioptionsplus_agent.exe    N/A      |
+|    0   N/A  N/A      2888    C+G   ...Programs\Microsoft VS Code\Code.exe    N/A      |
+|    0   N/A  N/A      3860    C+G   ...nt.CBS_cw5n1h2txyewy\SearchHost.exe    N/A      |
+|    0   N/A  N/A      8572    C+G   ...2txyewy\StartMenuExperienceHost.exe    N/A      |
+|    0   N/A  N/A      8784    C+G   ...siveControlPanel\SystemSettings.exe    N/A      |
+|    0   N/A  N/A      8840    C+G   ...oogle\Chrome\Application\chrome.exe    N/A      |
+|    0   N/A  N/A      8880    C+G   ...ekyb3d8bbwe\PhoneExperienceHost.exe    N/A      |
+|    0   N/A  N/A     10052    C+G   ...mpt_builder\LogiAiPromptBuilder.exe    N/A      |
+|    0   N/A  N/A     10604    C+G   ...5n1h2txyewy\ShellExperienceHost.exe    N/A      |
+|    0   N/A  N/A     10964    C+G   ...n\126.0.2592.102\msedgewebview2.exe    N/A      |
+|    0   N/A  N/A     12124    C+G   ...CBS_cw5n1h2txyewy\TextInputHost.exe    N/A      |
+|    0   N/A  N/A     13168    C+G   ...__8wekyb3d8bbwe\WindowsTerminal.exe    N/A      |
++---------------------------------------------------------------------------------------+
+```
+
+1. INSTALL LIBS
+```bash
+# transformers - HuggingFaces library that when used will download the LLM model specified and provide interfacing methods
+# torch = pytorch for interfacing and creating LLM's
+# asyncio - for asynchrnous you can type chat and the LLM listents for incomming speech/wake words
+# sounddevice - for connecting to microphone and speaker hardware on host
+# vosk - a speech to text language model
+pip3 install transformers torch sounddevice vosk asyncio
+```
+
+2. DOWNLOAD VOSK MODEL
+```bash
+# windows - only for American accents
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
+Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
+Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
+
+# unix*
+curl -O https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 vosk_speech_model
+```
+
+3. TRAIN VOSK MODEL
+```bash
+STEPS HERE - https://alphacephei.com/vosk/models#training-your-own-model
+```
+
+4. Connect a Microphone, Camera and Speaker to edge hardware
+
+5. (OPTIONAL) USING OPENAI API (No computer vision/privacy)
+Generate an Open API key and set token limit
 ```bash
 export OPENAI_API_KEY='your_openai_api_key' # unix
 $env:OPENAI_API_KEY='your_openai_api_key' # windows
 ```
-
-2. (OPTIONAL) On OpenAI portal set token limit
-
-3. INSTALL LIBS ON HOST DEVICE e.g. PI
-```bash
-pip3 install torch transformers vosk sounddevice
-```
-
-4. DOWNLOAD VOSK MODEL
-```bash
-# windows
-Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
-Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -DestinationPath "vosk-model-small-en-us-0.15"
-Rename-Item -Path "vosk-model-small-en-us-0.15" -NewName "model"
-
-# unix*
-wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
-unzip vosk-model-small-en-us-0.15.zip
-mv vosk-model-small-en-us-0.15 model
-```
-
-5. CREATE SCRIPT 'gpt4_api.py' REPLACING OPENAI_KEY
 ```python
 # gpt_api.py
 import os
@@ -220,104 +262,16 @@ if __name__ == "__main__":
     main()
 ```
 
-6. CONNECT HARDWARE PERIPHERALS MIC AND SPEAKER
-
-7. RUN THEN TEST
-```bash
-main.py
-
->>> What is the temprature today?
-```
-
-______________________________________________________________________________________________
-
-                                    AI - PYTORCH LLM ON DEDICATED HARDWARE
-______________________________________________________________________________________________
-
-Edge hardware hosted LLM with Speect to text.
-
-PREREQUISITES
-
-* Below requires trained language model for your accent
-* Pytorch/torch works with GPU only with Nvidia Cuda natively, else it will default to running on CPU.
-If you have another GPU and language e.g. AMD, then requires manual import like C++/OpenGL context
-
-
-Ensure that the version of CUDA you have is supported by torch. You can find this by running
-```bash
-PS C:\Users\Sumeet> nvidia-smi
-Thu Jul 18 02:37:57 2024
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 536.99                 Driver Version: 536.99       CUDA Version: 12.2     | <----- CUDA VERSION HERE
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                     TCC/WDDM  | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  NVIDIA GeForce RTX 3060      WDDM  | 00000000:04:00.0  On |                  N/A |
-|  0%   38C    P8              16W / 170W |    700MiB / 12288MiB |      3%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
-
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|    0   N/A  N/A      1832    C+G   C:\Windows\explorer.exe                   N/A      |
-|    0   N/A  N/A      1880    C+G   ...tionsPlus\logioptionsplus_agent.exe    N/A      |
-|    0   N/A  N/A      2888    C+G   ...Programs\Microsoft VS Code\Code.exe    N/A      |
-|    0   N/A  N/A      3860    C+G   ...nt.CBS_cw5n1h2txyewy\SearchHost.exe    N/A      |
-|    0   N/A  N/A      8572    C+G   ...2txyewy\StartMenuExperienceHost.exe    N/A      |
-|    0   N/A  N/A      8784    C+G   ...siveControlPanel\SystemSettings.exe    N/A      |
-|    0   N/A  N/A      8840    C+G   ...oogle\Chrome\Application\chrome.exe    N/A      |
-|    0   N/A  N/A      8880    C+G   ...ekyb3d8bbwe\PhoneExperienceHost.exe    N/A      |
-|    0   N/A  N/A     10052    C+G   ...mpt_builder\LogiAiPromptBuilder.exe    N/A      |
-|    0   N/A  N/A     10604    C+G   ...5n1h2txyewy\ShellExperienceHost.exe    N/A      |
-|    0   N/A  N/A     10964    C+G   ...n\126.0.2592.102\msedgewebview2.exe    N/A      |
-|    0   N/A  N/A     12124    C+G   ...CBS_cw5n1h2txyewy\TextInputHost.exe    N/A      |
-|    0   N/A  N/A     13168    C+G   ...__8wekyb3d8bbwe\WindowsTerminal.exe    N/A      |
-+---------------------------------------------------------------------------------------+
-```
-
-1. INSTALL LIBS
-```bash
-# transformers it HuggingFaces library that when used will download the LLM model specified
-# torch = pytorch for interfacing and creating LLM's
-# asyncio - for asynchrnous you can type chat and the LLM listents for incomming speech/wake words
-# sounddevice - for connecting to microphone and speaker hardware on host
-# vosk - a speech to text language model
-pip3 install transformers torch sounddevice vosk asyncio
-```
-
-2. DOWNLOAD VOSK MODEL
-```bash
-# windows - only for American accents
-Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
-Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
-Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
-
-# unix*
-wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
-unzip vosk-model-small-en-us-0.15.zip
-mv vosk-model-small-en-us-0.15 vosk_speech_model
-rm vosk-model-small-en-us-0.15.zip
-mv vosk_speech_model/vosk-model-small-en-us-0.15/* vosk_speech_model
-rmdir vosk_speech_model/vosk-model-small-en-us-0.15
-```
-
-3. CREATE SCRIPT TO DOWNLOAD REQUIRED EDGE LLM MODEL AND START
+6. USING LOCAL LLM
 ```python
+import asyncio
 import torch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from transformers import GPT2LMHeadModel, GPT2Tokenizer # LLaMATokenizer, LLaMAForCausalLM
 from vosk import Model, KaldiRecognizer
 import sounddevice as sd
-import numpy as np
 import json
 
-WAKE_WORDS = ["hey", "hello", "Hi"]
+WAKE_WORDS = ["hi", "hello", "hey", "ai", "hey ai", "hello ai", "hi ai", ]
 
 def detect_wake_word(text):
     for wake_word in WAKE_WORDS:
@@ -328,45 +282,54 @@ def detect_wake_word(text):
 def load_model_and_tokenizer(model_name):
     model = GPT2LMHeadModel.from_pretrained(model_name)
     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+    # model = LLaMAForCausalLM.from_pretrained(model_name)
+    # tokenizer = LLaMATokenizer.from_pretrained(model_name)
     return model, tokenizer
 
 def generate_response(model, tokenizer, prompt):
     inputs = tokenizer.encode(prompt, return_tensors="pt")
-    attention_mask = torch.ones(inputs.shape, dtype=torch.long)  # Create an attention mask
     pad_token_id = tokenizer.eos_token_id
+    attention_mask = torch.ones(inputs.shape, dtype=torch.long)  # Create attention mask
     outputs = model.generate(
-        inputs, 
-        attention_mask=attention_mask,
-        max_length=150, 
-        num_return_sequences=1, 
+        inputs,
+        attention_mask=attention_mask,  # Pass attention mask
+        max_length=150,
+        num_return_sequences=1,
         pad_token_id=pad_token_id
     )
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
 
-def recognize_speech(recognizer, model, tokenizer, duration=5, fs=16000):
-    print("Listening...")
-
+async def recognize_speech(recognizer, model, tokenizer):
     def callback(indata, frames, time, status):
         if recognizer.AcceptWaveform(indata.tobytes()):
             result = recognizer.Result()
             text = json.loads(result).get("text", "")
             if text:
-                print(f"You (speech): {text}")
+                print(f"You spoke: {text}")
                 response = generate_response(model, tokenizer, text)
                 print(f"AI: {response}")
 
-    with sd.InputStream(samplerate=fs, channels=1, callback=callback):
-        sd.sleep(int(duration * 1000))
+    with sd.InputStream(samplerate=16000, channels=1, callback=callback):
+        while True:
+            await asyncio.sleep(1)
 
-if __name__ == "__main__":
+async def handle_text_input(model, tokenizer):
+    while True:
+        prompt = input("You wrote: ")
+        if prompt.lower() in ["exit", "quit"]:
+            return
+        response = generate_response(model, tokenizer, prompt)
+        print(f"AI: {response}")
+
+async def main():
     # Load pre-trained model and tokenizer
     model_name = "gpt2"
+    # model_name = "llama-model-name"
     model, tokenizer = load_model_and_tokenizer(model_name)
 
     # Check device and print information
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
 
     if device.type == "cuda":
         print(f"CUDA Device Name: {torch.cuda.get_device_name(0)}")
@@ -374,83 +337,28 @@ if __name__ == "__main__":
         print(f"CUDA Memory Allocated: {torch.cuda.memory_allocated(0)} bytes")
         print(f"CUDA Memory Cached: {torch.cuda.memory_reserved(0)} bytes")
     else:
-        print("No CUDA device found, using CPU.")
+        print("No CUDA device found, device: {device}")
 
     print("Hi I'm Ghar AI. You can ask me any question by typing or talking.")
 
     # Initialize Vosk model
-    vosk_model = Model("model")
-    recognizer = KaldiRecognizer(vosk_model, 16000)
+    model_path = "vosk_speech_model"  # folder that contains the speech model
+    try:
+        vosk_model = Model(model_path)  # Create Model object from path
+        recognizer = KaldiRecognizer(vosk_model, 16000)
+        print("Model loaded successfully.")
+    except Exception as e:
+        print(f"Failed to create a speech model: {e}")
+        return
 
-    while True:
-        mode = input("Type 'text' to type a question or 'speech' to talk to the AI: ").strip().lower()
-        if mode == "exit" or mode == "quit":
-            break
-        elif mode == "text":
-            prompt = input("You: ")
-            response = generate_response(model, tokenizer, prompt)
-            print(f"AI: {response}")
-        elif mode == "speech":
-            print("Waiting for wake word...")
-            while True:
-                with sd.InputStream(samplerate=16000, channels=1) as stream:
-                    sd.sleep(1000)
-                    print("Listening...")
-                    audio_input = stream.read(16000 * 5)[0]  # Record 5 seconds of audio
-                    recognizer.SetWords(True)
-                    if recognizer.AcceptWaveform(audio_input.tobytes()):
-                        result = json.loads(recognizer.Result())
-                        text = result["text"]
-                        if detect_wake_word(text):
-                            print(f"Wake word detected: {text}")
-                            recognize_speech(recognizer, model, tokenizer)
-                            break
-                        else:
-                            print(f"Detected: {text}")
-                    else:
-                        print("Failed to recognize speech.")
-        else:
-            print("Invalid mode. Please type 'text' or 'speech'.")
-```
+    # Start listening for speech and handling text input concurrently
+    await asyncio.gather(
+        recognize_speech(recognizer, model, tokenizer),
+        handle_text_input(model, tokenizer)
+    )
 
-
-______________________________________________________________________________________________
-
-                        AI - PYTORCH TRAINING MACHINE LEARNING MODEL
-______________________________________________________________________________________________
-
-
-We will be taking a existing Speect to text language model from vosk and training it will Australian
-accents so we can use it for Australian speect to text, such as with a AI personal assistant.
-
-STEPS HERE - https://alphacephei.com/vosk/models#training-your-own-model
-
-1. INSTALL LIBS
-```bash
-# sounddevice - for connecting to microphone and speaker hardware on host
-# vosk - a speech to text language model
-pip3 install sounddevice vosk
-```
-
-2. DOWNLOAD VOSK MODEL
-```bash
-# windows - only for American accents
-Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
-Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
-Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
-Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
-
-# unix*
-wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
-unzip vosk-model-small-en-us-0.15.zip
-mv vosk-model-small-en-us-0.15 vosk_speech_model
-rm vosk-model-small-en-us-0.15.zip
-mv vosk_speech_model/vosk-model-small-en-us-0.15/* vosk_speech_model
-rmdir vosk_speech_model/vosk-model-small-en-us-0.15
-```
-
-3. GET TRAINING DATA FOR AUSTRALIAN ACCENT
-```bash
+if __name__ == "__main__":
+    asyncio.run(main())
 
 ```
+
