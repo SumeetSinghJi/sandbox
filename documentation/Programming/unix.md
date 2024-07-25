@@ -141,16 +141,47 @@ ___________________________________________________________________________
                     COMMON COMMANDS
 ___________________________________________________________________________
 
-SSH
-e.g. by remoting into raspberry pi with default u: pi p: rasbperry
+SSH INTO LINUX DEVICE
 ```bash
+# e.g. a Raspberry Pi on home network uses default password raspberry
 ssh pi@192.168.0.211
 pi@retropi:~ enter password $ raspberry
 ```
 
-FIND DISTRIBUTION | RELEASE | VERSION
+FIND - OPERATING SYSTEM | OS | DISTRIBUTION | RELEASE | VERSION
 ```bash
 cat /etc/os-release
+
+pi@retropie:~ $ cat /etc/os-release
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+```
+
+FIND KERNEL
+```bash
+pi@retropie:~ $ uname -a
+Linux retropie 5.4.72-v7+ #1356 SMP Thu Oct 22 13:56:54 BST 2020 armv7l GNU/Linux
+
+# IF KERNEL IS OLD THEN RUN
+sudo apt update
+# or
+sudo apt full-upgrade
+```
+
+CHANGE HOSTNAME
+```bash
+sudo nano /etc/hostname
+sudo nano /etc/hosts
+#    127.0.1.1   retropie # e.g. uncommont this to rename the hostname to the IP address in /hosts
+sudo reboot
 ```
 
 QUITTING CLI
