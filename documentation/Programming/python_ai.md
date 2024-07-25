@@ -70,11 +70,32 @@ until we get the final output of the network. Each neuron forms their own points
 to make a neural network that can learn and prove any function e.g. enough inputs to give an answer to any output
 e.g. what time of the day is it? will give accurate response as the inputs have been fed every date/time in history till now
 
-e.g.
+EXAMPLE 1
+
         <> |0.0| <> |0.1| <> |3.5|
 |0.3| <><> |2.9| <> |2.5| <> |0.0| <> |2.9|
 |1.8| <><> |3.7| <> |3.2| <> |0.4| <> |1.1|
 |0.5| <><> |0.0| <> |1.1| <> |3.1| <> |0.0|
+
+
+EXAMPLE 2
+
+Feeding input's it will through weighting find the right answer
+
+x = "lemon"
+
+= NN(lemon)
+
+= 
+|x1|
+|x2|
+|x3|
+
+=
+       <> |0.0| <> |0.1| <> |3.5|
+|x1| <><> |2.9| <> |2.5| <> |0.0| <> |apple|
+|x2| <><> |3.7| <> |3.2| <> |0.4| <> |oange|
+|x3| <><> |0.0| <> |1.1| <> |3.1| <> |I dont know| <----- This is the answer the NN doesn't know what lemons are
 
 
 The values of the weights are discovered through it's training data set and ask it to produce the correct
@@ -168,11 +189,24 @@ ________________________________________________________________________________
                 COMPLETE VOICE ACTIVATED EDGE HARDWARE LLM SETUP STEPS
 ______________________________________________________________________________________________
 
-To build an AI like Google Home, Siri, Cortana, or Alexa on a home device (called edge hardware), you need:
+To build an AI like Google Home, Siri, Cortana, or Alexa on a home device (called edge hardware)
+with the addition of extra features such as computer vision and text output (emailed to you)
+you require the below;
 
-Speech Recognition Model: Vosk
-LLM: ChatGPT-2
-Computer: Raspberry Pi + Microphone + Speaker
+HARDWARE REQUIREMENTS
+* Raspberry Pi 5 - $140
+* Pi 5 PSU - $20
+* Pi 5 UPS/portable battery - $150
+* Geekworm NVMe dual m.2 hat - $50
+* Hailo 8 - 10 - $300 - 500
+* 1TB NVMe m.2 - $100
+* Microphone - $50
+* Speaker - $50
+* Pi 5 Module 3 camera wide - $50
+
+SOFTWARE REQUIREMENTS
+* Speech Recognition Model: Vosk
+* LLM: LLAMA
 
 Alternatively, there is an option to use the ChatGPT API (but that is not private and cannot perform computer vision). Trying to send 100 images a second using the ChatGPT API could be extremely costly and would require the fastest internet possible.
 
@@ -510,7 +544,3 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 ```
-
-
-
-

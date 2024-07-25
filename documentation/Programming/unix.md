@@ -138,7 +138,7 @@ alias head='runlolcat head'
 
 ___________________________________________________________________________
 
-                    COMMON COMMANDS
+                            COMMON COMMANDS
 ___________________________________________________________________________
 
 SSH INTO LINUX DEVICE
@@ -174,6 +174,11 @@ Linux retropie 5.4.72-v7+ #1356 SMP Thu Oct 22 13:56:54 BST 2020 armv7l GNU/Linu
 sudo apt update
 # or
 sudo apt full-upgrade
+```
+
+UPTIME
+```bash
+uptime
 ```
 
 CHANGE HOSTNAME
