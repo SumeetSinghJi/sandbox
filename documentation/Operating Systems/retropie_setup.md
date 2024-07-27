@@ -1,3 +1,13 @@
+___________________________________________________________________________
+
+                    ARCADE1UP CABINET MODDING
+___________________________________________________________________________
+
+1. Add custom authentic steel look riser https://www.youtube.com/watch?v=Os-N8Orcxu8
+2. Buy Sanwa Joysticks, Raspberry Pi 5, and 256GB minimum Micro SD Card
+3. Follow guide below to setup the Raspberry Pi with game emulators
+
+
 
 ___________________________________________________________________________
 
@@ -178,3 +188,7 @@ c. Press to configure by having user not worry about conflicts (automatically fi
 d. Press to start and it will download all images by itself
 e. If Some images are skipped you can go back and choose the second scrapper which scraps images
 from a different website and complete the remaining images
+
+17. OPTIONAL - KEEP MOUSE LOCKED TO ACTIVE GAME SCREEN (NO BORDERLESS)
+a. set hotkey mouse (toggle) to any button e.g. doubel quotation mark (").
+in game press that button and mouse will lock to screen.

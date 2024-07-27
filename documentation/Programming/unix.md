@@ -577,6 +577,11 @@ sumeetsingh@Sumeets-Air ~ % arp 192.168.0.211
 retropie.modem (192.168.0.211) at b8:27:eb:ba:19:85 on en0 ifscope [ethernet]
 ```
 
+CLEARING ARP
+```bash
+arp -d *
+```
+
 FIND MAC - FROM LOCALHOST
 ```bash
 sumeetsingh@Sumeets-Air ~ % arp -a
