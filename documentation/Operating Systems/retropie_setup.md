@@ -1,11 +1,59 @@
 ___________________________________________________________________________
 
-                    ARCADE1UP CABINET MODDING
+                        ARCADE1UP CABINET MODDING
 ___________________________________________________________________________
 
-1. Add custom authentic steel look riser https://www.youtube.com/watch?v=Os-N8Orcxu8
-2. Buy Sanwa Joysticks, Raspberry Pi 5, and 256GB minimum Micro SD Card
-3. Follow guide below to setup the Raspberry Pi with game emulators
+The steps below outline modding an Arcade1up cabinet to setup with retro
+game emulation along with cosmetic changes.
+
+The steps apply to Arcade1up generation 2 cabinets but you may pick and choose
+whichever steps to apply to any arcade machine.
+
+1. Add steel riser https://www.youtube.com/watch?v=Os-N8Orcxu8
+Why do this because the cabinets are not only short, but the wooden
+riser is damaged easily by floods e.g. if outside or by scraping against floor.
+There are 2 options steel riser options below; Test both and see your cosmetic 
+preference
+Option A: 30cm steel riser to complement existing riser
+Option B: 60cm steel riser to replace existing riser 
+2. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
+3. Add custom marquee
+4. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM 
+
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+      |________________________|
+     |                          |
+     |                          |      
+     |                          |
+     +--------------------------+
+     |     Steel Riser (6")     |
+     |                          |
+     +--------------------------+
+5. Follow steps below to setup retropie
 
 
 
