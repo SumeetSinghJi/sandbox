@@ -1,33 +1,24 @@
 
 # PROGRAMMING WITH UNIX
+
 By: Sumeet Singh @ sumeet-singh.com
 
 Date: July 2024
 
-Publisher: Sabrenetics
-
-
 # TABLE OF CONTENTS
-- [1. Profile script](#profile-script)
-- [2. Common Commands](#common-commands)
-- [3. Importing scripts](#importing-scripts)
-- [4. Drawing Images with Matplotlib](#drawing-images-with-matplotlib)
--  [5. What is AI](#what-is-ai)
--  [5a. Training a Neural Network](#training-a-neural-network)
--  [5b. Creating a AI personal assistant](#creating-a-ai-personal-assistant)
-
-___________________________________________________________________________
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Profile script](#profile-script)
+- [4. Common Commands](#common-commands)
+- [5. Scripts](#scripts)
 
 # REQUIREMENTS
-___________________________________________________________________________
 
 The commands below target the Debian family e.g. Debian, Ubuntu, RaspberryPi
 however they can be modified with a quick confirmation with chatGPT to suit
 other OS.
 
-___________________________________________________________________________
-
-# FIRST TIME SETUP
+# INSTALLING
 ___________________________________________________________________________
 
 
@@ -113,7 +104,6 @@ sudo snap remove firefox
 ___________________________________________________________________________
 
 # PROFILE SCRIPT
-___________________________________________________________________________
 
 Your startup scripts, environmental variables, alias and more are documented
 in your shell script located under /home/username/ hidden found with "ls -la"
@@ -153,11 +143,7 @@ alias tail='runlolcat tail'
 alias head='runlolcat head'
 ```
 
-
-___________________________________________________________________________
-
-3 COMMON COMMANDS
-___________________________________________________________________________
+# COMMON COMMANDS
 
 SSH INTO LINUX DEVICE
 ```bash
@@ -632,10 +618,7 @@ UNZIPPING
 unzip vosk-model-small-en-us-0.15.zip
 ```
 
-___________________________________________________________________________
-
-# COMMON SCRIPTS
-___________________________________________________________________________
+# SCRIPTS
 
 CRON JOB 1 - On low disk usage or high CPU/MEMORY usage alert
 ```bash

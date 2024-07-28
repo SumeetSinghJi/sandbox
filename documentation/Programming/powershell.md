@@ -1,41 +1,31 @@
 
-___________________________________________________________________________
+# PROGRAMMING WITH POWERSHELL
 
-                                WINGET
-___________________________________________________________________________
+By: Sumeet Singh @ sumeet-singh.com
 
-SEARCH INSTALLED PACKAGES
-```bash
-winget list
+Date: July 2024
+
+# TABLE OF CONTENTS
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Profile script](#profile-script)
+- [4. Common Commands](#common-commands)
+- [5. Scripts](#scripts)
+- [6. Winget](#winget)
+
+# REQUIREMENTS
+
+MAKE PROFILE
+```powershell
 ```
 
-SEARCH PACKAGE
-```bash
-winget search g++
+# INSTALLING
+
+MAKE PROFILE
+```powershell
 ```
 
-INSTALL
-```bash
-winget install LLVM
-```
-
-UNINSTALL
-```bash
-winget remove LLVM
-```
-
-
-UPLOADING A WINGET
-```bash
-
-```
-
-
-
-___________________________________________________________________________
-
-                        POWERSHELL PROFILE
-___________________________________________________________________________
+# PROFIlE SCRIPT
 
 MAKE PROFILE
 ```bash
@@ -52,12 +42,7 @@ Welcome, Sumeet@SUMEETS-PC Today is Sunday, July 07 2024.
 PS C:\Users\Sumeet\Documents\sandbox>
 ```
 
-
-___________________________________________________________________________
-
-                        POWERSHELL COMMANDS
-___________________________________________________________________________
-
+# COMMON COMMANDS
 
 1. COPY SUBDIRECTORIES CONTENTS TO PARENT THEN DELETE
 ```powershell
@@ -80,4 +65,39 @@ Get-ChildItem -Directory -Recurse | Where-Object { $_.GetFileSystemInfos().Count
     Write-Host "Deleting directory: $directoryPath"
     $_ | Remove-Item -Force
 }
+```
+
+# SCRIPTS
+
+SCRIPTS
+```powershell
+
+```
+
+# WINGET
+
+SEARCH INSTALLED PACKAGES
+```powershell
+winget list
+```
+
+SEARCH PACKAGE
+```powershell
+winget search g++
+```
+
+INSTALL
+```powershell
+winget install LLVM
+```
+
+UNINSTALL
+```powershell
+winget remove LLVM
+```
+
+
+UPLOADING A WINGET
+```powershell
+
 ```

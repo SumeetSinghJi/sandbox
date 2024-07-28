@@ -1,17 +1,26 @@
-___________________________________________________________________________
 
-                        GIT COMMANDS
-___________________________________________________________________________
+# PROGRAMMING WITH GIT
 
-TERMINOLOGY
+By: Sumeet Singh @ sumeet-singh.com
 
-upstream: the original repo e.g, vedic-lang
-origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
+Date: July 2024
 
-___________________________________________________________________________
+# TABLE OF CONTENTS
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Create new repo using CLI](#create-new-repo-using-cli)
+- [4. Common Commands](#common-commands)
+- [5. Brew formula commit workflow](#brew-formula-commit-workflow)
 
-                        FIRST TIME SETUP
-___________________________________________________________________________
+# REQUIREMENTS
+
+TERMINOLOGIES
+* repo: Short for repository the location
+* upstream: the original repo e.g, vedic-lang
+* origin: your fork of upstream e.g, SumeetSinghJi/vedic-lang
+* no upstream: it means the repo maintainers dont allow pull request merging which means not open source
+
+# INSTALLING
 
 Windows: https://git-scm.com/downloads
 Mac: ```brew install git```
@@ -24,20 +33,13 @@ git config --global user.name "Sumeet Singh"
 git config --global user.email "sumeet.singhji@outlook.com"
 ```
 
-___________________________________________________________________________
-
-                    CREATE NEW REPO from CLI
-___________________________________________________________________________
-
+# CREATE NEW REPO USING CLI
 
 Mac: brew install gh
 2. ```gh auth login # follow setup steps```
 3. ```gh repo create SumeetSinghJi/Heroes3MapLiker --public```
 
-___________________________________________________________________________
-
-                    FORK, CLONE, COMMIT, PUSH
-___________________________________________________________________________
+# COMMON COMMANDS
 
 ```bash
 #STEP 1 - FORK REPO
@@ -82,11 +84,7 @@ git merge upstream/main
 git reset --hard upstream/main
 ```
 
-
-___________________________________________________________________________
-
-                    BREW FORMULA COMMIT WORKFLOW
-___________________________________________________________________________
+# BREW FORMULA COMMIT WORKFLOW
 
 ```bash
 # STEP 1 - FORK REPO

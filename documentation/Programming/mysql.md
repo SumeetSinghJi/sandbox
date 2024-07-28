@@ -1,9 +1,19 @@
 
-______________________________________________________________________________________________
+# PROGRAMMING WITH MYSQL
 
-                            FIND | CREATE | START DATABASE
-______________________________________________________________________________________________
+By: Sumeet Singh @ sumeet-singh.com
 
+Date: July 2024
+
+# TABLE OF CONTENTS
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Create new repo using CLI](#create-new-repo-using-cli)
+- [4. Common Commands](#common-commands)
+
+# REQUIREMENTS
+
+# INSTALLING, FINDING, CREATING OR STARTING DATABASE
 
 START DATABASE IF INSTALLED
 ```bash
@@ -35,10 +45,10 @@ Incomming
 IPv4	MYSQL/Aurora	TCP	3306
 Outgoing
 everything/default/*
-______________________________________________________________________________________________
 
-                            CONNECT TO DATABASE - CLI
-______________________________________________________________________________________________
+
+# CONNECT TO DATABASE - CLI
+
 
 OPTIONAL - Find DB running port MacOS/Linux
 Result is usually default 3306
@@ -65,10 +75,10 @@ REMOTE DB - specify url of DB in -h parameter
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
 
-______________________________________________________________________________________________
 
-                                    HASH PASSWORD
-______________________________________________________________________________________________
+
+# HASH PASSWORD
+
 
 To securely store a user password into a MySQL DB, we can use insecure SHA, or use bcrypt to
 hash the password securely with an algorithm
@@ -105,10 +115,10 @@ sumeetsingh@Sumeets-Air backend % node HashPassword.js
 Hashed password: $2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy
 ```
 
-______________________________________________________________________________________________
 
-                      SETUP ADMIN, DATABASE, TABLE, RECORDS
-______________________________________________________________________________________________
+
+# SETUP ADMIN, DATABASE, TABLE, RECORDS
+
 
 1. Run the below code in MySQL once connected through CLI, remember to change
 the users password to a Hash password e.g. from step earlier to hash a password
@@ -142,18 +152,17 @@ VALUES ('sum337', 'sumeet.singhji@outlook.com', '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9
 ```
 
 
-______________________________________________________________________________________________
 
-                          CONNECT TO DATABASE - JAVASCRIPT/REACT
-______________________________________________________________________________________________
+
+# CONNECT TO DATABASE - JAVASCRIPT/REACT
+
 
 See ```react_commands.md``` for details on how to connect with Javascript/React
 
 
-______________________________________________________________________________________________
 
-                            COMMON COMMANDS
-______________________________________________________________________________________________
+
+# COMMON COMMANDS
 
 1. COMMENTS
 ```bash

@@ -44,14 +44,14 @@ The final build should look like below assuming 6" steel riser
       |       | |_| |_| |      |
       |       +---------+      |
       |                        |
-      |________________________|
-     |                          |
-     |                          |      
-     |                          |
-     +--------------------------+
-     |     Steel Riser (6")     |
-     |                          |
-     +--------------------------+
+      +------------------------|
+      |                        |
+      |                        |      
+      |                        |
+      |                        |
+      |    Steel Riser (12")   |
+      |                        |
+      +------------------------+
 5. Follow steps below to setup retropie
 
 

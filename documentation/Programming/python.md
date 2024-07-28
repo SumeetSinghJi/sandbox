@@ -1,12 +1,9 @@
 
-
 # PROGRAMMING WITH PYTHON
+
 By: Sumeet Singh @ sumeet-singh.com
 
 Date: July 2024
-
-Publisher: Sabrenetics
-
 
 # TABLE OF CONTENTS
 - [1. Requirements](#requirements)
@@ -20,6 +17,7 @@ Publisher: Sabrenetics
 - [7b. Creating a AI personal assistant](#creating-a-ai-personal-assistant)
 
 # REQUIREMENTS
+Python is lightweight and can be installed on many devices, some even have them already installed
 
 # INSTALLING
 This code uses Python 3. Some devices already come with python3 so test by
@@ -90,30 +88,37 @@ from clear import cls
 
 # DRAWING IMAGES WITH MATPLOTLIB
 
-1. DRAW & EXPORT IMAGE WITH MATPLOTLIB
+1. DRAW & EXPORT IMAGE
 ```python
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # for drawing text to window
+import matplotlib.patches as patches # for drawing shapes to window
 
-# Create a figure and axis
-fig, ax = plt.subplots(figsize=(8, 12))
+# Set size here e.g, A4 paper dimensions in inches
+a4_width = 8.27
+a4_height = 11.69
+
+# Create a figure and axis using previous defined dimensions
+fig, ax = plt.subplots(figsize=(a4_width, a4_height))
 
 # Set background color
 fig.patch.set_facecolor('black')
 ax.set_facecolor('black')
 
 # Add the header text
-header_text = "To Return to all Games Menu"
+header_text = "To change game press"
 ax.text(0.5, 0.8, header_text, color='white', fontsize=30, ha='center', va='center', fontweight='bold')
 
 # Add the instruction text with multiple lines
-instruction_text = "Press\nJoystick: P1 + P2\nController: (PS) button + Start"
+instruction_text = "Joystick: P1 + P2\nController: (PS) button + Start"
 ax.text(0.5, 0.5, instruction_text, color='yellow', fontsize=25, ha='center', va='center', fontweight='bold')
 
-# Add the footer text
-footer_text = "Find more retro games!"
-ax.text(0.5, 0.2, footer_text, color='white', fontsize=20, ha='center', va='center')
+# Create Pac-Man shape (yellow circle with a triangle cutout)
+pacman_circle = patches.Wedge((0.5, 0.1), 0.1, 30, 330, facecolor='yellow', edgecolor='yellow')
 
-# Remove axes
+# Add Pac-Man shape to the plot
+ax.add_patch(pacman_circle)
+
+# Remove/hide axes lines
 ax.axis('off')
 
 # Save the poster as a PDF
@@ -125,7 +130,7 @@ plt.show()
 
 # WHAT IS AI?
 
-Watch here - https://www.youtube.com/watch?v=TkwXa7Cvfr8 
+Lesson 1 - https://www.youtube.com/watch?v=TkwXa7Cvfr8 
 
 A neural network can be viewed as a function f(x)≈NN(x) that maps inputs (x) to outputs (y) through a series of transformations. This function is learned from training data.
 
