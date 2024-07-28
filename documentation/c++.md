@@ -18,12 +18,47 @@ Date: July 2024
 
 # INSTALLING
 
+## CHOOSING A COMPILER
+
 On Windows there are 3 ways to install C++ compiler so that you can get started writing
 C++ code in an IDE, and then compile it to create a binary/executable e.g. test.exe to run.
 
-* MSYS2
-* CLANG
-* VISUAL STUDIO
+* CLANG (compiler = clang++)
+Pros;
+    Same environment as MacOS
+    Compiled code is portable
+    Supports every C standards
+    Fastest to compile/link
+    Lowest compile footprint
+    The best error message detection
+Cons;
+
+
+* MSYS2 (compiler = g++)
+Pros;
+    Same environment as linux
+    Compiled code is portable
+    Supports every C standards
+Cons;
+    slowest to compiler/link
+
+
+* VISUAL STUDIO (compiler = msvc)
+Pros;
+    The best IDE integrations e.g. Intel Profiler, .exe icon embedding, performance tuning/testing
+Cons;
+    Doesn't support old C standards e.g. > C 99
+    Code only compiles on Windows by default
+    Massive instalation footprint
+
+## Best Compiler?
+
+The answer to which is best is subjective, if you're developing a portable app use GCC + a static analyser
+such as cppcheck to find code issues, then compile the updated code into clang++ to find any errors.
+
+If you're just targetting Windows only ever, then stick with Visual Studio as it suits the environment.
+
+## INSTALLING WITH MSYS2
 
 MSYS2 setup
 
@@ -63,6 +98,11 @@ MSYS2 setup
         where gcc
 
         ADD LINKING steps!!!!!!!!!!!!!!!!!!!!!!!!
+
+## INSTALLING WITH CLANG
+
+## INSTALLING WITH VISUAL STUDIO
+
 
 # PROFILE SCRIPT
 
