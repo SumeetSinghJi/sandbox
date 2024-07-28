@@ -9,9 +9,7 @@ game emulation along with cosmetic changes.
 The steps apply to Arcade1up generation 2 cabinets but you may pick and choose
 whichever steps to apply to any arcade machine.
 
-1. Add steel riser https://www.youtube.com/watch?v=Os-N8Orcxu8
-Why do this because the cabinets are not only short, but the wooden
-riser is damaged easily by floods e.g. if outside or by scraping against floor.
+1. Add steel riser kickplate protection https://www.youtube.com/watch?v=Os-N8Orcxu8
 There are 2 options steel riser options below; Test both and see your cosmetic 
 preference
 Option A: 30cm steel riser to complement existing riser
@@ -19,6 +17,7 @@ Option B: 60cm steel riser to replace existing riser
 2. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
 3. Add custom marquee
 4. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM 
+The final build should look like below assuming 6" steel riser
 
       +------------------------+
       |     MORTAL KOMBAT      |

@@ -1,6 +1,24 @@
+
+# PROGRAMMING WITH UNIX
+By: Sumeet Singh @ sumeet-singh.com
+
+Date: July 2024
+
+Publisher: Sabrenetics
+
+
+# TABLE OF CONTENTS
+- [1. Profile script](#profile-script)
+- [2. Common Commands](#common-commands)
+- [3. Importing scripts](#importing-scripts)
+- [4. Drawing Images with Matplotlib](#drawing-images-with-matplotlib)
+-  [5. What is AI](#what-is-ai)
+-  [5a. Training a Neural Network](#training-a-neural-network)
+-  [5b. Creating a AI personal assistant](#creating-a-ai-personal-assistant)
+
 ___________________________________________________________________________
 
-                            REQUIREMENTS
+# REQUIREMENTS
 ___________________________________________________________________________
 
 The commands below target the Debian family e.g. Debian, Ubuntu, RaspberryPi
@@ -9,7 +27,7 @@ other OS.
 
 ___________________________________________________________________________
 
-                            FIRST TIME SETUP
+# FIRST TIME SETUP
 ___________________________________________________________________________
 
 
@@ -94,7 +112,7 @@ sudo snap remove firefox
 
 ___________________________________________________________________________
 
-                        SHELL STARTUP SCRIPT
+# PROFILE SCRIPT
 ___________________________________________________________________________
 
 Your startup scripts, environmental variables, alias and more are documented
@@ -138,7 +156,7 @@ alias head='runlolcat head'
 
 ___________________________________________________________________________
 
-                            COMMON COMMANDS
+3 COMMON COMMANDS
 ___________________________________________________________________________
 
 SSH INTO LINUX DEVICE
@@ -616,7 +634,7 @@ unzip vosk-model-small-en-us-0.15.zip
 
 ___________________________________________________________________________
 
-                            COMMON SCRIPTS
+# COMMON SCRIPTS
 ___________________________________________________________________________
 
 CRON JOB 1 - On low disk usage or high CPU/MEMORY usage alert
