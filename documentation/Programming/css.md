@@ -1,7 +1,26 @@
-___________________________________________________________________________
 
-                          EXAMPLE FLEX CSS
-___________________________________________________________________________
+# PROGRAMMING WITH GIT
+
+By: Sumeet Singh @ sumeet-singh.com
+
+Date: July 2024
+
+# TABLE OF CONTENTS
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Profile script](#profile-script)
+- [4. Common Commands](#common-commands)
+- [5. Scripts - Example Flex CSS](#scripts-example-flex-css)
+
+# REQUIREMENTS
+
+# INSTALLING
+
+# PROFILE SCRIPT
+
+# COMMON COMMANDS
+
+# SCRIPTS EXAMPLE FLEX CSS
 
 ```css
 /* 
@@ -127,3 +146,5 @@ body, html, #root {
   margin: 0.5rem 0; /* Provides margin between list items */
 }
 ```
+
+

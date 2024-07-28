@@ -8,12 +8,14 @@ Date: July 2024
 # TABLE OF CONTENTS
 - [1. Requirements](#requirements)
 - [2. Installing](#installing)
-- [3. Create new repo using CLI](#create-new-repo-using-cli)
+- [3. profile-script](#profile-script)
 - [4. Common Commands](#common-commands)
+- [5. Scripts complete setup admin, database, table, records](#common-commands)
+- [6. Hash password](#common-commands)
 
 # REQUIREMENTS
 
-# INSTALLING, FINDING, CREATING OR STARTING DATABASE
+# INSTALLING
 
 START DATABASE IF INSTALLED
 ```bash
@@ -47,8 +49,7 @@ Outgoing
 everything/default/*
 
 
-# CONNECT TO DATABASE - CLI
-
+# PROFILE SCRIPT LOGIN TO DATABASE
 
 OPTIONAL - Find DB running port MacOS/Linux
 Result is usually default 3306
@@ -75,89 +76,6 @@ REMOTE DB - specify url of DB in -h parameter
 mysql -h agnisamoohmysql.cv43d5o2h5wi.ap-southeast-2.rds.amazonaws.com -u admin -p
 ```
 
-
-
-# HASH PASSWORD
-
-
-To securely store a user password into a MySQL DB, we can use insecure SHA, or use bcrypt to
-hash the password securely with an algorithm
-
-1. Requires node.js installed see ```node_commands.md``` for more details on how to install
-libs bcrypt
-
-2. Create file anywhere, ideally in /src/components/backend/HashPassword.js
-```javascript
-// HashPassword.js
-const bcrypt = require('bcryptjs');
-
-const password = 'Password1!'; // Change this to any value
-const saltRounds = 10;
-
-bcrypt.hash(password, saltRounds, (err, hash) => {
-  if (err) {
-    console.error('Error hashing password:', err);
-  } else {
-    console.log('Hashed password:', hash);
-  }
-});
-```
-
-3. Run code above
-```bash
-cd project-directory/src/components/backend
-node HashPassword.js
-```
-
-4. You will get an output similar to below
-```bash
-sumeetsingh@Sumeets-Air backend % node HashPassword.js
-Hashed password: $2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy
-```
-
-
-
-# SETUP ADMIN, DATABASE, TABLE, RECORDS
-
-
-1. Run the below code in MySQL once connected through CLI, remember to change
-the users password to a Hash password e.g. from step earlier to hash a password
-
-If the users password is already set from a different password encryption method
-use AlTER user following steps in COMMON COMMANDS to change it to new hashed password
-
-e.g, update users set password = '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy' where username = 'sum337';
-
-```bash
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Password1!';
-CREATE DATABASE agnisamoohdb;
-GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'admin'@'localhost';
-USE agnisamoohdb;
-CREATE TABLE users (
-    userID INT AUTO_INCREMENT PRIMARY KEY,
-    date_account_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    username VARCHAR(20) NOT NULL,
-    email VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    on_mailing_list TINYINT(1) NOT NULL DEFAULT 0,
-    pending_orders INT NOT NULL DEFAULT 0,
-    order_history INT NOT NULL DEFAULT 0,
-    open_tickets INT NOT NULL DEFAULT 0,
-    closed_tickets INT NOT NULL DEFAULT 0,
-    subscriptions VARCHAR(1000) NOT NULL,
-    notes VARCHAR(1000) NOT NULL
-);
-INSERT INTO users (username, email, password, subscriptions, notes)
-VALUES ('sum337', 'sumeet.singhji@outlook.com', '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy', '', '');
-```
-
-
-
-
-# CONNECT TO DATABASE - JAVASCRIPT/REACT
-
-
-See ```react_commands.md``` for details on how to connect with Javascript/React
 
 
 
@@ -330,4 +248,79 @@ select * from users where username = "sum337";
 20. LOG OFF
 ```bash
 exit
+```
+
+
+
+# SCRIPTS COMPLETE SETUP ADMIN, DATABASE, TABLE, RECORDS
+
+1. Run the below code in MySQL once connected through CLI, remember to change
+the users password to a Hash password e.g. from step earlier to hash a password
+
+If the users password is already set from a different password encryption method
+use AlTER user following steps in COMMON COMMANDS to change it to new hashed password
+
+e.g, update users set password = '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy' where username = 'sum337';
+
+```bash
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Password1!';
+CREATE DATABASE agnisamoohdb;
+GRANT ALL PRIVILEGES ON agnisamoohdb.* TO 'admin'@'localhost';
+USE agnisamoohdb;
+CREATE TABLE users (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    date_account_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    username VARCHAR(20) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    on_mailing_list TINYINT(1) NOT NULL DEFAULT 0,
+    pending_orders INT NOT NULL DEFAULT 0,
+    order_history INT NOT NULL DEFAULT 0,
+    open_tickets INT NOT NULL DEFAULT 0,
+    closed_tickets INT NOT NULL DEFAULT 0,
+    subscriptions VARCHAR(1000) NOT NULL,
+    notes VARCHAR(1000) NOT NULL
+);
+INSERT INTO users (username, email, password, subscriptions, notes)
+VALUES ('sum337', 'sumeet.singhji@outlook.com', '$2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy', '', '');
+```
+
+
+
+
+# HASH PASSWORD
+
+To securely store a user password into a MySQL DB, we can use insecure SHA, or use bcrypt to
+hash the password securely with an algorithm
+
+1. Requires node.js installed see ```node_commands.md``` for more details on how to install
+libs bcrypt
+
+2. Create file anywhere, ideally in /src/components/backend/HashPassword.js
+```javascript
+// HashPassword.js
+const bcrypt = require('bcryptjs');
+
+const password = 'Password1!'; // Change this to any value
+const saltRounds = 10;
+
+bcrypt.hash(password, saltRounds, (err, hash) => {
+  if (err) {
+    console.error('Error hashing password:', err);
+  } else {
+    console.log('Hashed password:', hash);
+  }
+});
+```
+
+3. Run code above
+```bash
+cd project-directory/src/components/backend
+node HashPassword.js
+```
+
+4. You will get an output similar to below
+```bash
+sumeetsingh@Sumeets-Air backend % node HashPassword.js
+Hashed password: $2a$10$9JsnQAMsal.4iMhX.CnZXuy9aCILeipHjLt8MGf5h.JJ64KSg.uOy
 ```
