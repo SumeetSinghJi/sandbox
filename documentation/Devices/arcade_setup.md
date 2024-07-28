@@ -1,101 +1,75 @@
-___________________________________________________________________________
 
-                        ARCADE1UP CABINET MODDING
-___________________________________________________________________________
+# ARCADE MACINE BUILD GUIDE
 
-The steps below outline modding an Arcade1up cabinet to setup with retro
-game emulation along with cosmetic changes.
+# PREFACE
 
-The steps apply to Arcade1up generation 2 cabinets but you may pick and choose
-whichever steps to apply to any arcade machine.
+Realise you will never get a real authentic arcade experience with original machines as 
+old technology looks horrible, obscenly expensive, difficult to maintain, bulky, replacements
+will soon become obsolete to replace and wont cover every game you love. 
 
-1. Add steel riser kickplate protection https://www.youtube.com/watch?v=Os-N8Orcxu8
-Existing riser dimensions are 52.07cm length, 50.17cm width, 33.66cm height (Meant to be a foot tall)  
-https://arcade1up.com/collections/riser/products/arcade1up-riser-1
-So you could make a steel riser to either replace the existing riser while adding height or complement;
-Option A: 10.16cm (4") to complement existing riser
-      +------------------------+
-      |     MORTAL KOMBAT      |
-      |                        |
-      +------------------------+
-      | +--------------------+ |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | +--------------------+ |
-      |                        |
-      |------------------------|
-      |   X O O O   X O O O    |
-      |------------------------|
-      |                        |
-      |                        |
-      |                        |
-      |       +---------+      |
-      |       |  |   |  |      |
-      |       |  _   _  |      |
-      |       | |_| |_| |      |
-      |       +---------+      |
-      |                        |
-     +--------------------------|
-     |                          |
-     | Arcade1up Riser (13.25") |      
-     |                          |
-     |                          |     
-     +--------------------------+
-     |     Steel Riser (4")     |
-     |                          |
-     +--------------------------+
+Alternatives?
+
+Arcade1up devices are substitutes however while fun will never provide the games you want in 
+the right format or consistent dimension you prefer either. However don't regret any Arcade1up that 
+you've already purchased. You bought them to have fun. You would've had fun, 
+learnt woodworking, electronics, emulation, and finally building an arcade yourself an achievement. 
+You learnt everything because of these. So treasure them until the day you can save for a new home 
+and build your own, and keep these at your parents/loved ones just like your childhood game consoles.
+
+So what should I do?
+
+* Build 1 x Fighting arcade
+* Build 1 x Racing arcade
+* Build 1 x Gun arcade
+
+Using the steps below. This way you can mod them to play every game in each category futureproofing
+these arcades, being able to mod to create new features and providing an template to create a new one 
+if they fail.
+
+
+
+# ARCADE MACHINE BUILD STEPS
+
+1. BUILD CABINET
+
+2. OPTIONAL ARCADE1UP CABINETS ONLY - BUILD CUSTOM RISER
+
+Both 3/4 and Deluxe cabinets share same length and width dimensions and fit same riser - https://www.reddit.com/r/Arcade1Up/comments/167qcsp/can_the_deluxe_cabinets_be_put_on_risers/ 
+
+As Arcade1up 3/4 cabinets are too short by 15cm (6") by personal testing and most reports https://www.reddit.com/r/Arcade1Up/comments/sdjj7n/even_with_riser_arcade_games_are_not_high_enough/ we then add that to the
+custom riser measurements below to either extend the existing riser by 15cm or make a new riser for 49cm;
+
+Aracde modder example dimensions - breakdown - https://www.reddit.com/r/Arcade1Up/comments/hql8o3/riser_specs/
+4 x Outer panels 51cm (l) x 34cm (h)
+2 x Inner panels 48cm (l) x 29cm (h)
+2 x Weight bearing panels 48cm (l) x 5cm (w)
+
+Option A - Buy a flush riser extender below and use the dimensions
+
+Prepurchase: https://www.gijoelgaming.com/product/arcade1up-inline-riser
+Example: https://www.youtube.com/watch?v=wlPyo3gw3MA
+
+OPTION B: Buy a riser extender (diamond kickplate pattern best) and use the dimensions
+
+Prepurchase: https://www.buystuffarcades.com/products/riser-booster-for-arcade1up-arcades?variant=40523236540576
+Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaABAg.A6OuP1Pj09KA6PBk7JDYHM
+
+OPTION C: Build your own riser
+
+Example; https://www.youtube.com/watch?v=B4P6Nuofftg
+
+
+3. PAINT CABINET - PAINT CODE COLORS
+
+Pacman
+Yellow: Pantone 116 C
+Red: Pantone 485 C
+Blue: Pantone 300 C
      
-Option B: 43.82cm (17.25") to replace existing riser 
-      +------------------------+
-      |     MORTAL KOMBAT      |
-      |                        |
-      +------------------------+
-      | +--------------------+ |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | |                    | |
-      | +--------------------+ |
-      |                        |
-      |------------------------|
-      |   X O O O   X O O O    |
-      |------------------------|
-      |                        |
-      |                        |
-      |                        |
-      |       +---------+      |
-      |       |  |   |  |      |
-      |       |  _   _  |      |
-      |       | |_| |_| |      |
-      |       +---------+      |
-      |                        |
-      +------------------------|
-      |                        |
-      |                        |      
-      |                        |
-      |                        |
-      |                        |      
-      |  Steel Riser (17.25")  |
-      |                        |
-      +------------------------+
-2. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
-3. Add custom marquee
-4. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM 
-The final build should look like below assuming 6" steel riser
-5. Follow steps below to setup retropie
-
-
-
-___________________________________________________________________________
-
-                          WHAT IS RETROPIE?
-___________________________________________________________________________
+4. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
+5. Add custom lit marquee (applies to 3/4 size cabinets only)
+6. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM (applies to 3/4 size cabinets only)
+7. Follow steps below to setup retropie
 
 If you want a gaming device like an arcade machine, or a custom gameboy
 that has every retro game console and game in it you can take and play anywhere
@@ -123,10 +97,7 @@ INSTALLING RETROPIE - https://retropie.org.uk/docs/First-Installation/
 
 [Or just watch the YouTube video here](https://www.youtube.com/watch?v=E1sbnPZ_A8w)
 
-___________________________________________________________________________
-
-                          WHAT IS BIOS?
-___________________________________________________________________________
+WHAT IS BIOS?
 
 For CD and up generation gaming consoles you will need to dump your consoles
 operating system called a bios and add it to your emulators folder.
@@ -134,11 +105,7 @@ operating system called a bios and add it to your emulators folder.
 Conveniently they are available online but first ensure you legally own the console first. 
 An example for illustration purposes are here: https://github.com/Abdess/retroarch_system/releases/
 
-
-___________________________________________________________________________
-
-                          RETROPIE SETUP
-___________________________________________________________________________
+RETROPIE SETUP
 
 1. INSTALLING FROM IMAGE
 ```bash

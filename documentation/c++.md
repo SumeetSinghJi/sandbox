@@ -20,6 +20,16 @@ Date: July 2024
 
 ## CHOOSING A COMPILER
 
+Linux
+
+GNU g++ is installed by default. Don't change.
+
+MacOS
+
+clang++ is installed by default. Don't change.
+
+Windows
+
 On Windows there are 3 ways to install C++ compiler so that you can get started writing
 C++ code in an IDE, and then compile it to create a binary/executable e.g. test.exe to run.
 
@@ -39,8 +49,10 @@ Pros;
     Same environment as linux
     Compiled code is portable
     Supports every C standards
+    Lightweight install footprint
 Cons;
-    slowest to compiler/link
+    slowest to compile/link
+    worst error messages
 
 
 * VISUAL STUDIO (compiler = msvc)
@@ -53,12 +65,12 @@ Cons;
 
 ## Best Compiler?
 
-The answer to which is best is subjective, if you're developing a portable app use GCC + a static analyser
-such as cppcheck to find code issues, then compile the updated code into clang++ to find any errors.
+The answer to which is best is subjective, if you're on windows and developing a portable app use GCC + a static analyser such as cppcheck to find code issues, then compile the updated code into clang++ to find any errors.
 
 If you're just targetting Windows only ever, then stick with Visual Studio as it suits the environment.
 
-## INSTALLING WITH MSYS2
+
+## WINDOWS - INSTALLING WITH MSYS2
 
 MSYS2 setup
 
@@ -99,10 +111,9 @@ MSYS2 setup
 
         ADD LINKING steps!!!!!!!!!!!!!!!!!!!!!!!!
 
-## INSTALLING WITH CLANG
+## WINDOWS - INSTALLING WITH CLANG
 
-## INSTALLING WITH VISUAL STUDIO
-
+## WINDOWS - INSTALLING WITH VISUAL STUDIO
 
 # PROFILE SCRIPT
 
