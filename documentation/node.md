@@ -12,6 +12,24 @@ Date: July 2024
 - [4. Common Commands](#common-commands)
 - [5. Scripts](#scripts)
 - [5. React](#react)
+- [5a. Limitations](#limitations)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
+- [5a. React](#react)
 
 # REQUIREMENTS
 
@@ -80,22 +98,11 @@ npm run build
 
 # REACT
 
-
-______________________________________________________________________________________________
-
-                                  LIMITATIONS
-______________________________________________________________________________________________
-
+## LIMITATIONS
 
 File path names should be short! If something looks too long then it's time to shorten.
 
-
-
-______________________________________________________________________________________________
-
-                            SPECIAL CHARACTERS - HTML ESCAPING - ENCODING
-______________________________________________________________________________________________
-
+## SPECIAL CHARACTERS - HTML ESCAPING - ENCODING
 
 TO render special characters in react use the escape character e.g. < = &lt;
 
@@ -103,22 +110,12 @@ e.g.
 Will throw error - <p> This is a less then and greater then symbol <> </p>
 Will successfully pass - <p> This is a less then and greater then symbol &lt;&gt; </p>
 
-
-
-______________________________________________________________________________________________
-
-                            TERMINOLOGIES - REACT
-______________________________________________________________________________________________
+## TERMINOLOGIES - REACT
 
 React "React simplifies state management in JavaScript by introducing hooks, which allow 
 functional components to manage state and perform side effects effectively."
 
-
-
-______________________________________________________________________________________________
-
-                            TERMINOLOGIES - HOOK
-______________________________________________________________________________________________
+## TERMINOLOGIES - HOOK
 
 Hooks: "Hooks allow management of state within react."
 
@@ -138,15 +135,9 @@ EXAMPLE
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 ```
 
-
-______________________________________________________________________________________________
-
-                            TERMINOLOGIES - FUNCTIONAL COMPONENT
-______________________________________________________________________________________________
-
+## TERMINOLOGIES - FUNCTIONAL COMPONENT
 
 A React function that returns JSX.
-
 
 EXAMPLE
 
@@ -193,11 +184,7 @@ const Greeting = (props) => {
 export default Greeting;
 ```
 
-______________________________________________________________________________________________
-
-                            TERMINOLOGIES - STATE - useState
-______________________________________________________________________________________________
-
+## TERMINOLOGIES - STATE - useState
 
 State: "State dynamically updates the frontend HTML/DOM based on actions such as user 
 interactions (e.g., clicks, inputs) and responses from backend interactions."
@@ -288,12 +275,7 @@ function App() {
 export default App;
 ```
 
-
-______________________________________________________________________________________________
-
-                            TERMINOLOGIES - STATE - useEffect
-______________________________________________________________________________________________
-
+## TERMINOLOGIES - STATE - useEffect
 
 ```javascript
 import React, { useState, useEffect } from 'react';
@@ -331,11 +313,7 @@ const UserProfile = () => {
   export default userProfile;
   ```
 
-
-______________________________________________________________________________________________
-
-                              TERMINOLOGIES - FACTORY FUNCTION
-______________________________________________________________________________________________
+## TERMINOLOGIES - FACTORY FUNCTION
 
 DESCRIPTION
 
@@ -409,10 +387,7 @@ person2['greet']()  # Output: Hello, my name is Bob and I am 25 years old.
 
 ```
 
-______________________________________________________________________________________________
-
-                  FULL STACK JAVASCRIPT - MERN (MongoDB, Express, React, Node) 
-______________________________________________________________________________________________
+## FULL STACK JAVASCRIPT - MERN (MongoDB, Express, React, Node) 
 
 The best way to implement React is to use Javascript for Full stack. No other Language needed!
 
@@ -423,10 +398,7 @@ Frontend - React (optionally written in Typescript, and styled in Tailwind)
 Backend - Express running node.js
 Database - MongoDB
 
-______________________________________________________________________________________________
-
-                                COMMON COMMANDS
-______________________________________________________________________________________________
+## COMMON COMMANDS
 
 COMMENTS
 ```javascript
@@ -445,10 +417,7 @@ COMMENTS
 
 ```
 
-______________________________________________________________________________________________
-
-                                  INSTALLING REACT
-______________________________________________________________________________________________
+## INSTALLING REACT
 
 1. Install node.js
 ```bash
@@ -457,10 +426,7 @@ MacOS: brew install node
 Linux: apt install node
 ```
 
-______________________________________________________________________________________________
-
-                          OPTIONAL - INSTALL CLONED WEBSITE
-______________________________________________________________________________________________
+## OPTIONAL - INSTALL CLONED WEBSITE
 
 1. IF CLONING REACT FOR FIRST TIME
 ```bash
@@ -472,10 +438,7 @@ OPTIONAL - RESET/CLEAR NODE MODULES CACHE IF ERRORS OCCUR DURING INSTALLATION
 npm cache clean --force
 ```
 
-______________________________________________________________________________________________
-
-                                    CREATE WEBSITE
-______________________________________________________________________________________________
+## CREATE WEBSITE
 
 DESCRIPTION
 The steps below will create a website with
@@ -940,10 +903,7 @@ export default ProductData;
 
 ```
 
-______________________________________________________________________________________________
-
-                                    CREATE PAGES
-______________________________________________________________________________________________
+## CREATE PAGES
 
 1. Create page /src/pages/Account.js and add the below
 Include button to delete account with confirmation for full CRUD
@@ -1552,11 +1512,7 @@ export default SignUp;
 
 ```
 
-______________________________________________________________________________________________
-
-                                CREATE COMPONENTS
-______________________________________________________________________________________________
-
+## CREATE COMPONENTS
 
 1. Create component /src/components/AddCartButton.js and add the below
 ```javascript
@@ -1906,10 +1862,7 @@ export default YouTubeEmbed;
 
 ```
 
-______________________________________________________________________________________________
-
-                                CREATE COMPONENTS - BACKEND
-______________________________________________________________________________________________
+## CREATE COMPONENTS - BACKEND
 
 These frontend js codes connect to API's that are in the backend. 
 See below section "CONNECT TO LOCAL DATABASE" - for local DB's
@@ -2489,12 +2442,7 @@ export default UnsubscribeMailingListButton;
 
 ```
 
-
-
-______________________________________________________________________________________________
-
-                                CONNECT TO LOCAL NO-SQL DATABASE
-______________________________________________________________________________________________
+## CONNECT TO LOCAL NO-SQL DATABASE
 
 The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
 For details on how to setup the NoSQL Db follow the below and skip section 
@@ -2507,10 +2455,7 @@ xxx #macos
 xxx # debian family 
 ```
 
-______________________________________________________________________________________________
-
-                                CONNECT TO LOCAL SQL DATABASE
-______________________________________________________________________________________________
+## CONNECT TO LOCAL SQL DATABASE
 
 The LoginForm.js from earlier is used to login to a SQL database defined in the Server.js below.
 For details on how to setup the DB that the Server.js db_config variables use 
@@ -2800,11 +2745,7 @@ cd ../../
 npm start
 ```
 
-______________________________________________________________________________________________
-
-                                CONNECT TO REMOTE SQL DATABASE
-______________________________________________________________________________________________
-
+## CONNECT TO REMOTE SQL DATABASE
 
 1. Create a Lambda to act as backend called agnisamooh-server.js
 ```bash
@@ -3100,11 +3041,7 @@ password; Password1!
 3. You should be redirected to the account page
 ```
 
-
-______________________________________________________________________________________________
-
-                                DATABASE FINAL TESTING CLEANUP
-______________________________________________________________________________________________
+## DATABASE FINAL TESTING CLEANUP
 
 1. If above tests are successfull for login remember to log back into mysql and change the
 admin password and the users table test user record password. Replace the password placeholder with a new
@@ -3114,11 +3051,7 @@ password
 mysql -h 127.0.0.1 -u root -p -e "ALTER USER 'admin'@'localhost' IDENTIFIED BY 'new_password_goes_here'; USE agnisamoohdb; UPDATE users SET password = 'new_password_goes_here' WHERE username = 'sum337';"
 ```
 
-
-______________________________________________________________________________________________
-
-                              BUILDING/DEPLOYING REACT WEBSITE
-______________________________________________________________________________________________
+## BUILDING/DEPLOYING REACT WEBSITE
 
 1. UNCOMMENT ./build in .gitignore for CICD
 In .gitignore file remove entry for ./build so that Git/VersionControl/CI/CD will detect

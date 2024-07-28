@@ -33,11 +33,7 @@ git config --global user.name "Sumeet Singh"
 git config --global user.email "sumeet.singhji@outlook.com"
 ```
 
-# CREATE NEW REPO USING CLI
-
-Mac: brew install gh
-2. ```gh auth login # follow setup steps```
-3. ```gh repo create SumeetSinghJi/Heroes3MapLiker --public```
+# PROFILE SCRIPT
 
 # COMMON COMMANDS
 
@@ -84,7 +80,13 @@ git merge upstream/main
 git reset --hard upstream/main
 ```
 
-# BREW FORMULA COMMIT WORKFLOW
+# SCRIPTS CREATE NEW REPO USING CLI
+Mac: brew install gh
+2. ```gh auth login # follow setup steps```
+3. ```gh repo create SumeetSinghJi/Heroes3MapLiker --public```
+
+
+# WORKFLOW CREATE BREW FORMULA PULL REQUEST
 
 ```bash
 # STEP 1 - FORK REPO

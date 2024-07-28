@@ -25,7 +25,7 @@ MAKE PROFILE
 ```powershell
 ```
 
-# PROFIlE SCRIPT
+# PROFILE SCRIPT
 
 MAKE PROFILE
 ```bash

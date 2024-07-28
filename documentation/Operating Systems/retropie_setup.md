@@ -10,15 +10,46 @@ The steps apply to Arcade1up generation 2 cabinets but you may pick and choose
 whichever steps to apply to any arcade machine.
 
 1. Add steel riser kickplate protection https://www.youtube.com/watch?v=Os-N8Orcxu8
-There are 2 options steel riser options below; Test both and see your cosmetic 
-preference
-Option A: 30cm steel riser to complement existing riser
-Option B: 60cm steel riser to replace existing riser 
-2. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
-3. Add custom marquee
-4. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM 
-The final build should look like below assuming 6" steel riser
-
+Existing riser dimensions are 52.07cm length, 50.17cm width, 33.66cm height (Meant to be a foot tall)  
+https://arcade1up.com/collections/riser/products/arcade1up-riser-1
+So you could make a steel riser to either replace the existing riser while adding height or complement;
+Option A: 10.16cm (4") to complement existing riser
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+     +--------------------------|
+     |                          |
+     | Arcade1up Riser (13.25") |      
+     |                          |
+     |                          |     
+     +--------------------------+
+     |     Steel Riser (4")     |
+     |                          |
+     +--------------------------+
+     
+Option B: 43.82cm (17.25") to replace existing riser 
       +------------------------+
       |     MORTAL KOMBAT      |
       |                        |
@@ -49,9 +80,14 @@ The final build should look like below assuming 6" steel riser
       |                        |      
       |                        |
       |                        |
-      |    Steel Riser (12")   |
+      |                        |      
+      |  Steel Riser (17.25")  |
       |                        |
       +------------------------+
+2. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
+3. Add custom marquee
+4. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM 
+The final build should look like below assuming 6" steel riser
 5. Follow steps below to setup retropie
 
 
