@@ -1,40 +1,75 @@
+# ARCADE SETUP
 
-# ARCADE MACINE BUILD GUIDE
+By: Sumeet Singh @ sumeet-singh.com
 
-# PREFACE
+Date: August 2024
 
-Realise you will never get a real authentic arcade experience with original machines as 
-old technology looks horrible, obscenly expensive, difficult to maintain, bulky, replacements
-will soon become obsolete to replace and wont cover every game you love. 
-
-Alternatives?
-
-Arcade1up devices are substitutes however while fun will never provide the games you want in 
-the right format or consistent dimension you prefer either. However don't regret any Arcade1up that 
-you've already purchased. You bought them to have fun. You would've had fun, 
-learnt woodworking, electronics, emulation, and finally building an arcade yourself an achievement. 
-You learnt everything because of these. So treasure them until the day you can save for a new home 
-and build your own, and keep these at your parents/loved ones just like your childhood game consoles.
-
-So what should I do?
-
-* Build 1 x Fighting arcade
-* Build 1 x Racing arcade
-* Build 1 x Gun arcade
-
-Using the steps below. This way you can mod them to play every game in each category futureproofing
-these arcades, being able to mod to create new features and providing an template to create a new one 
-if they fail.
+Description: This document outlines various ways to build, modify, and setup arcade machine cabinets and optionally add retro game emulation.
 
 
+# TABLE OF CONTENTS
+- [1. Arcade1UP Modding](#arcade1up-modding)
+- [2. Build your own Arcade machine](#build-your-own-arcade-machine)
+- [3. Retropie Setup](#retropie-setup)
 
-# ARCADE MACHINE BUILD STEPS
 
-1. BUILD CABINET
+# ARCADE1UP MODDING
 
-2. OPTIONAL ARCADE1UP CABINETS ONLY - BUILD CUSTOM RISER
+If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
+Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
-Both 3/4 and Deluxe cabinets share same length and width dimensions and fit same riser - https://www.reddit.com/r/Arcade1Up/comments/167qcsp/can_the_deluxe_cabinets_be_put_on_risers/ 
+For starters, don't buy any 3/4 (also known as partycade with risers) generation of cabinets as they present many problems e.g. height, 
+bad viewing angles, inferior build quality etc. Either buy the XL cabs if space is available or go for the Deluxe. The below
+steps advise on cabinet modding to make them more authentic with height increasing or coin door light mods etc.,
+
+METHEDOLOGY
+
+1. BUILD CUSTOM RISER
+
+Both 3/4 and Deluxe cabinets share same length and width dimensions and fit same riser - https://www.reddit.com/r/Arcade1Up/comments/167qcsp/can_the_deluxe_cabinets_be_put_on_risers/ XL cabs are also authentic but they are huge. Deluxe provide the middle ground authentic footprint
+arcade experience.
+
+Deluxe cabinets - Buy a flush riser extender below and use the dimensions
+
+Prepurchase: https://www.gijoelgaming.com/product/arcade1up-inline-riser
+Example: https://www.youtube.com/watch?v=wlPyo3gw3MA
+
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+      |                        |
+      |                        |
+      |                        |
+      |                        |
+      |                        |     
+      +------------------------+
+      |    Custom Riser (4")   |
+      |                        |
+      +------------------------+
+
+3/4 cabinets: Buy a riser extender (diamond kickplate pattern best) and use the dimensions
 
 As Arcade1up 3/4 cabinets are too short by 15cm (6") by personal testing and most reports https://www.reddit.com/r/Arcade1Up/comments/sdjj7n/even_with_riser_arcade_games_are_not_high_enough/ we then add that to the
 custom riser measurements below to either extend the existing riser by 15cm or make a new riser for 49cm;
@@ -44,39 +79,78 @@ Aracde modder example dimensions - breakdown - https://www.reddit.com/r/Arcade1U
 2 x Inner panels 48cm (l) x 29cm (h)
 2 x Weight bearing panels 48cm (l) x 5cm (w)
 
-Option A - Buy a flush riser extender below and use the dimensions
-
-Prepurchase: https://www.gijoelgaming.com/product/arcade1up-inline-riser
-Example: https://www.youtube.com/watch?v=wlPyo3gw3MA
-
-OPTION B: Buy a riser extender (diamond kickplate pattern best) and use the dimensions
-
 Prepurchase: https://www.buystuffarcades.com/products/riser-booster-for-arcade1up-arcades?variant=40523236540576
 Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaABAg.A6OuP1Pj09KA6PBk7JDYHM
+
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+     +--------------------------+
+     |                          |
+     | Arcade1up Riser (13.25") |      
+     |                          |
+     |                          |     
+     +--------------------------+
+     |     Custom Riser (4")    |
+     |                          |
+     +--------------------------+
 
 OPTION C: Build your own riser
 
 Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 
 
-3. PAINT CABINET - PAINT CODE COLORS
+2. Deluxe cabs only - Lightup coin door mod - https://www.youtube.com/watch?v=lsZ99HHl2U0
+3. 3/4 cabs only - Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
+4. 3/4 cabs only - Add custom lit marquee (applies to 3/4 size cabinets only)
+5. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
 
-Pacman
-Yellow: Pantone 116 C
-Red: Pantone 485 C
-Blue: Pantone 300 C
-     
-4. Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
-5. Add custom lit marquee (applies to 3/4 size cabinets only)
-6. Follow video to build together https://www.youtube.com/watch?v=09DQCOr6zQM (applies to 3/4 size cabinets only)
-7. Follow steps below to setup retropie
+# BUILD YOUR OWN ARCADE MACHINE
+
+These steps outline how to build your own custom arcade machine from scratch either yourself or with a carpenters help
+to cut the wood (machine) the parts so you can put together, as well as various ways to paint the cab. Once the cab is built
+and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
+
+Benefits of building your own machine include being able to have 1 of each game type (e.g. Fighting, seated racing, or gun arcade cabinet)
+better then any Arcade1up reproduction.
+
+METHEDOLOGY
+
+1. 
+2. 
+3. 
+
+
+# RETROPIE SETUP
 
 If you want a gaming device like an arcade machine, or a custom gameboy
 that has every retro game console and game in it you can take and play anywhere
 then you need to install different emulators. RetroPie packages these steps in
 a simple one click setup.
 
-As per: https://www.reddit.com/r/RetroPie/comments/yet5v1/retropie_or_emulation_station/
+METHEDOLOGY
 
 For any Linux OS (not just RaspberryPi), RetroPie runs a bunch of scripts that
 installs and configures; 
