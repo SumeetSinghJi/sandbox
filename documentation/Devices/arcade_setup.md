@@ -29,8 +29,12 @@ METHEDOLOGY
 Both 3/4 and Deluxe cabinets share same length and width dimensions and fit same riser - https://www.reddit.com/r/Arcade1Up/comments/167qcsp/can_the_deluxe_cabinets_be_put_on_risers/ XL cabs are also authentic but they are huge. Deluxe provide the middle ground authentic footprint
 arcade experience.
 
-Deluxe cabinets - Buy a flush riser extender below and use the dimensions
+## FOR DELUXE CABINETS
 
+### OPTION A - Flush riser
+
+Buy a flush riser then put metal diamond tread kickplates on all sides to prevent wear and tear
+Cons are it will cause balance instability and exhuberate the rocking issue with these top heavy tall cabs (serious consideration)
 Prepurchase: https://www.gijoelgaming.com/product/arcade1up-inline-riser
 Example: https://www.youtube.com/watch?v=wlPyo3gw3MA
 
@@ -65,11 +69,51 @@ Example: https://www.youtube.com/watch?v=wlPyo3gw3MA
       |                        |
       |                        |     
       +------------------------+
-      |    Custom Riser (4")   |
+      |    Flush Riser (4")    |
       |                        |
       +------------------------+
 
-3/4 cabinets: Buy a riser extender (diamond kickplate pattern best) and use the dimensions
+### OPTION B - non flush riser
+
+Buy a no flush riser then put metal diamond tread kickplates on all sides to prevent wear and tear, base adss stability.
+Prepurchase: https://www.buystuffarcades.com/products/mini-riser-for-deluxe-arcade1up-cabs
+
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+      |                        |
+      |                        |
+      |                        |    
+      |                        |
+      |                        |
+     +--------------------------+
+     |   Metal Kickplate (4")   |
+     |                          |
+     +--------------------------+
+
+## FOR 3/4 CABINETS
 
 As Arcade1up 3/4 cabinets are too short by 15cm (6") by personal testing and most reports https://www.reddit.com/r/Arcade1Up/comments/sdjj7n/even_with_riser_arcade_games_are_not_high_enough/ we then add that to the
 custom riser measurements below to either extend the existing riser by 15cm or make a new riser for 49cm;
@@ -78,6 +122,10 @@ Aracde modder example dimensions - breakdown - https://www.reddit.com/r/Arcade1U
 4 x Outer panels 51cm (l) x 34cm (h)
 2 x Inner panels 48cm (l) x 29cm (h)
 2 x Weight bearing panels 48cm (l) x 5cm (w)
+
+### OPTION A - Buy Riser extender
+
+Buy a riser extender (diamond kickplate pattern best) and use the dimensions
 
 Prepurchase: https://www.buystuffarcades.com/products/riser-booster-for-arcade1up-arcades?variant=40523236540576
 Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaABAg.A6OuP1Pj09KA6PBk7JDYHM
@@ -117,7 +165,7 @@ Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaAB
      |                          |
      +--------------------------+
 
-OPTION C: Build your own riser
+### OPTION B: Build Riser extender
 
 Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 
@@ -125,6 +173,7 @@ Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 2. Deluxe cabs only - Lightup coin door mod - https://www.youtube.com/watch?v=lsZ99HHl2U0
 3. 3/4 cabs only - Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
 4. 3/4 cabs only - Add custom lit marquee (applies to 3/4 size cabinets only)
+5. Deluxe cabs only - Fix static on speakers - The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ 
 5. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
 
 # BUILD YOUR OWN ARCADE MACHINE

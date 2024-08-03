@@ -312,7 +312,7 @@ HARDWARE REQUIREMENTS
 * Webcam - $100
 
 SOFTWARE REQUIREMENTS
-* Speech Recognition Model: Vosk
+* Speech Recognition Model: Vosk | ALTERNATIVE NEW IDEA: OpenAI Whipser TEST - https://medium.com/@kharatmoljagdish/using-openai-whisper-python-library-for-speech-to-text-dda4f558fccc
 * LLM: LLAMA
 
 Ensure that the version of CUDA you have is supported by torch. You can find this by running
@@ -362,7 +362,23 @@ Thu Jul 18 02:37:57 2024
 pip3 install transformers torch sounddevice vosk asyncio
 ```
 
-2. DOWNLOAD VOSK MODEL
+OPTIONAL. DOWNLOAD VOSK SPEECH TO TEXT MODEL
+```bash
+# windows - only for American accents
+Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
+Expand-Archive -Path "vosk-model-small-en-us-0.15.zip" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk-model-small-en-us-0.15.zip"
+Move-Item -Path "vosk_speech_model\vosk-model-small-en-us-0.15\*" -Destination "vosk_speech_model"
+Remove-Item -Recurse -Force "vosk_speech_model\vosk-model-small-en-us-0.15"
+
+# unix*
+curl -O https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 vosk_speech_model
+```
+TRAIN VOSK
+
+2. DOWNLOAD SPEECH TO TEXT MODEL
 ```bash
 # windows - only for American accents
 Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip" -OutFile "vosk-model-small-en-us-0.15.zip"
@@ -377,12 +393,7 @@ unzip vosk-model-small-en-us-0.15.zip
 mv vosk-model-small-en-us-0.15 vosk_speech_model
 ```
 
-3. TRAIN VOSK MODEL
-```bash
-STEPS HERE - https://alphacephei.com/vosk/models#training-your-own-model
-```
-
-6. USING LOCAL LLM
+3. TYPE AND RUN CODE AND TEST
 ```python
 import asyncio
 import torch
