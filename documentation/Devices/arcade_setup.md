@@ -1,19 +1,50 @@
+
 # ARCADE SETUP
 
 By: Sumeet Singh @ sumeet-singh.com
 
 Date: August 2024
 
-Description: This document outlines various ways to build, modify, and setup arcade machine cabinets and optionally add retro game emulation.
+Description: This document outlines various ways to build, modify, and setup arcade machine cabinets with emulators and add games.
 
 
 # TABLE OF CONTENTS
-- [1. Arcade1UP Modding](#arcade1up-modding)
-- [2. Build your own Arcade machine](#build-your-own-arcade-machine)
+- [1. Build your own Arcade machine](#build-your-own-arcade-machine)
+- [2. Optional modify Arcade1up](#optional-modify-arcade1up)
 - [3. Retropie Setup](#retropie-setup)
 
 
-# ARCADE1UP MODDING
+# BUILD YOUR OWN ARCADE MACHINE
+
+Why build arcade machine cabinet(s)? because they are fun and teach you alot.
+
+These steps outline how to build your own custom arcade machine from scratch either yourself or with a carpenters help
+to cut the wood (machine) the parts so you can put together, as well as various ways to paint the cab. Once the cab is built
+and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
+
+Benefits of building your own machine include being able to have 1 of each game type (e.g. Fighting, seated racing, or gun arcade cabinet)
+better then any Arcade1up reproduction.
+
+### BUILDING LIGHT GUN CABINET
+First check the list of available games and if you feel it's adequte then follow steps below
+https://en.wikipedia.org/wiki/List_of_light-gun_games
+1. Buy a pair of Sinden light guns with recoil https://www.sindenshop.com/
+2. Build the cabinet over it
+
+### BUILDING RACING CABINET
+1. Simplest option is to buy a "racing cockpit simulator" by searching on Google e.g, https://pagnianimports.com.au/collections/ready-2-race-packages 
+2. Then add your TV, console/PC, connect it together and test
+3. Build the cabinet over it
+
+### BUILDING FIGHTING GAME CABINET
+Fighting games are generic games not seated racing or gun specific arcade cabinets.
+1. 
+2. 
+3. 
+
+
+
+# OPTIONAL MODIFY ARCADE1UP
 
 If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
@@ -176,33 +207,43 @@ Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 5. Deluxe cabs only - Fix static on speakers - The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ 
 5. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
 
-# BUILD YOUR OWN ARCADE MACHINE
-
-These steps outline how to build your own custom arcade machine from scratch either yourself or with a carpenters help
-to cut the wood (machine) the parts so you can put together, as well as various ways to paint the cab. Once the cab is built
-and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
-
-Benefits of building your own machine include being able to have 1 of each game type (e.g. Fighting, seated racing, or gun arcade cabinet)
-better then any Arcade1up reproduction.
-
-METHEDOLOGY
-
-1. 
-2. 
-3. 
 
 
 # RETROPIE SETUP
 
-If you want a gaming device like an arcade machine, or a custom gameboy
-that has every retro game console and game in it you can take and play anywhere
-then you need to install different emulators. RetroPie packages these steps in
-a simple one click setup.
+If you want an graphical software that has emulators that represent various game consoles to play games on such as Atari, or Sega, then
+you need to generally install a software like "Retroarch". Retroarch can be installed on many operating systems such as windows, mac or
+various linux distrobutions and allows you to download various consoles such as Sega Megadrive within it. After that's done you can 
+point to a file location containing various games known as roms, setup key bindings, set to download game artwork and launch Retroarch
+and get started choosing a retro or modern game console and game to play. The guide below advises how to setup Retroarch on Windows, Mac
+and Linux distro's and get BIOS for game consoles.  We do not condone piracy of games. If you require games (roms) then you will need to 
+research yourself (try asking AI).
 
-METHEDOLOGY
+### BIOS
 
-For any Linux OS (not just RaspberryPi), RetroPie runs a bunch of scripts that
-installs and configures; 
+What is a BIOS and why is it needed?
+
+BIOS represent the Operating System of a console. Old retro consoles like gameboys don't have an OS like modern consoles
+such as Playstation, therefore retro console emulators can run games without a need for a BIOS.
+
+To obtain a bios requires dumping (extracting) the files from your existing console. Considering you own the consoles
+already you can conveniently find a list of all BIOS needed for Retroarch here: https://github.com/Abdess/retroarch_system/releases/
+
+Simply download the files (called a BIOS set) and add them to the respective folder required after Retroarch (or any emulator) is installed.
+
+### WINDOWS
+
+Install Retroarch from here: https://www.retroarch.com/
+
+### MAC
+
+Install Retroarch from here: https://www.retroarch.com/
+
+### LINUX
+
+Setting up Retroarch on Linux is often difficult and time consuming, you can choose to setup yourself using below link
+Install Retroarch from here: https://www.retroarch.com/ 
+or use Retropie which runs on may Linux distro's (not just Raspberry Pi) which runs a bunch of scripts that installs and configures; 
 1. User account "pi" with all necessary permissions
 2. Default drivers (if RaspberryPi)
 3. Retroarch
@@ -214,21 +255,7 @@ installs and configures;
 So you can see it does quite alot. If you want a dedicated linux emulator device
 then best use RetroPie to automatically do it all.
 
-If using Windows then you can just use Retroarch.
-
-INSTALLING RETROPIE - https://retropie.org.uk/docs/First-Installation/
-
-[Or just watch the YouTube video here](https://www.youtube.com/watch?v=E1sbnPZ_A8w)
-
-WHAT IS BIOS?
-
-For CD and up generation gaming consoles you will need to dump your consoles
-operating system called a bios and add it to your emulators folder.
-
-Conveniently they are available online but first ensure you legally own the console first. 
-An example for illustration purposes are here: https://github.com/Abdess/retroarch_system/releases/
-
-RETROPIE SETUP
+#### RETROPIE SETUP STEPS
 
 1. INSTALLING FROM IMAGE
 ```bash
