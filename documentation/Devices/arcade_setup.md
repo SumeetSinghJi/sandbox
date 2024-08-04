@@ -25,18 +25,31 @@ and all electronics added you can skip to the Retropie Setup steps to finally ad
 Benefits of building your own machine include being able to have 1 of each game type (e.g. Fighting, seated racing, or gun arcade cabinet)
 better then any Arcade1up reproduction.
 
+NOTE: Arcade joystick cables are called "2.8mm Terminal Quick Connects" arcade cables.
+
+
+### CRT VS MODERN TV e.g, LCD/LED/PLASMA
+
+Many people choose to use older CRT (Cathode Ray Tube) style TV's to use in Arcade machines to get an authentic retro gaming experience.
+Thus many people option for buying and installing a CRT TV. Although fun CRT TV's are no longer commercially viable and what parts exist
+are usually heavy, expensive, rare and difficult to repair. Regardless the emulator software's dont care what screen you use so if you 
+don't want the hastle of dealing with an old CRT TV theirs nothing wrong with using a modern style TV.
+
 ### BUILDING LIGHT GUN CABINET
+
 First check the list of available games and if you feel it's adequte then follow steps below
 https://en.wikipedia.org/wiki/List_of_light-gun_games
 1. Buy a pair of Sinden light guns with recoil https://www.sindenshop.com/
 2. Build the cabinet over it
 
 ### BUILDING RACING CABINET
+
 1. Simplest option is to buy a "racing cockpit simulator" by searching on Google e.g, https://pagnianimports.com.au/collections/ready-2-race-packages 
 2. Then add your TV, console/PC, connect it together and test
 3. Build the cabinet over it
 
 ### BUILDING FIGHTING GAME CABINET
+
 Fighting games are generic games not seated racing or gun specific arcade cabinets.
 1. 
 2. 
@@ -49,11 +62,11 @@ Fighting games are generic games not seated racing or gun specific arcade cabine
 If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
-For starters, don't buy any 3/4 (also known as partycade with risers) generation of cabinets as they present many problems e.g. height, 
-bad viewing angles, inferior build quality etc. Either buy the XL cabs if space is available or go for the Deluxe. The below
-steps advise on cabinet modding to make them more authentic with height increasing or coin door light mods etc.,
+The various sizes of cabs are below (comparison is here: https://www.youtube.com/watch?v=jvMRYGZPh34)
 
-METHEDOLOGY
+3/4 cabs: varies
+Deluxe cab: 155cm
+XL cab: 165cm + 3" wider
 
 1. BUILD CUSTOM RISER
 
@@ -202,10 +215,11 @@ Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 
 
 2. Deluxe cabs only - Lightup coin door mod - https://www.youtube.com/watch?v=lsZ99HHl2U0
-3. 3/4 cabs only - Add real coin door https://www.youtube.com/watch?v=kSyySSv1ywQ
+3. Any cab - Add real coin door (requires a arcade splitter cable) https://www.youtube.com/watch?v=kSyySSv1ywQ
 4. 3/4 cabs only - Add custom lit marquee (applies to 3/4 size cabinets only)
-5. Deluxe cabs only - Fix static on speakers - The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ 
-5. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
+5. Deluxe cabs only - Fix static on speakers - The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ
+6. Any cab - Add link cable multiplayer - https://www.buystuffarcades.com/products/ridge-racer-and-outrun-mod-kit 
+7. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
 
 
 
@@ -366,7 +380,7 @@ pcsx_rearmed_show_bios_bootlogo = "disabled"
 pcsx_rearmed_show_bios_bootlogo = "enabled"
 ```
 
-15. OPTIONAL - START GAME ON BOOT
+15. OPTIONAL - START GAME ON BOOT | BOOT INTO GAME | AUTOSTART GAME
 ```bash
 nano /opt/retropie/configs/all/autostart.sh
 # To start any rom on startup type/replace the core and rom path with the game 

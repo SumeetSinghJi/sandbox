@@ -105,19 +105,11 @@ ___________________________________________________________________________
 
 # PROFILE SCRIPT
 
-Your startup scripts, environmental variables, alias and more are documented
-in your shell script located under /home/username/ hidden found with "ls -la"
-They need to be added there and the shell restarted for the change to take 
-place. There are 3 or more shell's usually e.g, ~/.zshrc, ~/.bash or 
-~/.bash_profile. edit 1 to include the envionmental variable as per below 
-steps, and remove any outdated version form the other shell scripts for MacOS 
-add the path only to: ~/.zshrc
-
 1. Open your shells startup script
 ```bash
-open -e ~/.zshrc # MacOS only? Please confirm this also works on Ubuntu or not
-# or
-sudo nano ~/.zshrc
+ls -la ~ # first find the default shell used by querying hidden folders in home.
+sudo nano ~/.zshrc # Mac
+sudo nano ~/.bashrc # Ubuntu
 ```
 
 2. Add your startup code
@@ -167,6 +159,22 @@ ID_LIKE=debian
 HOME_URL="http://www.raspbian.org/"
 SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
 BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+```
+
+FIND HIDDEN FILES
+```bash
+ls -la
+```
+
+ENVIRONMENTAL VARIABLES
+```bash
+# on Linux environmental variable refers to shell startup script file
+ls -la ~ # first find the default shell used by querying hidden folders in home.
+sudo nano ~/.zshrc # Mac
+sudo nano ~/.bashrc # Ubuntu
+
+# then add the filepath to the executable e.g, for FFMPEG
+/usr/lib/ffmpeg
 ```
 
 FIND KERNEL
