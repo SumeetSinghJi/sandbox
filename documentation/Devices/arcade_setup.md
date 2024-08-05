@@ -9,12 +9,12 @@ Description: This document outlines various ways to build, modify, and setup arc
 
 
 # TABLE OF CONTENTS
-- [1. Build your own Arcade machine](#build-your-own-arcade-machine)
+- [1. Build Arcade machine](#build-arcade-machine)
 - [2. Optional modify Arcade1up](#optional-modify-arcade1up)
-- [3. Retropie Setup](#retropie-setup)
+- [3. Emulator Setup](#emulator-setup)
 
 
-# BUILD YOUR OWN ARCADE MACHINE
+# BUILD ARCADE MACHINE
 
 Why build arcade machine cabinet(s)? because they are fun and teach you alot.
 
@@ -35,25 +35,46 @@ Thus many people option for buying and installing a CRT TV. Although fun CRT TV'
 are usually heavy, expensive, rare and difficult to repair. Regardless the emulator software's dont care what screen you use so if you 
 don't want the hastle of dealing with an old CRT TV theirs nothing wrong with using a modern style TV.
 
+
 ### BUILDING LIGHT GUN CABINET
 
 First check the list of available games and if you feel it's adequte then follow steps below
 https://en.wikipedia.org/wiki/List_of_light-gun_games
-1. Buy a pair of Sinden light guns with recoil https://www.sindenshop.com/
-2. Build the cabinet over it
+
+I have not yet investigated if the lightgun can be used as a controller to play non light gun fps/over the head shoulder style games e.g, 
+Silent Hill/Resident Evil 2. __________________________________FILL ME_____________________________
+
+Note that Raspberry Pi's are too slow to emulate perfect light gun latency games as reported by many Reddit users. Keep this in mind.
+
+1. There are 2 types of light guns on the market, the calibration required but perfect Gun4IR, and the less responsive simple Sinden light guns 
+https://www.sindenshop.com/, the best option is Gun4IR for even faster then CRT TV latency.
+
+3. Get wood cut and ordered using the schematics here ____________________
+4. Setup the computer with emulator following Emulator setup steps ____________________
+5. Build the cabinet by ____________________
+
 
 ### BUILDING RACING CABINET
 
 1. Simplest option is to buy a "racing cockpit simulator" by searching on Google e.g, https://pagnianimports.com.au/collections/ready-2-race-packages 
-2. Then add your TV, console/PC, connect it together and test
-3. Build the cabinet over it
+2. Then add your TV, console/PC, connect it together
+
+3. Get wood cut and ordered using the schematics here ____________________
+4. Setup the computer with emulator following Emulator setup steps ____________________
+5. Build the cabinet by ____________________
 
 ### BUILDING FIGHTING GAME CABINET
 
 Fighting games are generic games not seated racing or gun specific arcade cabinets.
-1. 
-2. 
-3. 
+1. Buy Sanwa Joysticks - 
+2. Buy Speakers - 
+3. Buy arcade harness cables -
+4. Buy real coin door - xardcade -
+
+3. Get wood cut and ordered using the schematics here ____________________
+4. Setup the computer with emulator following Emulator setup steps ____________________
+5. Build the cabinet by ____________________
+
 
 
 
@@ -62,7 +83,10 @@ Fighting games are generic games not seated racing or gun specific arcade cabine
 If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
-The various sizes of cabs are below (comparison is here: https://www.youtube.com/watch?v=jvMRYGZPh34)
+Size comparisons
+
+Deluxe vs XL: https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fanyone-holding-out-for-the-2024-cabinets-im-hoping-for-more-v0-3aqwpaofk8ec1.png%3Fwidth%3D1756%26format%3Dpng%26auto%3Dwebp%26s%3D8ebaee4471a173ffbe9dc32f272372e33d3fa8d0
+Deluxe vs Real original arcade: https://www.youtube.com/watch?v=jvMRYGZPh34
 
 3/4 cabs: varies
 Deluxe cab: 155cm
@@ -213,17 +237,38 @@ Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaAB
 
 Example; https://www.youtube.com/watch?v=B4P6Nuofftg
 
+2. LIGHT UP COIN DOOR MOD (DELUX CABS)
+https://www.youtube.com/watch?v=lsZ99HHl2U0
 
-2. Deluxe cabs only - Lightup coin door mod - https://www.youtube.com/watch?v=lsZ99HHl2U0
-3. Any cab - Add real coin door (requires a arcade splitter cable) https://www.youtube.com/watch?v=kSyySSv1ywQ
-4. 3/4 cabs only - Add custom lit marquee (applies to 3/4 size cabinets only)
-5. Deluxe cabs only - Fix static on speakers - The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ
-6. Any cab - Add link cable multiplayer - https://www.buystuffarcades.com/products/ridge-racer-and-outrun-mod-kit 
-7. Add speakers, raspberry pi and final build steps https://www.youtube.com/watch?v=09DQCOr6zQM
+3. ADD REAL COIN DOOR
+First purchase an "2.8mm Terminal Quick Connects split arcade cables" then follow this guide https://www.youtube.com/watch?v=kSyySSv1ywQ
+
+4. ADD CUSTOM LIT MARQUEE (3/4 CABS)
+
+5. FIX LOW LEVEL SPEAKER STATIC (DELUXE CABS)
+The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ
+
+6. ADD LINK CABLE FOR MULTIPLAYER
+https://www.buystuffarcades.com/products/ridge-racer-and-outrun-mod-kit
+
+7. REPLACE JOYSTICK BUTTONS
+You can choose to replace the stock cheap Arcade1up buttons on the non XL models with better products. You will need to buy
+Sanwa style arcade buttons
+1. Follow this to replace buttons - https://www.youtube.com/watch?v=09DQCOr6zQM
+
+8. ADD BIGGER SCREEN
+To add a different size monitor or TV to an existing Arcade1up cabinet such as increasing the screen size for shooter games
+you need the below; you can read from here: https://www.reddit.com/r/Arcade1Up/comments/1ehu3uo/which_geekworm_lvds_adapter_works_best_with_dell/
+1 x Geepworm LDVS 2.0 converter
+1 x HDMI signal booster e.g, https://www.amazon.com.au/s?k=hdmi+signal+booster
+1 x TV/Monitor
+
+9. REPLACE SPEAKERS
+https://www.youtube.com/watch?v=09DQCOr6zQM
 
 
 
-# RETROPIE SETUP
+# EMULATOR SETUP
 
 If you want an graphical software that has emulators that represent various game consoles to play games on such as Atari, or Sega, then
 you need to generally install a software like "Retroarch". Retroarch can be installed on many operating systems such as windows, mac or
