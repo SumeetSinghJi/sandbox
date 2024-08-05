@@ -1,29 +1,32 @@
 
-# ARCADE SETUP
+# COMPLETE ARCADE/ARCADE1UP BUILD AND MOD GUIDE 2024
 
 By: Sumeet Singh @ sumeet-singh.com
 
 Date: August 2024
 
-Description: This document outlines various ways to build, modify, and setup arcade machine cabinets with emulators and add games.
+Description: This document outlines various ways to repair, build, modify, and setup with emulators/retro games various arcade machine cabinets
 
 
 # TABLE OF CONTENTS
 - [1. Build Arcade machine](#build-arcade-machine)
 - [2. Optional modify Arcade1up](#optional-modify-arcade1up)
 - [3. Emulator Setup](#emulator-setup)
+- [4. Credits](#credits)
 
 
 # BUILD ARCADE MACHINE
 
-Why build arcade machine cabinet(s)? because they are fun and teach you alot.
+Why collect, mod, or build arcade machines/cabinets? because they are fun and you learn lots of skills.
 
 These steps outline how to build your own custom arcade machine from scratch either yourself or with a carpenters help
 to cut the wood (machine) the parts so you can put together, as well as various ways to paint the cab. Once the cab is built
 and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
 Benefits of building your own machine include being able to have 1 of each game type (e.g. Fighting, seated racing, or gun arcade cabinet)
-better then any Arcade1up reproduction.
+that you can customise however you want.
+
+If you feel this is too much effort you can always buy Arcade1UP arcade machines and use the below modding guide to customise.
 
 NOTE: Arcade joystick cables are called "2.8mm Terminal Quick Connects" arcade cables.
 
@@ -233,9 +236,44 @@ Example: https://www.youtube.com/watch?v=2bcejhZNyBA&lc=Ugzya6nEhq4Rz2VvC5F4AaAB
      |                          |
      +--------------------------+
 
-### OPTION B: Build Riser extender
+### OPTION B: Build custom riser
 
-Example; https://www.youtube.com/watch?v=B4P6Nuofftg
+Example here https://www.youtube.com/watch?v=B4P6Nuofftg
+
+      +------------------------+
+      |     MORTAL KOMBAT      |
+      |                        |
+      +------------------------+
+      | +--------------------+ |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | |                    | |
+      | +--------------------+ |
+      |                        |
+      |------------------------|
+      |   X O O O   X O O O    |
+      |------------------------|
+      |                        |
+      |                        |
+      |                        |
+      |       +---------+      |
+      |       |  |   |  |      |
+      |       |  _   _  |      |
+      |       | |_| |_| |      |
+      |       +---------+      |
+      |                        |
+     +--------------------------+
+     |                          |
+     |   Custom Riser (13.25")  |      
+     |                          |
+     |                          |     
+     +--------------------------+
+
+
+OTHER MODS
 
 2. LIGHT UP COIN DOOR MOD (DELUX CABS)
 https://www.youtube.com/watch?v=lsZ99HHl2U0
@@ -258,10 +296,20 @@ Sanwa style arcade buttons
 
 8. ADD BIGGER SCREEN
 To add a different size monitor or TV to an existing Arcade1up cabinet such as increasing the screen size for shooter games
-you need the below; you can read from here: https://www.reddit.com/r/Arcade1Up/comments/1ehu3uo/which_geekworm_lvds_adapter_works_best_with_dell/
-1 x Geepworm LDVS 2.0 converter
+you need the below;
+1 x Geekworm HDMI to LDVS 2.0/20 adapter - https://geekworm.com/products/lvds-to-hdmi-adapter-board-converter-with-lvds-cable
 1 x HDMI signal booster e.g, https://www.amazon.com.au/s?k=hdmi+signal+booster
+2 x HDMI cable
 1 x TV/Monitor
+1 x VEGA bracket support frame
+STEPS
+a. Disconnect the Arcade1up PCB board from the stock monitor and connect to LDVS conveter in Channel 1
+ensure the twisted ribbon style cable you connect has the dot on it's plastic seated in the same PCB dot reference.
+You can use double sided sticky tape and cardboard to seperate the metalic plate of the LCD screen/arcade1up screen
+and your LDVS adapter to prevent electricity shorting issues.
+b. add HDMI cable to LDVS and TV and turn on game and test. If flickering/drop outs occour then test with Channel 2 position
+c. If flickering/drop outs still occur then add a signal booster in between HDMI cables and test both channels again
+d. Once desired position is kept add the Wood/VEGA frame to Arcade cabinet and TV and connect all back together
 
 9. REPLACE SPEAKERS
 https://www.youtube.com/watch?v=09DQCOr6zQM
@@ -451,3 +499,14 @@ from a different website and complete the remaining images
 17. OPTIONAL - KEEP MOUSE LOCKED TO ACTIVE GAME SCREEN (NO BORDERLESS)
 a. set hotkey mouse (toggle) to any button e.g. doubel quotation mark (").
 in game press that button and mouse will lock to screen.
+
+
+# CREDITS
+
+      Thanks to everyone in the Arcade1up Reddit & YouTube community for keeping this hobby alive.
+
+      Thanks to the dedicated Arcade1UP staff who go above and beyond to give us the best product possible. We wouldn't be here without you.
+
+      Thanks to my canine companion Porus for always being there for me.
+
+      And finally thanks to people like you that read this and continue to keep the hobby alive for others to experience.
