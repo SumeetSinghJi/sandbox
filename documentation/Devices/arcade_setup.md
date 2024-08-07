@@ -100,12 +100,15 @@ If you have an existing Arcade1up cabinet the following steps outline the ways t
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
 1. ADD DIAMOND TREAD KICKPLATE
-To protect the bottom of the arcade cabinet from being damaged from repeated kicks follow this guide https://www.youtube.com/watch?v=Wf4RVx3Bs-o
+To protect the bottom of the arcade cabinet from being damaged from repeated kicks such as in commercial settings you can
+tape or glue a metal sheet at the front following this example guide https://www.youtube.com/watch?v=Wf4RVx3Bs-o
 
 2. BUILD CUSTOM RISER
 
-Size comparisons
+If the height of the Arcade1UP cabinets are too short you can increase with custom risers. The steps below outline different size comparisons
+and different options depending on the generation/model of cabinets you have.
 
+Size comparisons
 Deluxe vs XL: https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fanyone-holding-out-for-the-2024-cabinets-im-hoping-for-more-v0-3aqwpaofk8ec1.png%3Fwidth%3D1756%26format%3Dpng%26auto%3Dwebp%26s%3D8ebaee4471a173ffbe9dc32f272372e33d3fa8d0
 Deluxe vs Real original arcade: https://www.youtube.com/watch?v=jvMRYGZPh34
 
