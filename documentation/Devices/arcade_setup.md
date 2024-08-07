@@ -5,17 +5,18 @@ By: Sumeet Singh @ sumeet-singh.com
 
 Date: August 2024
 
-Description: This document outlines various ways to repair, build, modify, and setup with emulators/retro games various arcade machine cabinets
+Description: This document outlines various ways to repair, build, modify, and setup with emulators/retro games various arcade machine cabinets.
 
 
 # TABLE OF CONTENTS
-- [1. Build Arcade machine](#build-arcade-machine)
-- [2. Optional modify Arcade1up](#optional-modify-arcade1up)
+- [1. Building Arcade machines](#building-arcade-machines)
+- [2. Modifying Arcade1UP machines](#modifying-arcade1up-machines)
 - [3. Emulator Setup](#emulator-setup)
-- [4. Credits](#credits)
+- [4. Selling Arcade machines](#selling-arcade-machines)
+- [5. Credits](#credits)
 
 
-# BUILD ARCADE MACHINE
+# BUILDING ARCADE MACHINES
 
 Why collect, mod, or build arcade machines/cabinets? because they are fun and you learn lots of skills.
 
@@ -34,12 +35,16 @@ NOTE: Arcade joystick cables are called "2.8mm Terminal Quick Connects" arcade c
 ### CRT VS MODERN TV e.g, LCD/LED/PLASMA
 
 Many people choose to use older CRT (Cathode Ray Tube) style TV's to use in Arcade machines to get an authentic retro gaming experience.
-Thus many people option for buying and installing a CRT TV. Although fun CRT TV's are no longer commercially viable and what parts exist
+Thus many people option for buying and installing a CRT TV. Although fun CRT TV's are not commercially viable and what parts exist
 are usually heavy, expensive, rare and difficult to repair. Regardless the emulator software's dont care what screen you use so if you 
-don't want the hastle of dealing with an old CRT TV theirs nothing wrong with using a modern style TV.
+don't want the hastle of dealing with an old CRT TV theirs nothing wrong with using a modern style Flatscreen TV. Note the build guides below
+have optional schematics for CRT retro style cabinets and modern flatscreen style.
+
+Choose whichever CRT or LCD cabinet you prefer. Note CRT cabinets are bigger as they are meant to hold
+the weight of the CRT TV and in general use older Retro style cabinets, whereas Flatscreen uses more flatscreen style.
 
 
-### BUILDING LIGHT GUN CABINET
+### BUILDING STADING LIGHT GUN CABINET
 
 First check the list of available games and if you feel it's adequte then follow steps below
 https://en.wikipedia.org/wiki/List_of_light-gun_games
@@ -53,35 +58,43 @@ Note that Raspberry Pi's are too slow to emulate perfect light gun latency games
 https://www.sindenshop.com/, the best option is Gun4IR for even faster then CRT TV latency.
 
 3. Get wood cut and ordered using the schematics here ____________________
-4. Setup the computer with emulator following Emulator setup steps ____________________
-5. Build the cabinet by ____________________
+4. Setup the computer with emulator following Emulator setup steps within this guide
+5. Build the cabinet by following these steps:
 
 
-### BUILDING RACING CABINET
+### BUILDING SEATED RACING CABINET
 
-1. Simplest option is to buy a "racing cockpit simulator" by searching on Google e.g, https://pagnianimports.com.au/collections/ready-2-race-packages 
+1. Simplest option is to buy a "full motion racing cockpit simulator" by searching on Google e.g, https://dofreality.com/
+2-axis is the cheapest and 6-axis full motion is the most expensive.
+Consider using a universal option with both controls for Racing & Flying e.g, https://dofreality.com/product/universal/universal-motion-platform-6-axis-hero-h6/
 2. Then add your TV, console/PC, connect it together
 
 3. Get wood cut and ordered using the schematics here ____________________
-4. Setup the computer with emulator following Emulator setup steps ____________________
-5. Build the cabinet by ____________________
+4. Setup the computer with emulator following Emulator setup steps within this guide
+5. Build the cabinet by following these steps:
 
-### BUILDING FIGHTING GAME CABINET
+### BUILDING GENERIC ARCADE CABINET
 
-Fighting games are generic games not seated racing or gun specific arcade cabinets.
+CRT cabinet final design example: https://www.youtube.com/watch?v=fl0FW4VvbNM
+Flatscreen cabinet final design example: 
+
 1. Buy Sanwa Joysticks - 
 2. Buy Speakers - 
 3. Buy arcade harness cables -
-4. Buy real coin door - xardcade -
+4. Buy real coin door -
+5. (OPTIONAL) If using a modern PC/Raspberry Pi for emulation you will
+need to buy a "HDMI to RCA Converter" to plug it into the CRT TV.
+5. Get wood cut and ordered using the schematics here 
+CRT: https://retromash.com/2015/01/02/building-a-home-arcade-machine-part-1/
+Flatscreen: 
+6. Setup the computer with emulator following Emulator setup steps within this guide
+7. Build the cabinet by following these steps 
+CRT: https://retromash.com/2015/01/02/building-a-home-arcade-machine-part-1/
+Flatscreen: 
+8. Test and done
 
-3. Get wood cut and ordered using the schematics here ____________________
-4. Setup the computer with emulator following Emulator setup steps ____________________
-5. Build the cabinet by ____________________
 
-
-
-
-# OPTIONAL MODIFY ARCADE1UP
+# MODIFYING ARCADE1UP MACHINES
 
 If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
@@ -275,15 +288,15 @@ Example here https://www.youtube.com/watch?v=B4P6Nuofftg
 
 OTHER MODS
 
-2. LIGHT UP COIN DOOR MOD (DELUX CABS)
+2. LIGHT UP COIN DOOR
 https://www.youtube.com/watch?v=lsZ99HHl2U0
 
 3. ADD REAL COIN DOOR
 First purchase an "2.8mm Terminal Quick Connects split arcade cables" then follow this guide https://www.youtube.com/watch?v=kSyySSv1ywQ
 
-4. ADD CUSTOM LIT MARQUEE (3/4 CABS)
+4. ADD CUSTOM LIT MARQUEE
 
-5. FIX LOW LEVEL SPEAKER STATIC (DELUXE CABS)
+5. FIX LOW LEVEL SPEAKER STATIC
 The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ
 
 6. ADD LINK CABLE FOR MULTIPLAYER
@@ -297,21 +310,18 @@ Sanwa style arcade buttons
 8. ADD BIGGER SCREEN
 To add a different size monitor or TV to an existing Arcade1up cabinet such as increasing the screen size for shooter games
 you need the below;
-1 x Geekworm HDMI to LDVS 2.0/20 adapter - https://geekworm.com/products/lvds-to-hdmi-adapter-board-converter-with-lvds-cable
-1 x HDMI signal booster e.g, https://www.amazon.com.au/s?k=hdmi+signal+booster
-2 x HDMI cable
+1 x Geekworm HDMI to LDVS 20 (a.k.a 2.0) adapter - https://geekworm.com/products/lvds-to-hdmi-adapter-board-converter-with-lvds-cable
+1 x HDMI cable
 1 x TV/Monitor
 1 x VEGA bracket support frame
 STEPS
 a. Disconnect the Arcade1up PCB board from the stock monitor and connect to LDVS conveter in Channel 1
-ensure the twisted ribbon style cable you connect has the dot on it's plastic seated in the same PCB dot reference.
-You can use double sided sticky tape and cardboard to seperate the metalic plate of the LCD screen/arcade1up screen
-and your LDVS adapter to prevent electricity shorting issues.
+ensure the twisted ribbon style cable you connect has the dot on it's plastic seated in the same PCB dot reference (PIN 1)
+Optionally, Seperate the board from the LCD with cardboard and double sided tape to prevent electrial shorting
 b. add HDMI cable to LDVS and TV and turn on game and test. If flickering/drop outs occour then test with Channel 2 position
-c. If flickering/drop outs still occur then add a signal booster in between HDMI cables and test both channels again
-d. Once desired position is kept add the Wood/VEGA frame to Arcade cabinet and TV and connect all back together
+d. Once desired position is kept add the Wood/VEGA frame to Arcade cabinet and TV and connect all back together and test
 
-9. REPLACE SPEAKERS
+9. COMPLETE BUILD GUIDE - RASPBERRY PI + SPEAKERS + BUTTONS
 https://www.youtube.com/watch?v=09DQCOr6zQM
 
 
@@ -368,6 +378,16 @@ then best use RetroPie to automatically do it all.
 ```bash
 1. Use PI imager - Select Raspberry Pi OS - Select storage medium e.g, Micro SD Card - Enable SSH during setup - Enable Wifi and add login details - Install - Plug Micro SD card into Pi then done. 
 2. Find the IP address of the Raspberry PI e.g. either from router or arp -a command if on same network 
+```
+
+OPTIONAL. CHANGING WIFI PASSWORD
+```bash
+/etc/wpa_supplicant/wpa_supplicant.conf # edit this file
+
+network={
+    ssid="YourNetworkName" # update this with your wifis name
+    psk="YourPassword" # add your wifis password here
+}
 ```
 
 2. ACCESS PI VIA SSH
@@ -431,31 +451,7 @@ d. Copy all the folders over
 cp -r /media/usb1/* /home/pi/RetroPie/roms 
 ```
 
-10. SWAP A/B BUTTONS
-a. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
-Settings - Input - Menu Controls
-b. Set "Menu swap OK/Cancel buttons" to ON. This will change A/B buttons (or X/O on playstation controller)
-c. Go back to Main menu - configuration - save current configuration
-d. Done
-
-11. SETUP HOTKEYS (TURBO + SAVE STATES + EMULATOR MENU)
-a. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
-Settings - Input - Hotkey Binds
-b. scroll down to Hotkey - set to PS button on Playstation controller 
-(e.g. the PS logo on Dualshock 5)
-c. Select Fast Forward (Toggle) to be R3 (use in game with Press PS button + R3 (Hold down))
-d. Menu toggle gamepad combo - select "Start + Select" (use in game with Press Start + Select)
-e. Go back to Main menu - configuration - save current configuration
-f. Done
-
-12. SETUP BOTH ARCADE BUTTONS/JOYSTICK
-note you can keep a ps controller or keyboard plugged in while setting up the 2 arcade sticks
-To setup any controller just hold down any button on it and it will detect
-just that controller, then setup any buttons and skip any you cant do
-a. https://www.youtube.com/watch?v=uL3K8sZIuWo
-
-
-13. ADD BIOS
+10. ADD BIOS
 (Necessary for PS1)
 a. Find the BIOS somewhere e.g. by dumping your own consoles BIOS
 or here if you legally own the console: https://github.com/Abdess/retroarch_system/releases/
@@ -464,7 +460,7 @@ b. Put all files (e.g. for PS1) in BIOS
 cp scph5500.bin, scph5501.bin, scph5502.bin /home/pi/RetroPie/BIOS
 ```
 
-14. CONSOLE BOOT SOUND
+11. CONSOLE BOOT SOUND
 a. Edit config to set boot sound for whichever core e.g. ps1 to start
 ```bash
 nano /opt/retropie/configs/all/retroarch-core-options.cfg
@@ -473,7 +469,7 @@ pcsx_rearmed_show_bios_bootlogo = "disabled"
 pcsx_rearmed_show_bios_bootlogo = "enabled"
 ```
 
-15. OPTIONAL - START GAME ON BOOT | BOOT INTO GAME | AUTOSTART GAME
+12. OPTIONAL - START GAME ON BOOT | BOOT INTO GAME | AUTOSTART GAME
 ```bash
 nano /opt/retropie/configs/all/autostart.sh
 # To start any rom on startup type/replace the core and rom path with the game 
@@ -488,7 +484,32 @@ emulationstation #auto
 pi@retropie:~ $
 ```
 
-16. ADD GAME ARTWORK | THUMBNAIL IMAGES
+### RETROARCH CONFIGURATION
+
+1. SWAP A/B BUTTONS
+a. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
+Settings - Input - Menu Controls
+b. Set "Menu swap OK/Cancel buttons" to ON. This will change A/B buttons (or X/O on playstation controller)
+c. Go back to Main menu - configuration - save current configuration
+d. Done
+
+2. SETUP HOTKEYS (TURBO + SAVE STATES + EMULATOR MENU)
+a. In main menu (core/emulator section) select RetroPie - RetroArch (will open a new menu) -
+Settings - Input - Hotkey Binds
+b. scroll down to Hotkey - set to PS button on Playstation controller 
+(e.g. the PS logo on Dualshock 5)
+c. Select Fast Forward (Toggle) to be R3 (use in game with Press PS button + R3 (Hold down))
+d. Menu toggle gamepad combo - select "Start + Select" (use in game with Press Start + Select)
+e. Go back to Main menu - configuration - save current configuration
+f. Done
+
+3. SETUP BOTH ARCADE BUTTONS/JOYSTICK
+note you can keep a ps controller or keyboard plugged in while setting up the 2 arcade sticks
+To setup any controller just hold down any button on it and it will detect
+just that controller, then setup any buttons and skip any you cant do
+a. https://www.youtube.com/watch?v=uL3K8sZIuWo
+
+4. ADD GAME ARTWORK | THUMBNAIL IMAGES
 a. In main menu where you select your emulators press start
 b. Press scrapper
 c. Press to configure by having user not worry about conflicts (automatically find images)
@@ -501,9 +522,22 @@ a. set hotkey mouse (toggle) to any button e.g. doubel quotation mark (").
 in game press that button and mouse will lock to screen.
 
 
+# SELLING ARCADE MACHINES
+
+1. IF USING LINUX CLEAR WIFI PASSWORD
+```bash
+/etc/wpa_supplicant/wpa_supplicant.conf # edit this file
+
+network={
+    ssid="YourNetworkName" # Remove your Wifi name
+    psk="YourPassword" # Remove your wifi password
+}
+```
+
+
 # CREDITS
 
-      Thanks to everyone in the Arcade1up Reddit & YouTube community for keeping this hobby alive.
+      Thanks to everyone in the Arcade1UP Reddit & YouTube community for keeping this hobby alive.
 
       Thanks to the dedicated Arcade1UP staff who go above and beyond to give us the best product possible. We wouldn't be here without you.
 

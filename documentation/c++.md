@@ -63,8 +63,6 @@ Cons;
     Code only compiles on Windows by default
     Massive instalation footprint
 
-## Best Compiler?
-
 The answer to which is best is subjective, if you're on windows and developing a portable app use GCC + a static analyser such as cppcheck to find code issues, then compile the updated code into clang++ to find any errors.
 
 If you're just targetting Windows only ever, then stick with Visual Studio as it suits the environment.
@@ -117,11 +115,22 @@ MSYS2 setup
 
 # PROFILE SCRIPT
 
+Talk about setting up your environmental variables, tasks.json and other files
+to easily compile code
+
 # COMMON COMMANDS
+
+# WHAT TO CHOOSE C OR C++
+
+C uses structs with no private member variables, and no inline methods
+
+C++ uses classes, as well as being backwards compatible with C code such as structs
 
 # HEADERS AND MODULES
 
-# SDL
+# SDL - PLAY GIF ANIMATION
+
+# SDL - MULTIPLAYER GAME
 
 ```c++
 // Program below is a sample multipler c++ sdl game, ideally you would break the webserver
@@ -914,6 +923,19 @@ int main(int argc, char *argv[])
 }
 ```
 
+# ADDING LUA TO SDL GAME FOR MODDING
+
+```c++
+// The following is a simple Snake game, that has an Lua interpreter inbuilt to allow users to add scripts to customise
+// to the compiled .exe to allow modding
+```
+
 # RAYCASTER
 
-https://www.youtube.com/watch?v=gYRrGTC7GtA&list=PLrUnpWNDH4jgZWRjqRdMr_3Mi_aPpT2Ea 
+https://www.youtube.com/watch?v=gYRrGTC7GtA&list=PLrUnpWNDH4jgZWRjqRdMr_3Mi_aPpT2Ea
+
+# WEBCLIENT + WEBSERVER EXAMPLE
+
+```c++
+```
+
