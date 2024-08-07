@@ -100,7 +100,7 @@ If you have an existing Arcade1up cabinet the following steps outline the ways t
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
 1. ADD DIAMOND TREAD KICKPLATE
-To protect the bottom of the arcade cabinet from being damaged from repeated kicks lollow this guide https://www.youtube.com/watch?v=Wf4RVx3Bs-o
+To protect the bottom of the arcade cabinet from being damaged from repeated kicks follow this guide https://www.youtube.com/watch?v=Wf4RVx3Bs-o
 
 2. BUILD CUSTOM RISER
 
