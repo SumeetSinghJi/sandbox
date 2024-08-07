@@ -99,6 +99,11 @@ Flatscreen:
 If you have an existing Arcade1up cabinet the following steps outline the ways to improve the cosmetic and functional aspects of it.
 Once the cab is built and all electronics added you can skip to the Retropie Setup steps to finally add retro game emulation on it
 
+1. ADD DIAMOND TREAD KICKPLATE
+To protect the bottom of the arcade cabinet from being damaged from repeated kicks lollow this guide https://www.youtube.com/watch?v=Wf4RVx3Bs-o
+
+2. BUILD CUSTOM RISER
+
 Size comparisons
 
 Deluxe vs XL: https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fanyone-holding-out-for-the-2024-cabinets-im-hoping-for-more-v0-3aqwpaofk8ec1.png%3Fwidth%3D1756%26format%3Dpng%26auto%3Dwebp%26s%3D8ebaee4471a173ffbe9dc32f272372e33d3fa8d0
@@ -107,8 +112,6 @@ Deluxe vs Real original arcade: https://www.youtube.com/watch?v=jvMRYGZPh34
 3/4 cabs: varies
 Deluxe cab: 155cm
 XL cab: 165cm + 3" wider
-
-1. BUILD CUSTOM RISER
 
 Both 3/4 and Deluxe cabinets share same length and width dimensions and fit same riser - https://www.reddit.com/r/Arcade1Up/comments/167qcsp/can_the_deluxe_cabinets_be_put_on_risers/ XL cabs are also authentic but they are huge. Deluxe provide the middle ground authentic footprint
 arcade experience.
@@ -285,29 +288,26 @@ Example here https://www.youtube.com/watch?v=B4P6Nuofftg
      |                          |     
      +--------------------------+
 
-
-OTHER MODS
-
-2. LIGHT UP COIN DOOR
+3. LIGHT UP COIN DOOR
 https://www.youtube.com/watch?v=lsZ99HHl2U0
 
-3. ADD REAL COIN DOOR
+4. ADD REAL COIN DOOR
 First purchase an "2.8mm Terminal Quick Connects split arcade cables" then follow this guide https://www.youtube.com/watch?v=kSyySSv1ywQ
 
-4. ADD CUSTOM LIT MARQUEE
+5. ADD CUSTOM LIT MARQUEE
 
-5. FIX LOW LEVEL SPEAKER STATIC
+6. FIX LOW LEVEL SPEAKER STATIC
 The static can be fixed, I bought a better quality 12v power supply off Amazon and a TRRS Male to Female Stereo Audio Jack Extender Aux Extension Adapter Cords with Volume Control. Its a pain that they have the gain too high off the PCB and a noisy power supply, this way I can turn the gain down manually and it lowers the noise floor. The other fix is the reroute the headphone jack which is line level out and connect the speakers to that but I wanted to be able to still use headphones. It is kinda weird / lazy that they have not fixed an annoying problem that has a relatively cheap fix. - Youtube commenter @user-pi6cs3ue4s August 2024 https://www.youtube.com/watch?v=alf4X3mJsHQ
 
-6. ADD LINK CABLE FOR MULTIPLAYER
+7. ADD LINK CABLE FOR MULTIPLAYER
 https://www.buystuffarcades.com/products/ridge-racer-and-outrun-mod-kit
 
-7. REPLACE JOYSTICK BUTTONS
+8. REPLACE JOYSTICK BUTTONS
 You can choose to replace the stock cheap Arcade1up buttons on the non XL models with better products. You will need to buy
 Sanwa style arcade buttons
 1. Follow this to replace buttons - https://www.youtube.com/watch?v=09DQCOr6zQM
 
-8. ADD BIGGER SCREEN
+9. ADD BIGGER SCREEN
 To add a different size monitor or TV to an existing Arcade1up cabinet such as increasing the screen size for shooter games
 you need the below;
 1 x Geekworm HDMI to LDVS 20 (a.k.a 2.0) adapter - https://geekworm.com/products/lvds-to-hdmi-adapter-board-converter-with-lvds-cable
@@ -321,7 +321,7 @@ Optionally, Seperate the board from the LCD with cardboard and double sided tape
 b. add HDMI cable to LDVS and TV and turn on game and test. If flickering/drop outs occour then test with Channel 2 position
 d. Once desired position is kept add the Wood/VEGA frame to Arcade cabinet and TV and connect all back together and test
 
-9. COMPLETE BUILD GUIDE - RASPBERRY PI + SPEAKERS + BUTTONS
+10. COMPLETE BUILD GUIDE - RASPBERRY PI + SPEAKERS + BUTTONS
 https://www.youtube.com/watch?v=09DQCOr6zQM
 
 
