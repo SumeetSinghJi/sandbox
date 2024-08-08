@@ -52,7 +52,8 @@ https://en.wikipedia.org/wiki/List_of_light-gun_games
 I have not yet investigated if the lightgun can be used as a controller to play non light gun fps/over the head shoulder style games e.g, 
 Silent Hill/Resident Evil 2. __________________________________FILL ME_____________________________
 
-Note that Raspberry Pi's are too slow to emulate perfect light gun latency games as reported by many Reddit users. Keep this in mind.
+Note that Raspberry Pi's are too slow to emulate light gun latency therefore a higher performance PC is recommended e.g, buy a 
+< $250 Intel NUC from Amazon instead
 
 1. There are 2 types of light guns on the market, the calibration required but perfect Gun4IR, and the less responsive simple Sinden light guns 
 https://www.sindenshop.com/, the best option is Gun4IR for even faster then CRT TV latency.
@@ -83,7 +84,7 @@ Flatscreen cabinet final design example:
 3. Buy arcade harness cables -
 4. Buy real coin door -
 5. (OPTIONAL) If using a modern PC/Raspberry Pi for emulation you will
-need to buy a "HDMI to RCA Converter" to plug it into the CRT TV.
+need to buy a "HDMI to RCA Converter" or "HDMI to Scart" to plug it into the CRT TV.
 5. Get wood cut and ordered using the schematics here 
 CRT: https://retromash.com/2015/01/02/building-a-home-arcade-machine-part-1/
 Flatscreen: 
