@@ -20,6 +20,10 @@ Date: July 2024
 
 ## CHOOSING A COMPILER
 
+C++ compilers are backwards compatible with C code. Which means you can write a C or C++ program and
+compile it using most compilers like g++ or clang. The exception is MSVC which is the Visual Studio compiler
+which isn't compatible with the oldest C standards such as > C98
+
 Linux
 
 GNU g++ is installed by default. Don't change.
@@ -70,44 +74,38 @@ If you're just targetting Windows only ever, then stick with Visual Studio as it
 
 ## WINDOWS - INSTALLING WITH MSYS2
 
-MSYS2 setup
+1. Install MSYS2 from here https://www.msys2.org/ into default C:/msys64 location
+2. Run c:/msys64/mingw64 and paste and run the code below
+Note: yasm is for building software and often used in conjunction with make
+The toolchain is the actual C/C++ compiler
+```bash
+pacman -Syu --noconfirm &&
+pacman -S --noconfirm mingw-w64-x86_64-toolchain \
+mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_mixer \
+mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-libzip mingw-w64-x86_64-zlib \
+mingw-w64-x86_64-boost mingw-w64-x86_64-curl-winssl mingw-w64-x86_64-yasm \
+mingw-w64-x86_64-gtest make git
+```
+3. Test the g++ compiler is installed by running the code below and observing a "Hello world" output
+```bash
+echo "#include <stdio.h>" > test.c
+echo 'int main() { printf("Hello, World!\\n"); return 0; }' >> test.c
+gcc -o test test.c
+./test
 
-    - name: Set up MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        update: true
-
-    - name: Install dependencies
-      shell: msys2 {0}
-      run: |
-        pacman -Syu --noconfirm &&
-          pacman -S --noconfirm mingw-w64-x86_64-toolchain \
-          mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_mixer \
-          mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-libzip mingw-w64-x86_64-zlib \
-          mingw-w64-x86_64-boost mingw-w64-x86_64-curl-winssl mingw-w64-x86_64-yasm \
-          mingw-w64-x86_64-gtest make git
-
-    - name: Check C compiler
-      shell: msys2 {0}
-      run: |
-        echo "#include <stdio.h>" > test.c
-        echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
-        gcc -o test test.c
-        ./test
-
-    - name: Print MSYS2 variables
-      shell: msys2 {0}
-      run: |
-        # For troubleshooting e.g. Running these commands locally to match the remote
-        echo "PATH: $PATH"
-        echo "MSYSTEM: $MSYSTEM"
-        echo "MINGW_PACKAGE_PREFIX: $MINGW_PACKAGE_PREFIX"
-        gcc --version
-        g++ --version
-        where gcc
-
-        ADD LINKING steps!!!!!!!!!!!!!!!!!!!!!!!!
+# example output should be below
+$ Hello World!
+```
+4. Check or add the environmental variable for the g++ compiler
+```bash
+C:\msys64\mingw64\bin
+```
+5. From a Terminal window (not the Mingw64 shell) observe if compiler is available
+```bash
+PS C:\Users\Sumeet\Documents\sandbox> g++
+g++.exe: fatal error: no input files # expected output
+compilation terminated. # expected output
+```
 
 ## WINDOWS - INSTALLING WITH CLANG
 
@@ -122,8 +120,10 @@ to easily compile code
 
 # WHAT TO CHOOSE C OR C++
 
-C uses structs with no private member variables, and no inline methods
+COMMON DIFFERENCES
 
+CLASSES
+C uses structs with no private member variables, and no inline methods
 C++ uses classes, as well as being backwards compatible with C code such as structs
 
 # HEADERS AND MODULES

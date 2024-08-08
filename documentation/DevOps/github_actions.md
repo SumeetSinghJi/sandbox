@@ -8,13 +8,15 @@ ___________________________________________________________________________
 
 ___________________________________________________________________________
 
-                    C++ COMPILE, TEST, AND RELEASE
+                    C++ MULTIPLATFORM COMPILE, TEST, AND RELEASE
 ___________________________________________________________________________
 
 
 name: test and release software
 
 ```yml
+name: test and release software
+
 on:
   push:
     branches:
@@ -85,7 +87,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: C:/ffmpeg
-        key: ${{ runner.os }}-ffmpeg-${{ hashFiles('ffmpeg/.git/HEAD') }}
+        key: ${{ runner.os }}-ffmpeg-cache-key-v1
         restore-keys: |
           ${{ runner.os }}-ffmpeg-
 
@@ -114,32 +116,82 @@ jobs:
         Copy-Item -Path D:/a/_temp/msys64/mingw64/bin/swresample-5.dll ${{ github.workspace }}/ -Force
 
     - name: Compile test binary
+      shell: bash
       run: |
-        g++ -fdiagnostics-color=always -I${{ github.workspace }}/headers -ID:/a/_temp/msys64/mingw64/include  `
-          -g ${{ github.workspace }}/tests/testcases.cpp ${{ github.workspace }}/src/*.cpp `
-          ${{ github.workspace }}/src/buttons/*.cpp ${{ github.workspace }}/src/entities/*.cpp `
-          -o ${{ github.workspace }}/tests/testcases.exe -LD:/a/_temp/msys64/mingw64/lib `
-          -lboost_system-mt -lws2_32 -lmingw32 -lSDL2main -lSDL2 `
-          -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lgtest -lgtest_main -lcurl -lzip -lz `
-          -lavformat -lavcodec -lavutil -lswscale -lavfilter -mwindows
+        g++ \
+        -fdiagnostics-color=always \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -ID:/a/_temp/msys64/mingw64/include \
+        -g \
+        "${{ github.workspace }}/tests/testcases.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/tests/testcases.exe" \
+        -LD:/a/_temp/msys64/mingw64/lib \
+        -lboost_system-mt \
+        -lws2_32 \
+        -lmingw32 \
+        -lSDL2main \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lgtest \
+        -lgtest_main \
+        -lcurl \
+        -lzip \
+        -lz \
+        -lavformat \
+        -lavcodec \
+        -lavutil \
+        -lswscale \
+        -lavfilter \
 
     - name: Test test binary
       run: |
         cd tests
         mv testcases.exe ..
         cd ..
-        ./testcases.exe
+        ./testcases
 
     - name: Compile final binary
       run: |
-        g++ -fdiagnostics-color=always `
-          -g ${{ github.workspace }}/main.cpp ${{ github.workspace }}/src/*.cpp `
-          ${{ github.workspace }}/src/buttons/*.cpp ${{ github.workspace }}/src/entities/*.cpp `
-          -o ${{ github.workspace }}/main.exe `
-          -I${{ github.workspace }}/headers -ID:/a/_temp/msys64/mingw64/include -LD:/a/_temp/msys64/mingw64/lib `
-          -lboost_system-mt -lws2_32 -lmingw32 -lSDL2main -lSDL2 `
-          -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lgtest -lgtest_main -lcurl -lzip -lz `
-          -lavformat -lavcodec -lavutil -lswscale -lavfilter -mwindows
+        g++ \
+        -fdiagnostics-color=always \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -ID:/a/_temp/msys64/mingw64/include \
+        -g \
+        "${{ github.workspace }}/main.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/main.exe" \
+        -LD:/a/_temp/msys64/mingw64/lib \
+        -lboost_system-mt \
+        -lws2_32 \
+        -lmingw32 \
+        -lSDL2main \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lgtest \
+        -lgtest_main \
+        -lcurl \
+        -lzip \
+        -lz \
+        -lavformat \
+        -lavcodec \
+        -lavutil \
+        -lswscale \
+        -lavfilter \
       if: success()
 
     - name: Package artifacts
@@ -189,15 +241,35 @@ jobs:
 
     - name: Compile test binary 
       run: |
-        clang++ -fcolor-diagnostics -fansi-escape-codes -std=c++17 -stdlib=libc++ \
-          -I/opt/homebrew/include \
-          -I${{ github.workspace }}/headers -g ${{ github.workspace }}/tests/testcases.cpp \
-          ${{ github.workspace }}/src/*.cpp ${{ github.workspace }}/src/buttons/*.cpp \
-          ${{ github.workspace }}/src/entities/*.cpp \
-          -o ${{ github.workspace }}/tests/testcases \
-          -L/opt/homebrew/lib \
-          -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lavformat -lavcodec \
-          -lavutil -lswscale -lgtest -lcurl -lzip
+        clang++ \
+        -fcolor-diagnostics \
+        -fansi-escape-codes \
+        -std=c++17 \
+        -stdlib=libc++ \
+        -I/opt/homebrew/include \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -g \
+        "${{ github.workspace }}/tests/testcases.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/tests/testcases" \
+        -L/opt/homebrew/lib \
+        -lboost_system \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lavformat \
+        -lavcodec \
+        -lavutil \
+        -lswscale \
+        -lgtest \
+        -lcurl \
+        -lzip \
 
     - name: Test test binary 
       run: |
@@ -208,16 +280,35 @@ jobs:
 
     - name: Compile final binary
       run: |
-        cd ..
-        clang++ -fcolor-diagnostics -fansi-escape-codes -std=c++17 -stdlib=libc++ \
-          -I/opt/homebrew/include \
-          -I${{ github.workspace }}/headers -g ${{ github.workspace }}/main.cpp \
-          ${{ github.workspace }}/src/*.cpp ${{ github.workspace }}/src/buttons/*.cpp \
-          ${{ github.workspace }}/src/entities/*.cpp \
-          -o ${{ github.workspace }}/main \
-          -L/opt/homebrew/lib \
-          -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lavformat -lavcodec \
-          -lavutil -lswscale -lgtest -lcurl -lzip
+        clang++ \
+        -fcolor-diagnostics \
+        -fansi-escape-codes \
+        -std=c++17 \
+        -stdlib=libc++ \
+        -I/opt/homebrew/include \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -g \
+        "${{ github.workspace }}/main.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/main" \
+        -L/opt/homebrew/lib \
+        -lboost_system \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lavformat \
+        -lavcodec \
+        -lavutil \
+        -lswscale \
+        -lgtest \
+        -lcurl \
+        -lzip \
       if: success()
 
     - name: Package artifacts
@@ -290,13 +381,35 @@ jobs:
 
     - name: Compile test binary
       run: |
-        g++ -g ${{ github.workspace }}/tests/testcases.cpp ${{ github.workspace }}/src/*.cpp \
-          ${{ github.workspace }}/src/buttons/*.cpp ${{ github.workspace }}/src/entities/*.cpp \
-          -o ${{ github.workspace }}/tests/testcases -std=c++17 \
-          -I${{ github.workspace }}/headers -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include \
-          -L/usr/lib -L/usr/lib \
-          -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lgtest -lcurl -lzip \
-          -lavutil -lswscale -lavformat -lavcodec -lswresample
+        g++ \
+        -std=c++17 \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -I/usr/include \
+        -I/usr/include/x86_64-linux-gnu \
+        -g \
+        "${{ github.workspace }}/tests/testcases.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/tests/testcases" \
+        -I/usr/include \
+        -L/usr/lib \
+        -lboost_system \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lgtest \
+        -lcurl \
+        -lzip \
+        -lavutil \
+        -lswscale \
+        -lavformat \
+        -lavcodec \
+        -lswresample \
 
     - name: Check if running on headless display
       id: check_headless
@@ -321,14 +434,35 @@ jobs:
 
     - name: Compile final binary
       run: |
-        cd ..
-        g++ -g ${{ github.workspace }}/main.cpp ${{ github.workspace }}/src/*.cpp \
-          ${{ github.workspace }}/src/buttons/*.cpp ${{ github.workspace }}/src/entities/*.cpp \
-          -o ${{ github.workspace }}/main -std=c++17 \
-          -I${{ github.workspace }}/headers -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include \
-          -L/usr/lib -L/usr/lib \
-          -lboost_system -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lgtest -lcurl -lzip \
-          -lavutil -lswscale -lavformat -lavcodec -lswresample
+        g++ \
+        -std=c++17 \
+        -I"${{ github.workspace }}/headers" \
+        -I"${{ github.workspace }}/headers/buttons" \
+        -I"${{ github.workspace }}/headers/entities" \
+        -I/usr/include \
+        -I/usr/include/x86_64-linux-gnu \
+        -g \
+        "${{ github.workspace }}/main.cpp" \
+        "${{ github.workspace }}/src/"*.cpp \
+        "${{ github.workspace }}/src/buttons/"*.cpp \
+        "${{ github.workspace }}/src/entities/"*.cpp \
+        -o \
+        "${{ github.workspace }}/main" \
+        -I/usr/include \
+        -L/usr/lib \
+        -lboost_system \
+        -lSDL2 \
+        -lSDL2_image \
+        -lSDL2_ttf \
+        -lSDL2_mixer \
+        -lgtest \
+        -lcurl \
+        -lzip \
+        -lavutil \
+        -lswscale \
+        -lavformat \
+        -lavcodec \
+        -lswresample \
       if: success()
 
     - name: Package artifacts
