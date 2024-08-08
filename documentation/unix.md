@@ -261,7 +261,8 @@ sumeetsingh@Sumeets-Air-2 sandbox % awk '/asset/ { print }' CREDITS.txt # <-- LO
 
 SEARCH - PACKAGE MANAGER
 ```bash
-pacman -Ss xxxxx
+pacman -Ss xxxxx # to search with name e.g. all python packages
+pacman -Q # or list all
 sudo apt search xxxx
 sudo apt list --installed xxxxx
 ```

@@ -74,7 +74,25 @@ If you're just targetting Windows only ever, then stick with Visual Studio as it
 
 ## WINDOWS - INSTALLING WITH MSYS2
 
-1. Install MSYS2 from here https://www.msys2.org/ into default C:/msys64 location
+MSYS2 basically installs a small linux OS into c:/msys64 and the subfolders are linux style
+e.g. /usr /home /bin etc., so it's like having linux installed inside your computer that's accessed
+through the shells. You will notice many shells in the folder. The 2 most important
+are ucrt64 and mingw64. These are what you start. When you start it it's a linux environment and you
+can run linux commands. This is integrated with the host computer also so you can mv to c:/ and it's 
+as if the host filesystem is mounted into the linux OS. Why this is important is because g++ the main
+GNU community created compiler is built on Linux. 
+
+So to use in Windows we need to install "linux" to
+then install "g++" which installs it under c:/msys64/mingw64/bin or ucrt64/bin and then you add to 
+the hosts environmental variable which allows your terminal sessions and IDE software e.g. Visual Studio Code
+to now be able to target the g++ compiler to create executables. The benefit of using g++ on windows is that it's
+preinstalled on Linux distros, so you can use the same commands to import libs/target both OS easily.
+
+1. Install MSYS2 by running below
+During below installation remember to hit enter (or install from website release https://www.msys2.org/)
+```bash
+winget install MSYS2.MSYS2
+```
 2. Run c:/msys64/mingw64 and paste and run the code below
 Note: yasm is for building software and often used in conjunction with make
 The toolchain is the actual C/C++ compiler
@@ -96,15 +114,18 @@ gcc -o test test.c
 # example output should be below
 $ Hello World!
 ```
-4. Check or add the environmental variable for the g++ compiler
-```bash
-C:\msys64\mingw64\bin
+4. Check or add the environmental variable for the g++ compiler location here C:\msys64\mingw64\bin
+```powershell
+[System.Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\msys64\mingw64\bin", [System.EnvironmentVariableTarget]::Machine)
+
 ```
 5. From a Terminal window (not the Mingw64 shell) observe if compiler is available
 ```bash
-PS C:\Users\Sumeet\Documents\sandbox> g++
-g++.exe: fatal error: no input files # expected output
-compilation terminated. # expected output
+PS C:\Users\Sumeet\Documents\sandbox> g++ --version
+g++.exe (Rev1, Built by MSYS2 project) 14.2.0
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
 ## WINDOWS - INSTALLING WITH CLANG
@@ -939,3 +960,6 @@ https://www.youtube.com/watch?v=gYRrGTC7GtA&list=PLrUnpWNDH4jgZWRjqRdMr_3Mi_aPpT
 ```c++
 ```
 
+# FFMPEG
+
+see DevOps/ffmpeg.MD or it should be somewhere in this Document library folder
