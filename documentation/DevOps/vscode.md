@@ -1,18 +1,34 @@
-___________________________________________________________________________
 
-                      COMPILING C++ CODE IN VSCODE
-___________________________________________________________________________
+# PROGRAMMING WITH VSCODE
 
-The below steps advise how you can build and compile C++ code with your
-project.
+By: Sumeet Singh @ sumeet-singh.com
 
-For Github CI/CD you may want read ```github_actions_commands.md``` on
-how to create an actions.yml file for pushing
+Date: July 2024
 
-___________________________________________________________________________
+# TABLE OF CONTENTS
+- [1. Terminologies](#terminologies)
+- [2. Requirements](#requirements)
+- [3. Installing](#installing)
+- [4. Profile script](#profile-script)
+- [5. Common Commands](#common-commands)
+- [6. Importing scripts](#importing-scripts)
 
-                    TASKS.JSON FILE FOR C++ ALL OS
-___________________________________________________________________________
+# TERMINOLOGIES
+
+tasks.json: A file used to define the CLI arguments that when you run will be used in CLI to run/compile/build your program. E.g, ```g++ test -c test.cpp```
+c_pp_properties: _________________________________
+
+# REQUIREMENTS
+
+# INSTALLING
+
+# PROFILE SCRIPT
+
+# COMMON COMMANDS
+
+# IMPORTING SCRIPTS
+
+# C++ TASKS.JSON EXAMPLE
 
 The code below is for a /.vscode/tasks.json file for all OS for a C++ project
 
@@ -227,10 +243,7 @@ The code below is for a /.vscode/tasks.json file for all OS for a C++ project
 }
 ```
 
-___________________________________________________________________________
-
-                      C_CPP_PROPERTIES.JSON FILE
-___________________________________________________________________________
+# C+_ C_CPP_PROPERTIES.JSON EXAMPLE
 
 The code below is for a /.vscode/c_cpp_properties.json file for all OS for a C++ project
 

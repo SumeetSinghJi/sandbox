@@ -6,109 +6,17 @@ By: Sumeet Singh @ sumeet-singh.com
 Date: July 2024
 
 # TABLE OF CONTENTS
-- [1. Requirements](#requirements)
-- [2. Installing](#installing)
-- [3. Profile script](#profile-script)
-- [4. Common Commands](#common-commands)
-- [5. Scripts](#scripts)
-- [5. React](#react)
-- [5a. Limitations](#limitations)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
-- [5a. React](#react)
+- [1. Terminologies](#terminologies)
+- [2. Requirements](#requirements)
+- [3. Installing](#installing)
+- [4. Profile script](#profile-script)
+- [5. Common Commands](#common-commands)
+- [6. Scripts](#scripts)
+- [7. React](#react)
+- [8. Limitations](#limitations)
+- [9 React](#react)
 
-# REQUIREMENTS
-
-# INSTALLING
-
-1. Install node.js
-```bash
-Windows: winget install Node.js
-MacOS: brew install node
-Linux: apt install node
-```
-
-2a. (OPTIONAL) If cloning React website for first time
-if the /node_modules is missing the dependencies to run the app
-you will first need to cd into folder with file package.json then run the below
-to create the node_modules folder. Then skip to START WEBSITE step
-```bash
-npm install
-```
-
-2b. (OPTIONAL) - RESET/CLEAR NPM CACHE
-```bash
-npm cache clean --force
-```
-
-3a. INSTALL LIBS - CWD e.g, ```C:\Users\<YourUsername>\Documents\My-React-Website\node_modules```
-The recommended approach. You can just use a .gitignore to exclude these files from version control
-but keep them within this space so it's easier to port across different computers to work from
-without rebuilding your environment
-```bash
-npm install react-router-dom, create-react-app
-
-# e.g. for common libs
-
-npm install react-router-dom, create-react-app, express mysql2 bcryptjs jsonwebtoken body-parser cors axios
-
-```
-3b. INSTALL LIBS - GLOBALLY e.g. ```C:\Users\<YourUsername>\AppData\Roaming\npm\node_modules```
-```bash
-npm install -g react-router-dom, create-react-app
-```
-
-4. RUNNING LIB TO CREATE REACT WEBSITE TEMPLATE
-This will setup a template react website in current working directory. You can test with npm start within
-```bash
-create-react-app my-app
-```
-
-5. START WEBSITE FOR TESTING LOCALLY
-If any errors they will display in webpage, fix before building and try again
-```bash
-npm start
-```
-
-4. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
-for hosting e.g, uploading in Godaddy to host website
-```bash
-npm run build
-```
-
-# PROFILE SCRIPT
-
-# COMMON COMMANDS
-
-# SCRIPTS
-
-# REACT
-
-## LIMITATIONS
-
-File path names should be short! If something looks too long then it's time to shorten.
-
-## SPECIAL CHARACTERS - HTML ESCAPING - ENCODING
-
-TO render special characters in react use the escape character e.g. < = &lt;
-
-e.g. 
-Will throw error - <p> This is a less then and greater then symbol <> </p>
-Will successfully pass - <p> This is a less then and greater then symbol &lt;&gt; </p>
+# TERMINOLOGIES
 
 ## TERMINOLOGIES - REACT
 
@@ -386,6 +294,87 @@ person1['greet']()  # Output: Hello, my name is Alice and I am 30 years old.
 person2['greet']()  # Output: Hello, my name is Bob and I am 25 years old.
 
 ```
+
+
+# REQUIREMENTS
+
+# INSTALLING
+
+1. Install node.js
+```bash
+Windows: winget install Node.js
+MacOS: brew install node
+Linux: apt install node
+```
+
+2a. (OPTIONAL) If cloning React website for first time
+if the /node_modules is missing the dependencies to run the app
+you will first need to cd into folder with file package.json then run the below
+to create the node_modules folder. Then skip to START WEBSITE step
+```bash
+npm install
+```
+
+2b. (OPTIONAL) - RESET/CLEAR NPM CACHE
+```bash
+npm cache clean --force
+```
+
+3a. INSTALL LIBS - CWD e.g, ```C:\Users\<YourUsername>\Documents\My-React-Website\node_modules```
+The recommended approach. You can just use a .gitignore to exclude these files from version control
+but keep them within this space so it's easier to port across different computers to work from
+without rebuilding your environment
+```bash
+npm install react-router-dom, create-react-app
+
+# e.g. for common libs
+
+npm install react-router-dom, create-react-app, express mysql2 bcryptjs jsonwebtoken body-parser cors axios
+
+```
+3b. INSTALL LIBS - GLOBALLY e.g. ```C:\Users\<YourUsername>\AppData\Roaming\npm\node_modules```
+```bash
+npm install -g react-router-dom, create-react-app
+```
+
+4. RUNNING LIB TO CREATE REACT WEBSITE TEMPLATE
+This will setup a template react website in current working directory. You can test with npm start within
+```bash
+create-react-app my-app
+```
+
+5. START WEBSITE FOR TESTING LOCALLY
+If any errors they will display in webpage, fix before building and try again
+```bash
+npm start
+```
+
+4. CONVERT REACT WEBSITE TO STATIC PAGES IN ./Build
+for hosting e.g, uploading in Godaddy to host website
+```bash
+npm run build
+```
+
+# PROFILE SCRIPT
+
+# COMMON COMMANDS
+
+# SCRIPTS
+
+# REACT
+
+## LIMITATIONS
+
+File path names should be short! If something looks too long then it's time to shorten.
+
+## SPECIAL CHARACTERS - HTML ESCAPING - ENCODING
+
+TO render special characters in react use the escape character e.g. < = &lt;
+
+e.g. 
+Will throw error - <p> This is a less then and greater then symbol <> </p>
+Will successfully pass - <p> This is a less then and greater then symbol &lt;&gt; </p>
+
 
 ## FULL STACK JAVASCRIPT - MERN (MongoDB, Express, React, Node) 
 

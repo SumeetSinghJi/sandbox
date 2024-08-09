@@ -6,12 +6,15 @@ By: Sumeet Singh @ sumeet-singh.com
 Date: July 2024
 
 # TABLE OF CONTENTS
-- [1. Requirements](#requirements)
-- [2. Installing](#installing)
-- [3. Profile script](#profile-script)
-- [4. Common Commands](#common-commands)
-- [5. Scripts](#scripts)
-- [5. Jekyll](#jekyll)
+- [1. Terminologies](#terminologies)
+- [2. Requirements](#requirements)
+- [3. Installing](#installing)
+- [4. Profile script](#profile-script)
+- [5. Common Commands](#common-commands)
+- [6. Scripts](#scripts)
+- [7. Jekyll](#jekyll)
+
+# TERMINOLOGIES
 
 # REQUIREMENTS
 

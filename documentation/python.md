@@ -6,15 +6,18 @@ By: Sumeet Singh @ sumeet-singh.com
 Date: July 2024
 
 # TABLE OF CONTENTS
-- [1. Requirements](#requirements)
-- [2. Installing](#installing)
-- [3. Profile script](#profile-script)
-- [4. Common Commands](#common-commands)
-- [5. Importing scripts](#importing-scripts)
-- [6. Drawing Images with Matplotlib](#drawing-images-with-matplotlib)
-- [7. What is AI](#what-is-ai)
-- [7a. Training a Neural Network](#training-a-neural-network)
-- [7b. Creating a AI personal assistant](#creating-a-ai-personal-assistant)
+- [1. Terminologies](#terminologies)
+- [2. Requirements](#requirements)
+- [3. Installing](#installing)
+- [4. Profile script](#profile-script)
+- [5. Common Commands](#common-commands)
+- [6. Importing scripts](#importing-scripts)
+- [7. Drawing Images with Matplotlib](#drawing-images-with-matplotlib)
+- [8. What is AI](#what-is-ai)
+- [9. Training a Neural Network](#training-a-neural-network)
+- [10. Creating a AI personal assistant](#creating-a-ai-personal-assistant)
+
+# TERMINOLOGIES
 
 # REQUIREMENTS
 Python is lightweight and can be installed on many devices, some even have them already installed

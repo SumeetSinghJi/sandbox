@@ -1,20 +1,49 @@
 
-# PROGRAMMING WITH C++
+# PROGRAMMING WITH GITHUB
 
 By: Sumeet Singh @ sumeet-singh.com
 
 Date: July 2024
 
 # TABLE OF CONTENTS
-- [1. Requirements](#requirements)
-- [2. Installing](#installing)
-- [3. Profile script](#profile-script)
-- [4. Common Commands](#common-commands)
-- [5. Secrets and keys](#secrets-and-keys)
-- [6. Caches and Artifacts](#caches-and-artifacts)
-- [7. C++ example workflow](#c++-example-workflow)
-- [8. React example workflow](#react-example-workflow)
-- [9. Python example workflow](#python-example-workflow)
+- [1. Terminologies](#terminologies)
+- [2. Requirements](#requirements)
+- [3. Installing](#installing)
+- [4. Profile script](#profile-script)
+- [5. Common Commands](#common-commands)
+- [6. Secrets and keys](#secrets-and-keys)
+- [7. Caches and Artifacts](#caches-and-artifacts)
+- [8. C++ example workflow](#c++-example-workflow)
+- [9. React example workflow](#react-example-workflow)
+- [10. Python example workflow](#python-example-workflow)
+
+# TERMINOLOGIES
+
+Runners: are the VM/Docker platforms that the environment is defined in the yml playbook is run on.
+E.g, if you want to test and deploy python code the .yml file will outline steps to install packages on an Ubuntu VM/Docker for subsequent CI/CD
+testing before deployment
+
+# REQUIREMENTS
+
+Github actions is an CI/CD pipeline to push code to GitHub and trigger any additional commands e.g, to compile, test, push on success, etc.,
+
+To use Github actions in your GitHub project all you need to do is create this file and filepath in the top level of your project
+./github/workflows/actions.yml
+
+Then you just define rules as discussed later on within this guide and you have full CI/CD pipeline
+
+# INSTALLATION
+
+Only applicable to GitHub repo's (see REQUIREMENTS) however the skills you learn to create playbooks/yaml files are transferable
+to other CI/CD pipeline technologies e.g, Ansible
+
+# PROFILE SCRIPT
+
+N/a
+
+# COMMON COMMANDS
+
+N/a - skip to the invidual examples below
 
 # SECRETS AND KEYS 
 
@@ -25,7 +54,44 @@ and add it to the code so that it's not exposed.
 To add keys you must go to the Repo page - settings - secrets - then choose either for repository or environment
 then add the keys name in name field, and the ID value in ID field and save.
 
-Then within a GitHub actions yaml file include the hidden variable ```${secrets.key}```
+Then within a GitHub actions yaml file include the hidden variables e.g, ```${secrets.KEYNAME}```
+
+EXAMPLE 
+Website www.agnisamooh.com has a S3 bucket to upload the react website live to.
+1. Within AWS a secret Key pair are created as below
+[vscode-aws-toolkit]
+aws_access_key_id = alksjdalksjdalksjd
+aws_secret_access_key = asjdlkasjdlksajdlkajsdsdjsalk
+2. Then in the GitHub secrets and variables page they are added: the GitHub repo https://github.com/SumeetSinghJi/agnisamooh.com/settings/secrets/actions
+3. Then in the project folder a new path is created under ./github/workflows/actions.yml
+4. The below code is added to it. Now when the code is pushed to GitHub the github actions workflow will trigger which builds
+the react project, then also pushes it to aws S3 using the secret key pair.
+This way the keys are not exposed to public
+
+```yml
+name: actions
+run-name: ${{ github.actor }} Deploy to S3 bucket
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Sync to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: sumeet-singh.com
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          SOURCE_DIR: './build'
+```
 
 # CACHES AND ARTIFACTS
 
