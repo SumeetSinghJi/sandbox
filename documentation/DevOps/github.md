@@ -35,7 +35,7 @@ See INSTALATION
 Github actions is an CI/CD pipeline to push code to GitHub and trigger any additional commands e.g, to compile, test, push on success, etc.,
 
 To use Github actions in your GitHub project all you need to do is create this file and filepath in the top level of your project
-./github/workflows/actions.yml
+./.github/workflows/actions.yml
 
 Then you just define rules as discussed later on within this guide and you have full CI/CD pipeline. GitHub playbooks comes with predefined
 code for doing basic instructions such as using a specific VM or setting up a timelimit before a VM stops running and the workflow cancels
@@ -82,7 +82,34 @@ N/a
 
 # COMMON COMMANDS
 
-N/a - skip to the invidual examples below
+CLEARING DATA
+```yml
+  - name: Clear FFmpeg directory
+    run: rm -rf ${HOME}/ffmpeg/*
+```
+
+CONTINUE ON FAILURE + NEXT STEP DEPENDS ON PREVIOUS RESULT
+```yml
+      - name: Extract FFmpeg build if artifact was downloaded
+        id: extract-artifact
+        continue-on-error: true # will continue job even on exit 1
+        run: |
+          if [ -f "linux-ffmpeg-build.tar.gz" ]; then
+            tar -xzvf linux-ffmpeg-build.tar.gz -C /home/runner
+          else
+            echo "Artifact not found, skipping extraction"
+            exit 1
+          fi
+
+      - name: Build FFmpeg
+        if: steps.extract-artifact.outcome == 'failure'
+        run: |
+          cd ${HOME}/ffmpeg
+          git clone https://git.ffmpeg.org/ffmpeg.git .
+          ./configure --prefix=${HOME}/ffmpeg/install --enable-shared --enable-gpl --disable-programs
+          make -j$(nproc)
+          sudo make install
+```
 
 # SECRETS AND KEYS 
 
@@ -101,8 +128,8 @@ Website www.agnisamooh.com has a S3 bucket to upload the react website live to.
 [vscode-aws-toolkit]
 aws_access_key_id = alksjdalksjdalksjd
 aws_secret_access_key = asjdlkasjdlksajdlkajsdsdjsalk
-2. Then in the GitHub secrets and variables page they are added: the GitHub repo https://github.com/SumeetSinghJi/agnisamooh.com/settings/secrets/actions
-3. Then in the project folder a new path is created under ./github/workflows/actions.yml
+2. Then in the GitHub secrets and variables page they are added: the GitHub repo https://.github.com/SumeetSinghJi/agnisamooh.com/settings/secrets/actions
+3. Then in the project folder a new path is created under ./.github/workflows/actions.yml
 4. The below code is added to it. Now when the code is pushed to GitHub the github actions workflow will trigger which builds
 the react project, then also pushes it to aws S3 using the secret key pair. This way the keys are not exposed to public
 ```yml
@@ -249,21 +276,27 @@ Linux: ${HOME} use /home/runner/
                   -H "Accept: application/vnd.github.v3+json" \
                   https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/artifacts/$ARTIFACT_ID/zip \
                   --output linux-ffmpeg-build.zip
-              unzip linux-ffmpeg-build.zip -d /home/runner/ffmpeg
+              unzip linux-ffmpeg-build.zip -d /home/runner/
               exit 0
             fi
           done
 
           echo "No artifact found in recent runs"
-          exit 1
 
       - name: Extract FFmpeg build if artifact was downloaded
-        if: steps.download-artifact.outcome == 'success'
+        id: extract-artifact
+        continue-on-error: true
         run: |
-          tar -xzvf linux-ffmpeg-build.tar.gz -C /home/runner
+          FILE_PATH="/home/runner/linux-ffmpeg-build.tar.gz"
+          if [ -f "$FILE_PATH" ]; then
+            tar -xzvf "$FILE_PATH" -C /home/runner
+          else
+            echo "Artifact not found, skipping extraction"
+            exit 1
+          fi
 
       - name: Build FFmpeg
-        if: failure() || !steps.download-artifact.outputs['success']
+        if: steps.extract-artifact.outcome == 'failure'
         run: |
           cd ${HOME}/ffmpeg
           git clone https://git.ffmpeg.org/ffmpeg.git .
@@ -272,12 +305,13 @@ Linux: ${HOME} use /home/runner/
           sudo make install
 
       - name: Create archive of FFmpeg build
-        if: failure() || !steps.download-artifact.outputs['success']
+        if: steps.extract-artifact.outcome == 'failure'
         run: |
+          # archive the /ffmpeg folder in /home/runner/ to /home/runner/linux-ffmpeg-build.tar.gz
           tar -czvf /home/runner/linux-ffmpeg-build.tar.gz -C /home/runner ffmpeg
 
       - name: Upload FFmpeg build as artifact
-        if: steps.download-artifact.outcome == 'failure'
+        if: steps.extract-artifact.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: linux-ffmpeg-build
