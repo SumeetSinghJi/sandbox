@@ -173,6 +173,8 @@ Viewed by clicking on a job and seeing the logs on right side of gui.
 Either method ONLY works with absolute file paths so instead of
 Linux: ${HOME} use /home/runner/
 
+Be aware that uploading artifacts can upload a zip into itself as a nested zip, therefore when extracting will require extraction twice e.g, ./test.zip/test.zip
+
 ## ARTIFACT AWS EXAMPLE
 ```yaml
   build_and_test_linux:
@@ -235,6 +237,164 @@ Linux: ${HOME} use /home/runner/
 
 ## ARTIFACT GITHUB API EXAMPLE
 ```yml
+name: test and release software
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test_windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+
+    - name: Install dependencies
+      shell: msys2 {0}
+      run: |
+        pacman -Syu --noconfirm &&
+          pacman -S --noconfirm mingw-w64-x86_64-toolchain \
+          mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_mixer \
+          mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-libzip mingw-w64-x86_64-zlib \
+          mingw-w64-x86_64-boost mingw-w64-x86_64-curl-winssl mingw-w64-x86_64-yasm \
+          mingw-w64-x86_64-gtest make git
+
+    - name: Check C compiler
+      shell: msys2 {0}
+      run: |
+        echo "#include <stdio.h>" > test.c
+        echo 'int main() { printf("Hello, world!\\n"); return 0; }' >> test.c
+        gcc -o test test.c
+        ./test
+
+    - name: Print MSYS2 variables
+      shell: msys2 {0}
+      run: |
+        # For troubleshooting e.g. Running these commands locally to match the remote
+        echo "PATH: $PATH"
+        echo "MSYSTEM: $MSYSTEM"
+        echo "MINGW_PACKAGE_PREFIX: $MINGW_PACKAGE_PREFIX"
+        gcc --version
+        g++ --version
+        where gcc
+
+    - name: Copy dependencies DLLs
+      shell: msys2 {0}
+      run: |
+        cp /mingw64/bin/libboost_system-mt.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/SDL2.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/SDL2_image.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/SDL2_mixer.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/SDL2_ttf.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/libcurl-4.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/libzip.dll "D:/a/BubbleUp/BubbleUp/"
+        cp /mingw64/bin/zlib1.dll "D:/a/BubbleUp/BubbleUp/"
+        # google test has no dll header only, and -link lib during compile
+
+    - name: Ensure FFmpeg directory exists
+      run: mkdir -p C:/ffmpeg
+
+    - name: Download Artifact from Previous Run
+      id: download-artifact
+      run: |
+        $token = '${{ secrets.GITHUB_TOKEN }}'
+        $headers = @{
+          "Authorization" = "token $token"
+          "Accept" = "application/vnd.github.v3+json"
+        }
+
+        # Download the list of runs
+        Invoke-RestMethod -Uri "https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/runs" -Headers $headers | ConvertTo-Json | Set-Content -Path runs.json
+
+        # Iterate through runs to find one with artifacts
+        $runs = Get-Content -Path runs.json | ConvertFrom-Json
+        foreach ($run in $runs.workflow_runs) {
+          if ($run.status -eq "completed") {
+            $runId = $run.id
+            Write-Output "Checking run ID: $runId"
+
+            # Get artifacts for the specific run
+            Invoke-RestMethod -Uri "https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/runs/$runId/artifacts" -Headers $headers | ConvertTo-Json | Set-Content -Path artifacts.json
+
+            $artifacts = Get-Content -Path artifacts.json | ConvertFrom-Json
+            foreach ($artifact in $artifacts.artifacts) {
+              if ($artifact.name -eq "windows-ffmpeg-build") {
+                $artifactId = $artifact.id
+                Write-Output "Artifact found in run ID: $runId"
+
+                # Download the artifact
+                $artifactUrl = "https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/artifacts/$artifactId/zip"
+                $outputPath = "C:\windows-ffmpeg-build.zip"
+                Write-Output "Downloading artifact from $artifactUrl to $outputPath"
+                Invoke-RestMethod -Uri $artifactUrl -Headers $headers -OutFile $outputPath
+
+                # Verify if the file was downloaded
+                if (Test-Path $outputPath) {
+                  Write-Output "Artifact downloaded successfully to $outputPath"
+                } else {
+                  Write-Output "Failed to download artifact. File not found at $outputPath."
+                }
+                exit 0
+              }
+            }
+          }
+        }
+
+        Write-Output "No artifact found in recent runs"
+
+    - name: Extract FFmpeg build if artifact was downloaded
+      id: extract-artifact
+      continue-on-error: true
+      run: |
+        if (Test-Path "C:\windows-ffmpeg-build.zip") {
+          Write-Output "Extracting artifact zip twice as it's a nested zip"
+          Expand-Archive -Path "C:\windows-ffmpeg-build.zip" -DestinationPath 'C:\ffmpeg' -Force
+          Expand-Archive -Path "C:\ffmpeg\windows-ffmpeg-build.zip" -DestinationPath 'C:\ffmpeg' -Force
+          ls C:\ffmpeg
+        } else {
+          Write-Output "Artifact not found, skipping extraction"
+          exit 1
+        }
+
+    - name: Build FFmpeg
+      shell: msys2 {0}
+      if: steps.extract-artifact.outcome == 'failure'
+      run: |
+        cd C:/ffmpeg
+        git clone https://git.ffmpeg.org/ffmpeg.git .
+        ./configure --prefix=C:/ffmpeg --enable-shared --enable-gpl --disable-programs
+        make -j$(nproc)
+        make install
+
+    - name: Create archive of FFmpeg build
+      if: steps.extract-artifact.outcome == 'failure'
+      run: |
+        Compress-Archive -Path 'C:\ffmpeg\*' -DestinationPath 'C:\windows-ffmpeg-build.zip'
+      
+    - name: Upload FFmpeg build as artifact
+      if: steps.extract-artifact.outcome == 'failure'
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-ffmpeg-build
+        path: C:\windows-ffmpeg-build.zip
+        if-no-files-found: warn
+    
+    - name: Copy ffmpeg files to /mingw64
+      run: |
+        Copy-Item -Path C:/ffmpeg/bin/* -Destination "D:/a/_temp/msys64/mingw64/bin" -Recurse -Force
+        Copy-Item -Path C:/ffmpeg/include/* -Destination "D:/a/_temp/msys64/mingw64/include" -Recurse -Force
+        Copy-Item -Path C:/ffmpeg/lib/* -Destination "D:/a/_temp/msys64/mingw64/lib" -Recurse -Force
+
   build_and_test_linux:
     runs-on: ubuntu-latest
     timeout-minutes: 30
