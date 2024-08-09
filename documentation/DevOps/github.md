@@ -19,23 +19,62 @@ Date: July 2024
 
 # TERMINOLOGIES
 
+GitHub actions: Refer to the CI/CD pipeline for free offered by GitHub. A playbook file is placed in you're projects codebase
+and code is used to configure CI/CD such as compiling the code on a Windows VM then pushing that code to Cloud for production.
+
 Runners: are the VM/Docker platforms that the environment is defined in the yml playbook is run on.
 E.g, if you want to test and deploy python code the .yml file will outline steps to install packages on an Ubuntu VM/Docker for subsequent CI/CD
 testing before deployment
 
 # REQUIREMENTS
 
+See INSTALATION
+
+# INSTALLATION
+
 Github actions is an CI/CD pipeline to push code to GitHub and trigger any additional commands e.g, to compile, test, push on success, etc.,
 
 To use Github actions in your GitHub project all you need to do is create this file and filepath in the top level of your project
 ./github/workflows/actions.yml
 
-Then you just define rules as discussed later on within this guide and you have full CI/CD pipeline
+Then you just define rules as discussed later on within this guide and you have full CI/CD pipeline. GitHub playbooks comes with predefined
+code for doing basic instructions such as using a specific VM or setting up a timelimit before a VM stops running and the workflow cancels
+to prevent overrunning and consuming resources which could be expensive. GitHub only supports free code up to a certain usage in storage, performance
+and time.
 
-# INSTALLATION
+To extend the functionality of the playbook such as to adopt new technologies like pushing to a new Cloud provider, third party developers
+can create GitHub actions Marketplace workflows which are similar to mini GitHub repositories only for use in playbooks.
 
-Only applicable to GitHub repo's (see REQUIREMENTS) however the skills you learn to create playbooks/yaml files are transferable
-to other CI/CD pipeline technologies e.g, Ansible
+## MARKETPLACE
+
+The example playboko below has inbuilt code for naming the workflow job and using a specific runner, but the "uses" keyword
+define marketplace workflows such as below "jakejarvis/s3-sync-action@v0.5.1" is a created by a third party developer to extend the
+basic CI/CD functionality to allow pushing to S3. This way the playbook can be extended indefinitely and customised however you desire.
+
+```yml
+name: actions
+run-name: Deploy to S3 bucket
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Sync to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: sumeet-singh.com
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          SOURCE_DIR: './build'
+```
 
 # PROFILE SCRIPT
 
@@ -65,9 +104,7 @@ aws_secret_access_key = asjdlkasjdlksajdlkajsdsdjsalk
 2. Then in the GitHub secrets and variables page they are added: the GitHub repo https://github.com/SumeetSinghJi/agnisamooh.com/settings/secrets/actions
 3. Then in the project folder a new path is created under ./github/workflows/actions.yml
 4. The below code is added to it. Now when the code is pushed to GitHub the github actions workflow will trigger which builds
-the react project, then also pushes it to aws S3 using the secret key pair.
-This way the keys are not exposed to public
-
+the react project, then also pushes it to aws S3 using the secret key pair. This way the keys are not exposed to public
 ```yml
 name: actions
 run-name: ${{ github.actor }} Deploy to S3 bucket
@@ -244,7 +281,7 @@ Linux: ${HOME} use /home/runner/
         uses: actions/upload-artifact@v3
         with:
           name: linux-ffmpeg-build
-          path: /home/runner/ffmpeg
+          path: /home/runner/linux-ffmpeg-build.tar.gz
           if-no-files-found: warn
 
       - name: Copy FFmpeg files to /usr
