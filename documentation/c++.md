@@ -24,18 +24,14 @@ C++ compilers are backwards compatible with C code. Which means you can write a 
 compile it using most compilers like g++ or clang. The exception is MSVC which is the Visual Studio compiler
 which isn't compatible with the oldest C standards such as > C98
 
-Linux
+On Linux; GNU g++ is installed by default. Don't change.
 
-GNU g++ is installed by default. Don't change.
+On MacOS; clang++ is installed by default. Don't change.
 
-MacOS
-
-clang++ is installed by default. Don't change.
-
-Windows
-
-On Windows there are 3 ways to install C++ compiler so that you can get started writing
+On Windows; On Windows there are 3 ways to install C++ compiler so that you can get started writing
 C++ code in an IDE, and then compile it to create a binary/executable e.g. test.exe to run.
+
+PROS AND CONS
 
 * CLANG (compiler = clang++)
 Pros;
@@ -58,7 +54,6 @@ Cons;
     slowest to compile/link
     worst error messages
 
-
 * VISUAL STUDIO (compiler = msvc)
 Pros;
     The best IDE integrations e.g. Intel Profiler, .exe icon embedding, performance tuning/testing
@@ -69,7 +64,7 @@ Cons;
 
 The answer to which is best is subjective, if you're on windows and developing a portable app use GCC + a static analyser such as cppcheck to find code issues, then compile the updated code into clang++ to find any errors.
 
-If you're just targetting Windows only ever, then stick with Visual Studio as it suits the environment.
+If you're just targetting Windows only, then stick with Visual Studio as it suits the environment however keep in mind it's not portable.
 
 
 ## WINDOWS - INSTALLING WITH MSYS2
@@ -104,17 +99,16 @@ mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-libzip mingw-w64-x86_64-zlib \
 mingw-w64-x86_64-boost mingw-w64-x86_64-curl-winssl mingw-w64-x86_64-yasm \
 mingw-w64-x86_64-gtest make git
 ```
-3. Test the g++ compiler is installed by running the code below and observing a "Hello world" output
+3. Within mingw64 shell check the g++ compiler is installed by running the code below and observing a "Hello world" output
 ```bash
 echo "#include <stdio.h>" > test.c
 echo 'int main() { printf("Hello, World!\\n"); return 0; }' >> test.c
 gcc -o test test.c
 ./test
 
-# example output should be below
-$ Hello World!
+$ Hello World! # expected output
 ```
-4. Check or add the environmental variable for the g++ compiler location here C:\msys64\mingw64\bin
+4. Add environmental variable for g++ location C:\msys64\mingw64\bin (run below as admin in terminal or add manually)
 ```powershell
 [System.Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\msys64\mingw64\bin", [System.EnvironmentVariableTarget]::Machine)
 
@@ -122,7 +116,8 @@ $ Hello World!
 5. From a Terminal window (not the Mingw64 shell) observe if compiler is available
 ```bash
 PS C:\Users\Sumeet\Documents\sandbox> g++ --version
-g++.exe (Rev1, Built by MSYS2 project) 14.2.0
+
+g++.exe (Rev1, Built by MSYS2 project) 14.2.0 # expected output
 Copyright (C) 2024 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

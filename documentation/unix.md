@@ -19,8 +19,6 @@ however they can be modified with a quick confirmation with chatGPT to suit
 other OS.
 
 # INSTALLING
-___________________________________________________________________________
-
 
 1. INSTALLING LINUX
 ```bash

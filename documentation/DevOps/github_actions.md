@@ -1,16 +1,197 @@
 
-___________________________________________________________________________
+# PROGRAMMING WITH C++
 
-                          CACHE EXAMPLE
-___________________________________________________________________________
+By: Sumeet Singh @ sumeet-singh.com
 
+Date: July 2024
 
+# TABLE OF CONTENTS
+- [1. Requirements](#requirements)
+- [2. Installing](#installing)
+- [3. Profile script](#profile-script)
+- [4. Common Commands](#common-commands)
+- [5. Secrets and keys](#secrets-and-keys)
+- [6. Caches and Artifacts](#caches-and-artifacts)
+- [7. C++ example workflow](#c++-example-workflow)
+- [8. React example workflow](#react-example-workflow)
+- [9. Python example workflow](#python-example-workflow)
 
-___________________________________________________________________________
+# SECRETS AND KEYS 
 
-                    C++ MULTIPLATFORM COMPILE, TEST, AND RELEASE
-___________________________________________________________________________
+Repo's can have Repository/environmental secrets and keys which allow you to add keys such as API's in GitHub repo page
+and not within the code base itself. So when the code is pushed to GitHub, a GitHub actions CI/CD workflow will find that secret key
+and add it to the code so that it's not exposed.
 
+To add keys you must go to the Repo page - settings - secrets - then choose either for repository or environment
+then add the keys name in name field, and the ID value in ID field and save.
+
+Then within a GitHub actions yaml file include the hidden variable ```${secrets.key}```
+
+# CACHES AND ARTIFACTS
+
+Caches are for uploading dependencies for persistent storage between runners, whereas artifacts are for workflow job scope only to 
+download/push/zip directories/files.
+
+Caches only upload and save if a workflow is succesfull by creating an end task to save cache for next run.
+Viewed under github actions in it's own webpage called caches.
+
+Artifacts will upload at the point of that task being complete to the workflows local scope and do not persist for subsequent runs
+however they can be downloaded anytime. You could store/retrieve them to/from a external storage such as S3 bucket and then retrieve for another
+run or you can identify a succesfull job that stored an artifact and use GitHub API to curl find and retrieve.
+Viewed by clicking on a job and seeing the logs on right side of gui.
+
+Either method ONLY works with absolute file paths so instead of
+Linux: ${HOME} use /home/runner/
+
+## ARTIFACT AWS EXAMPLE
+```yaml
+  build_and_test_linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev googletest libgtest-dev yasm
+
+      - name: Ensure FFmpeg directory exists
+        run: mkdir -p ${HOME}/ffmpeg
+
+      - name: Download FFmpeg build from S3
+        id: download-s3
+        run: |
+          aws s3 cp s3://your-bucket-name/path/to/artifact/linux-ffmpeg-build.tar.gz /home/runner/linux-ffmpeg-build.tar.gz || echo "No artifact found"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: your-region
+
+      - name: Extract FFmpeg build if artifact was downloaded
+        if: success() && steps.download-s3.outputs['aws-s3-exit-code'] == '0'
+        run: |
+          tar -xzvf /home/runner/linux-ffmpeg-build.tar.gz -C /home/runner
+
+      - name: Build FFmpeg
+        if: failure() || steps.download-s3.outputs['aws-s3-exit-code'] != '0'
+        run: |
+          cd ${HOME}/ffmpeg
+          git clone https://git.ffmpeg.org/ffmpeg.git .
+          ./configure --prefix=${HOME}/ffmpeg/install --enable-shared --enable-gpl --disable-programs
+          make -j$(nproc)
+          sudo make install
+
+      - name: Create archive of FFmpeg build
+        if: failure() || steps.download-s3.outputs['aws-s3-exit-code'] != '0'
+        run: |
+          tar -czvf /home/runner/linux-ffmpeg-build.tar.gz -C /home/runner ffmpeg
+
+      - name: Upload FFmpeg build to S3
+        run: |
+          aws s3 cp /home/runner/linux-ffmpeg-build.tar.gz s3://your-bucket-name/path/to/artifact/linux-ffmpeg-build.tar.gz
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: your-region
+
+      - name: Copy FFmpeg files to /usr
+        run: |
+          sudo cp -rf ${HOME}/ffmpeg/install/include/* /usr/include
+          sudo cp -rf ${HOME}/ffmpeg/install/lib/* /usr/lib
+```
+
+## ARTIFACT GITHUB API EXAMPLE
+```yml
+  build_and_test_linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential g++ libboost-all-dev libcurl4-gnutls-dev libzip-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev googletest libgtest-dev yasm
+
+      - name: Ensure FFmpeg directory exists
+        run: mkdir -p ${HOME}/ffmpeg
+
+      - name: Download Artifact from Previous Run
+        id: download-artifact
+        run: |
+          # iterate backwards from most recent run to see if any run has artifact that matches name to use to download later on in workflow
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/runs \
+              -o runs.json
+
+          # Iterate through runs to find one with artifacts
+          RUN_ID=$(jq -r '.workflow_runs[] | select(.status == "completed") | .id' runs.json)
+          for id in $RUN_ID; do
+            echo "Checking run ID: $id"
+            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/runs/$id/artifacts \
+                -o artifacts.json
+
+            ARTIFACT_ID=$(jq -r '.artifacts[] | select(.name == "linux-ffmpeg-build") | .id' artifacts.json)
+            if [ -n "$ARTIFACT_ID" ]; then
+              echo "Artifact found in run ID: $id"
+              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  https://api.github.com/repos/SumeetSinghJi/BubbleUp/actions/artifacts/$ARTIFACT_ID/zip \
+                  --output linux-ffmpeg-build.zip
+              unzip linux-ffmpeg-build.zip -d /home/runner/ffmpeg
+              exit 0
+            fi
+          done
+
+          echo "No artifact found in recent runs"
+          exit 1
+
+      - name: Extract FFmpeg build if artifact was downloaded
+        if: steps.download-artifact.outcome == 'success'
+        run: |
+          tar -xzvf linux-ffmpeg-build.tar.gz -C /home/runner
+
+      - name: Build FFmpeg
+        if: failure() || !steps.download-artifact.outputs['success']
+        run: |
+          cd ${HOME}/ffmpeg
+          git clone https://git.ffmpeg.org/ffmpeg.git .
+          ./configure --prefix=${HOME}/ffmpeg/install --enable-shared --enable-gpl --disable-programs
+          make -j$(nproc)
+          sudo make install
+
+      - name: Create archive of FFmpeg build
+        if: failure() || !steps.download-artifact.outputs['success']
+        run: |
+          tar -czvf /home/runner/linux-ffmpeg-build.tar.gz -C /home/runner ffmpeg
+
+      - name: Upload FFmpeg build as artifact
+        if: steps.download-artifact.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-ffmpeg-build
+          path: /home/runner/ffmpeg
+          if-no-files-found: warn
+
+      - name: Copy FFmpeg files to /usr
+        run: |
+          sudo cp -rf ${HOME}/ffmpeg/install/include/* /usr/include
+          sudo cp -rf ${HOME}/ffmpeg/install/lib/* /usr/lib
+```
+
+## CACHE EXAMPLE
+```yml
+```
+
+# C++ EXAMPLE WORKFLOW
 
 name: test and release software
 
@@ -560,12 +741,7 @@ jobs:
         asset_content_type: application/zip
 ```
 
-
-___________________________________________________________________________
-
-                        UPLOADING REACT WEBSITE
-___________________________________________________________________________
-
+# REACT EXAMPLE WORKFLOW
 
 Using CI/CD - to upload React website to S3 static bucket
 
@@ -602,15 +778,7 @@ jobs:
           SOURCE_DIR: './build'
 ```
 
-
-
-
-
-___________________________________________________________________________
-
-                        PYTHON TEST AND RELEASE
-___________________________________________________________________________
-
+# PYTHON EXAMPLE WORKFLOW
 
 ```yml
 name: test and release software
@@ -859,3 +1027,4 @@ jobs:
   #       asset_name: Heroes3MapLiker-linux.zip
   #       asset_content_type: application/zip
 ```
+
